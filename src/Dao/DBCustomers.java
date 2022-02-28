@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class DBCustomers {
     public static ObservableList<Customers> getAllCustomers(){
@@ -22,13 +23,25 @@ public class DBCustomers {
              */
 
             while(rs.next()){
-                int customerIdCol = rs.getInt("Customer_ID");
+
+                int customerIdCol = rs.getInt("");
+                String customerNameCol = rs.getString("");
+                String customerAddyCol = rs.getString("");
+                String customerZipCol = rs.getString("");
+                String customerPhoneCol = rs.getString("");
+                String customerCreatedDateCol = rs.getString("");
+                String customerCreatedCol = rs.getString("");
+                Timestamp customerUpdatedOnCol = rs.getTimestamp("");
+                String customerUpdatedByCol = rs.getString("");
+                int customerCountryCol = rs.getInt("");
+
+               /* int customerIdCol = rs.getInt("Customer_ID");
                 String customerNameCol = rs.getString("Customer_Name");
                 String customerAddyCol = rs.getString("Address");
                 //String customerStateCol = rs.getString("Division_ID");
                 String customerZipCol = rs.getString("Postal_Code");
                 String customerPhoneCol = rs.getString("Phone");
-                int customerCountryCol = rs.getInt("Country_ID");
+                int customerCountryCol = rs.getInt("Country_ID");*/
 
                 //Customers customer = new Customers();
                 //customers.add(customer);
