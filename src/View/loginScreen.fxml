@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="TOP_CENTER" prefHeight="480.0" prefWidth="640.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginScreenController">
+    <padding>
+        <Insets bottom="10.0" top="50.0" />
+    </padding>
+    <children>
+        <Label alignment="CENTER" text="ONLINE SCHEDULING SYSTEM" textFill="#2600ff">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <VBox alignment="CENTER">
+            <VBox.margin>
+                <Insets top="150.0" />
+            </VBox.margin>
+            <children>
+                <TextField fx:id="usernameTextField" alignment="CENTER" promptText="Username">
+                    <VBox.margin>
+                        <Insets left="200.0" right="200.0" />
+                    </VBox.margin></TextField>
+            <PasswordField fx:id="usernamePasswordField" alignment="CENTER" promptText="Password">
+               <VBox.margin>
+                  <Insets left="200.0" right="200.0" top="10.0" />
+               </VBox.margin>
+            </PasswordField>
+            </children></VBox>
+        <HBox alignment="TOP_CENTER" prefHeight="30.0">
+            <children>
+                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onActionLogin" prefWidth="70.0" text="LOGIN" textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets right="10.0" />
+                    </HBox.margin></Button>
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onActionExit" prefWidth="70.0" text="CANCEL" textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets left="10.0" />
+                    </HBox.margin></Button>
+            </children></HBox>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <children>
+                <Label text="User Location:" />
+            <Label fx:id="userLocale" />
+            </children>
+        </VBox>
+    </children>
+</VBox>
