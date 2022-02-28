@@ -33,7 +33,9 @@ public class DBCustomers {
                 String customerCreatedCol = rs.getString("");
                 Timestamp customerUpdatedOnCol = rs.getTimestamp("");
                 String customerUpdatedByCol = rs.getString("");
-                int customerCountryCol = rs.getInt("");
+                int customerDivisionCol = rs.getInt("");
+
+                Customers customer = new Customers(customerIdCol,customerNameCol,customerAddyCol,customerZipCol,customerPhoneCol,customerCreatedDateCol,customerCreatedCol,customerUpdatedOnCol,customerUpdatedByCol,customerDivisionCol);
 
                /* int customerIdCol = rs.getInt("Customer_ID");
                 String customerNameCol = rs.getString("Customer_Name");
