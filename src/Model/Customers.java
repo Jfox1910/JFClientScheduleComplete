@@ -1,25 +1,33 @@
 package Model;
 
-//Customer Class
+import java.sql.Timestamp;
+
+    //Customer Class
 public class Customers {
 
     private int customerIdCol;
     private String customerNameCol;
     private String customerAddyCol;
-    private String customerStateCol;
-    private int customerZipCol;
+    private String customerZipCol;
+    private String customerPhoneCol;
+    private String customerCreatedDateCol;
+    private String customerCreatedCol;
+    private Timestamp customerUpdatedOnCol;
+    private String customerUpdatedByCol;
     private int customerCountryCol;
-    private int customerPhoneCol;
 
     //Constructor
-    public Customers(int customerIdCol, String customerNameCol, String customerAddyCol, String customerStateCol, int customerZipCol, int customerCountryCol, int customerPhoneCol) {
+    public Customers(int customerIdCol, String customerNameCol, String customerAddyCol, String customerZipCol, String customerPhoneCol, String customerCreatedDateCol,
+                     String customerCreatedCol, Timestamp customerUpdatedOnCol, String customerUpdatedByCol) {
         this.customerIdCol = customerIdCol;
         this.customerNameCol = customerNameCol;
         this.customerAddyCol = customerAddyCol;
-        this.customerStateCol = customerStateCol;
         this.customerZipCol = customerZipCol;
-        this.customerCountryCol = customerCountryCol;
         this.customerPhoneCol = customerPhoneCol;
+        this.customerCreatedDateCol = customerCreatedDateCol;
+        this.customerCreatedCol = customerCreatedCol;
+        this.customerUpdatedOnCol = customerUpdatedOnCol;
+        this.customerUpdatedByCol = customerUpdatedByCol;
     }
 
     //Getters
@@ -35,24 +43,35 @@ public class Customers {
         return customerAddyCol;
     }
 
-    public String getCustomerStateCol() {
-        return customerStateCol;
-    }
-
-    public int getCustomerZipCol() {
+    public String getCustomerZipCol() {
         return customerZipCol;
     }
 
-    public Integer getCustomerCountryCol() {
-        return customerCountryCol;
-    }
-
-    public int getCustomerPhoneCol() {
+    public String getCustomerPhoneCol() {
         return customerPhoneCol;
     }
 
-    //Setters
+    public String getCustomerCreatedDateCol() {
+        return customerCreatedDateCol;
+    }
 
+    public String getCustomerCreatedCol() {
+        return customerCreatedCol;
+    }
+
+    public Timestamp getCustomerUpdatedOnCol() {
+        return customerUpdatedOnCol;
+    }
+
+    public String getCustomerUpdatedByCol() {
+        return customerUpdatedByCol;
+    }
+
+    public int getCustomerCountryCol() {
+        return customerCountryCol;
+    }
+
+    //Setters
     public void setCustomerIdCol(int customerIdCol) {
         this.customerIdCol = customerIdCol;
     }
@@ -65,19 +84,31 @@ public class Customers {
         this.customerAddyCol = customerAddyCol;
     }
 
-    public void setCustomerStateCol(String customerStateCol) {
-        this.customerStateCol = customerStateCol;
-    }
-
-    public void setCustomerZipCol(int customerZipCol) {
+    public void setCustomerZipCol(String customerZipCol) {
         this.customerZipCol = customerZipCol;
     }
 
-    public void setCustomerCountryCol(Integer customerCountryCol) {
-        this.customerCountryCol = customerCountryCol;
+    public void setCustomerPhoneCol(String customerPhoneCol) {
+        this.customerPhoneCol = customerPhoneCol;
     }
 
-    public void setCustomerPhoneCol(int customerPhoneCol) {
-        this.customerPhoneCol = customerPhoneCol;
+    public void setCustomerCreatedDateCol(String customerCreatedDateCol) {
+        this.customerCreatedDateCol = customerCreatedDateCol;
+    }
+
+    public void setCustomerCreatedCol(String customerCreatedCol) {
+        this.customerCreatedCol = customerCreatedCol;
+    }
+
+    public void setCustomerUpdatedOnCol(Timestamp customerUpdatedOnCol) {
+        this.customerUpdatedOnCol = customerUpdatedOnCol;
+    }
+
+    public void setCustomerUpdatedByCol(String customerUpdatedByCol) {
+        this.customerUpdatedByCol = customerUpdatedByCol;
+    }
+
+    public void setCustomerCountryCol(int customerCountryCol) {
+        this.customerCountryCol = customerCountryCol;
     }
 }

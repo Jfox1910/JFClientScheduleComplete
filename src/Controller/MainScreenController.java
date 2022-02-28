@@ -48,10 +48,10 @@ public class MainScreenController implements Initializable {
     @FXML public TableColumn<Customers, Integer> customerIdCol;
     @FXML public TableColumn<Customers, String> customerNameCol;
     @FXML public TableColumn<Customers, String> customerAddyCol;
-    @FXML public TableColumn<Customers, String> customerStateCol;
-    @FXML public TableColumn<Customers, Integer> customerZipCol;
+   //@FXML public TableColumn<Customers, String> customerStateCol;
+    @FXML public TableColumn<Customers, String> customerZipCol;
+    @FXML public TableColumn<Countries, String> customerPhoneCol;
     @FXML public TableColumn<Customers, String> customerCountryCol;
-    @FXML public TableColumn<Countries, Integer> customerPhoneCol;
 
     private ObservableList<Customers> customers;
     private ObservableList<Appointments> appointments;
@@ -76,15 +76,15 @@ public class MainScreenController implements Initializable {
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("apptUserIDCol"));
 
         //Customers
-        customers = DBCustomers.getAllCustomers();
+/*        customers = DBCustomers.getAllCustomers();
         customersTableView.setItems(customers);
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
         customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("Address"));
-        customerStateCol.setCellValueFactory(new PropertyValueFactory<>("State"));
+        //customerStateCol.setCellValueFactory(new PropertyValueFactory<>("State"));
         customerZipCol.setCellValueFactory(new PropertyValueFactory<>("Zip"));
-        customerCountryCol.setCellValueFactory(new PropertyValueFactory<>("countryID"));
         customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+        customerCountryCol.setCellValueFactory(new PropertyValueFactory<>("countryID"));*/
 
     }
 

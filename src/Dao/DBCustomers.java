@@ -25,13 +25,16 @@ public class DBCustomers {
                 int customerIdCol = rs.getInt("Customer_ID");
                 String customerNameCol = rs.getString("Customer_Name");
                 String customerAddyCol = rs.getString("Address");
-                String customerStateCol = rs.getString("Division_ID");
-                int customerZipCol = rs.getInt("Postal_Code");
+                //String customerStateCol = rs.getString("Division_ID");
+                String customerZipCol = rs.getString("Postal_Code");
+                String customerPhoneCol = rs.getString("Phone");
                 int customerCountryCol = rs.getInt("Country_ID");
-                int customerPhoneCol = rs.getInt("Phone");
 
-                Customers customer = new Customers(customerIdCol, customerNameCol,customerAddyCol,customerStateCol,customerZipCol, customerCountryCol, customerPhoneCol);
-                customers.add(customer);
+                //Customers customer = new Customers();
+                //customers.add(customer);
+
+                /*Customers customer = new Customers(customerIdCol, customerNameCol,customerAddyCol,customerStateCol,customerZipCol, customerCountryCol, customerPhoneCol);
+                customers.add(customer);*/
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
