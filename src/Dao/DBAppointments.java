@@ -39,7 +39,7 @@ public final class DBAppointments {
                 int apptUserIDCol = rs.getInt("User_ID");
                 Appointments appointment = new Appointments(apptIDCol, apptTitleCol, apptDescriptionCol, apptLocationCol, apptContactCol, apptTypeCol, apptStartTimeCol,
                         apptEndTimeCol, apptCustomerIDCol, apptUserIDCol);
-                //add appt
+
                 appointments.add(appointment);
             }
         } catch (SQLException throwables) {

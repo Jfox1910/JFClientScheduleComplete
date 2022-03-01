@@ -30,6 +30,7 @@ public class Appointments {
         this.apptUserIDCol = apptUserIDCol;
     }
 
+    //Getters
     public int getApptIDCol() {
         return apptIDCol;
     }
@@ -70,6 +71,7 @@ public class Appointments {
         return apptUserIDCol;
     }
 
+    //Setters
     public void setApptIDCol(int apptIDCol) {
         this.apptIDCol = apptIDCol;
     }
