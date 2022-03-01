@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 
 public class DBCustomers {
     public static ObservableList<Customers> getAllCustomers(){
-        ObservableList<Customers> customers = FXCollections.observableArrayList();
+        ObservableList<Customers> customer = FXCollections.observableArrayList();
 
         try {
             String sql = "SELECT * from customers";
@@ -35,8 +35,8 @@ public class DBCustomers {
                 String customerUpdatedByCol = rs.getString("");
                 int customerDivisionCol = rs.getInt("");
 
-                Customers customer = new Customers(customerIdCol,customerNameCol,customerAddyCol,customerZipCol,customerPhoneCol,customerCreatedDateCol,customerCreatedCol,customerUpdatedOnCol,customerUpdatedByCol,customerDivisionCol);
-
+                Customers customers = new Customers(customerIdCol,customerNameCol,customerAddyCol,customerZipCol,customerPhoneCol,customerCreatedDateCol,customerCreatedCol,customerUpdatedOnCol,customerUpdatedByCol,customerDivisionCol);
+                customer.add(customers);
                /* int customerIdCol = rs.getInt("Customer_ID");
                 String customerNameCol = rs.getString("Customer_Name");
                 String customerAddyCol = rs.getString("Address");
@@ -55,6 +55,6 @@ public class DBCustomers {
             throwables.printStackTrace();
         }
 
-        return customers;
+        return customer;
     }
 }
