@@ -21,6 +21,7 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
@@ -44,14 +45,18 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Appointments, Integer> apptUserIDCol;
 
 
-    @FXML public TableView<Customers> customersTableView;
-    @FXML public TableColumn<Customers, Integer> customerIdCol;
-    @FXML public TableColumn<Customers, String> customerNameCol;
-    @FXML public TableColumn<Customers, String> customerAddyCol;
-   //@FXML public TableColumn<Customers, String> customerStateCol;
-    @FXML public TableColumn<Customers, String> customerZipCol;
-    @FXML public TableColumn<Countries, String> customerPhoneCol;
-    @FXML public TableColumn<Customers, String> customerCountryCol;
+    @FXML private TableView<Customers> customersTableView;
+    @FXML private TableColumn<Customers, Integer> customerIdCol;
+    @FXML private TableColumn<Customers, String> customerNameCol;
+    @FXML private TableColumn<Customers, String> customerAddyCol;
+    @FXML private TableColumn<Customers, String> customerZipCol;
+    @FXML private TableColumn<Countries, String> customerPhoneCol;
+    @FXML private TableColumn<Customers, String> customerCreatedDateCol;
+    @FXML private TableColumn<Customers,String> customerCreatedCol;
+    @FXML private TableColumn<Customers, Timestamp> customerUpdatedOnCol;
+    @FXML private TableColumn<Customers, String> customerUpdatedByCol;
+    @FXML private TableColumn<Customers, Integer> customerDivisionCol;
+
 
     private ObservableList<Customers> customers;
     private ObservableList<Appointments> appointments;
@@ -76,15 +81,18 @@ public class MainScreenController implements Initializable {
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("apptUserIDCol"));
 
         //Customers
-/*        customers = DBCustomers.getAllCustomers();
+        customers = DBCustomers.getAllCustomers();
         customersTableView.setItems(customers);
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
-        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("Address"));
-        //customerStateCol.setCellValueFactory(new PropertyValueFactory<>("State"));
-        customerZipCol.setCellValueFactory(new PropertyValueFactory<>("Zip"));
-        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("Phone"));
-        customerCountryCol.setCellValueFactory(new PropertyValueFactory<>("countryID"));*/
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerIdCol"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerNameCol"));
+        customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("customerAddyCol"));
+        customerZipCol.setCellValueFactory(new PropertyValueFactory<>("customerZipCol"));
+        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneCol"));
+
+        /**
+         * EDIT TO SHOW ACTUAL DIVISION INSTEAD OF THE ID*/
+
+        customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivisionCol"));
 
     }
 

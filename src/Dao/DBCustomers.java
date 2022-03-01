@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 
 public class DBCustomers {
     public static ObservableList<Customers> getAllCustomers(){
-        ObservableList<Customers> customer = FXCollections.observableArrayList();
+        ObservableList<Customers> customerList = FXCollections.observableArrayList();
 
         try {
             String sql = "SELECT * from customers";
@@ -24,19 +24,19 @@ public class DBCustomers {
 
             while(rs.next()){
 
-                int customerIdCol = rs.getInt("");
-                String customerNameCol = rs.getString("");
-                String customerAddyCol = rs.getString("");
-                String customerZipCol = rs.getString("");
-                String customerPhoneCol = rs.getString("");
-                String customerCreatedDateCol = rs.getString("");
-                String customerCreatedCol = rs.getString("");
-                Timestamp customerUpdatedOnCol = rs.getTimestamp("");
-                String customerUpdatedByCol = rs.getString("");
-                int customerDivisionCol = rs.getInt("");
+                int customerIdCol = rs.getInt("Customer_ID");
+                String customerNameCol = rs.getString("Customer_Name");
+                String customerAddyCol = rs.getString("Address");
+                String customerZipCol = rs.getString("Postal_Code");
+                String customerPhoneCol = rs.getString("Phone");
+                String customerCreatedDateCol = rs.getString("Create_Date");
+                String customerCreatedCol = rs.getString("Created_By");
+                Timestamp customerUpdatedOnCol = rs.getTimestamp("Last_Update");
+                String customerUpdatedByCol = rs.getString("Last_Updated_By");
+                int customerDivisionCol = rs.getInt("Division_ID");
 
                 Customers customers = new Customers(customerIdCol,customerNameCol,customerAddyCol,customerZipCol,customerPhoneCol,customerCreatedDateCol,customerCreatedCol,customerUpdatedOnCol,customerUpdatedByCol,customerDivisionCol);
-                customer.add(customers);
+                customerList.add(customers);
                /* int customerIdCol = rs.getInt("Customer_ID");
                 String customerNameCol = rs.getString("Customer_Name");
                 String customerAddyCol = rs.getString("Address");
@@ -55,6 +55,6 @@ public class DBCustomers {
             throwables.printStackTrace();
         }
 
-        return customer;
+        return customerList;
     }
 }

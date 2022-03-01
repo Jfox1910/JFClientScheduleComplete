@@ -73,8 +73,6 @@ public class Customers {
         }
 
         //Setters
-
-
         public void setCustomerIdCol(int customerIdCol) {
             this.customerIdCol = customerIdCol;
         }
