@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class DBCustomers {
+
+
     public static ObservableList<Customers> getAllCustomers(){
         ObservableList<Customers> customerList = FXCollections.observableArrayList();
 
@@ -18,9 +20,6 @@ public class DBCustomers {
             PreparedStatement psgetCustomers = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = psgetCustomers.executeQuery();
 
-            /**
-             * REPAIR Tableview columns to match DB tables
-             */
 
             while(rs.next()){
 
@@ -45,7 +44,9 @@ public class DBCustomers {
         return customerList;
     }
 
-    public void newCustomer(String customerName, String customerAddress, String customerZipCode, String customerPhone, String customerCreatedBy, String customerUpdatedBy, Integer customerDivision){
+    //Adds a new customer to the database.
+    public void newCustomer(String customerNameCol, String customerAddyCol, String customerZipCode, String customerPhone, String customerCreatedBy, Integer customerDivision){
+
         try {
             String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,?,?,?,?,NOW(),?,NOW(),?,?)";
 
@@ -53,26 +54,35 @@ public class DBCustomers {
 
 
             assert psnewCustomer != null;
-            psnewCustomer.setString(1,customerName);
-            psnewCustomer.setString(2,customerAddress);
+            psnewCustomer.setString(1,customerNameCol);
+            psnewCustomer.setString(2,customerAddyCol);
             psnewCustomer.setString(3,customerZipCode);
             psnewCustomer.setString(4,customerPhone);
             psnewCustomer.setString(5,customerCreatedBy);
-            psnewCustomer.setString(6, customerUpdatedBy);
-            psnewCustomer.setInt(7, customerDivision);
+            psnewCustomer.setInt(6,customerDivision);
 
             psnewCustomer.execute();
 
-        }
-        catch (SQLException throwables){
+        } catch (SQLException throwables){
             throwables.printStackTrace();
         }
     }
 
-    public void modifyCustomer(){
+    //Modifies a selected customer and updates the database
+    public void modifyCustomer(String customerNameCol, String customerAddyCol, String customerZipCode, String customerPhone, String customerUpdatedBy, Integer customerDivision){
         try {
-            String sqlModifyCustomer = "";
+            String sqlModifyCustomer = "UPDATE customers SET customerName = ?, customerAddress = ?, customerZipCode = ?, customerPhone = ?, customerUpdatedBy = ?, customerDivision = ?";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
+
+
+            psmodifyCustomer.setString(1,customerNameCol);
+            psmodifyCustomer.setString(2,customerAddyCol);
+            psmodifyCustomer.setString(3,customerZipCode);
+            psmodifyCustomer.setString(4,customerPhone);
+            psmodifyCustomer.setString(5,customerUpdatedBy);
+            psmodifyCustomer.setInt(6,customerDivision);
+
+            psmodifyCustomer.execute();
 
         }catch (SQLException throwables){
             throwables.printStackTrace();
@@ -80,10 +90,13 @@ public class DBCustomers {
 
     }
 
-    public void deleteCustomer(){
+    //Deletes an exisiting customer from the database.
+    public void deleteCustomer(Integer customerID){
         try {
             String sqldeleteCustomer = "DELETE from customers WHERE Customer_ID = ?";
             PreparedStatement psdeleteCustomer = JDBC.getConnection().prepareStatement(sqldeleteCustomer);
+
+            psdeleteCustomer.setInt(1, customerID);
 
             psdeleteCustomer.execute();
         }catch (SQLException throwables){
