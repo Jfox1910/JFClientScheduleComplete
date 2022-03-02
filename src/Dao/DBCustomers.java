@@ -15,8 +15,8 @@ public class DBCustomers {
 
         try {
             String sql = "SELECT * from customers";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            PreparedStatement psgetCustomers = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = psgetCustomers.executeQuery();
 
             /**
              * REPAIR Tableview columns to match DB tables
@@ -43,5 +43,51 @@ public class DBCustomers {
         }
 
         return customerList;
+    }
+
+    public void newCustomer(String customerName, String customerAddress, String customerZipCode, String customerPhone, String customerCreatedBy, String customerUpdatedBy, Integer customerDivision){
+        try {
+            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,?,?,?,?,NOW(),?,NOW(),?,?)";
+
+            PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer);
+
+
+            assert psnewCustomer != null;
+            psnewCustomer.setString(1,customerName);
+            psnewCustomer.setString(2,customerAddress);
+            psnewCustomer.setString(3,customerZipCode);
+            psnewCustomer.setString(4,customerPhone);
+            psnewCustomer.setString(5,customerCreatedBy);
+            psnewCustomer.setString(6, customerUpdatedBy);
+            psnewCustomer.setInt(7, customerDivision);
+
+            psnewCustomer.execute();
+
+        }
+        catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
+    public void modifyCustomer(){
+        try {
+            String sqlModifyCustomer = "";
+            PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
+
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public void deleteCustomer(){
+        try {
+            String sqldeleteCustomer = "DELETE from customers WHERE Customer_ID = ?";
+            PreparedStatement psdeleteCustomer = JDBC.getConnection().prepareStatement(sqldeleteCustomer);
+
+            psdeleteCustomer.execute();
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
     }
 }
