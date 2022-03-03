@@ -23,18 +23,18 @@ public class DBCustomers {
 
             while(rs.next()){
 
-                int customerIdCol = rs.getInt("Customer_ID");
-                String customerNameCol = rs.getString("Customer_Name");
-                String customerAddyCol = rs.getString("Address");
-                String customerZipCol = rs.getString("Postal_Code");
-                String customerPhoneCol = rs.getString("Phone");
-                String customerCreatedDateCol = rs.getString("Create_Date");
-                String customerCreatedCol = rs.getString("Created_By");
-                Timestamp customerUpdatedOnCol = rs.getTimestamp("Last_Update");
-                String customerUpdatedByCol = rs.getString("Last_Updated_By");
-                int customerDivisionCol = rs.getInt("Division_ID");
+                int customerId = rs.getInt("Customer_ID");
+                String customerName = rs.getString("Customer_Name");
+                String customerAddy = rs.getString("Address");
+                String customerZip = rs.getString("Postal_Code");
+                String customerPhone = rs.getString("Phone");
+                String customerCreatedDate = rs.getString("Create_Date");
+                String customerCreated = rs.getString("Created_By");
+                Timestamp customerUpdatedOn = rs.getTimestamp("Last_Update");
+                String customerUpdatedBy = rs.getString("Last_Updated_By");
+                int customerDivision = rs.getInt("Division_ID");
 
-                Customers customers = new Customers(customerIdCol,customerNameCol,customerAddyCol,customerZipCol,customerPhoneCol,customerCreatedDateCol,customerCreatedCol,customerUpdatedOnCol,customerUpdatedByCol,customerDivisionCol);
+                Customers customers = new Customers(customerId,customerName,customerAddy,customerZip,customerPhone,customerCreatedDate,customerCreated,customerUpdatedOn,customerUpdatedBy,customerDivision);
                 customerList.add(customers);
             }
         } catch (SQLException throwables) {
@@ -45,7 +45,7 @@ public class DBCustomers {
     }
 
     //Adds a new customer to the database.
-    public void newCustomer(String customerNameCol, String customerAddyCol, String customerZipCode, String customerPhone, String customerCreatedBy, Integer customerDivision){
+    public void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerCreatedBy, Integer customerDivision){
 
         try {
             String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,?,?,?,?,NOW(),?,NOW(),?,?)";
@@ -54,8 +54,8 @@ public class DBCustomers {
 
 
             assert psnewCustomer != null;
-            psnewCustomer.setString(1,customerNameCol);
-            psnewCustomer.setString(2,customerAddyCol);
+            psnewCustomer.setString(1,customerName);
+            psnewCustomer.setString(2,customerAddy);
             psnewCustomer.setString(3,customerZipCode);
             psnewCustomer.setString(4,customerPhone);
             psnewCustomer.setString(5,customerCreatedBy);
@@ -69,14 +69,13 @@ public class DBCustomers {
     }
 
     //Modifies a selected customer and updates the database
-    public void modifyCustomer(String customerNameCol, String customerAddyCol, String customerZipCode, String customerPhone, String customerUpdatedBy, Integer customerDivision){
+    public void modifyCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerUpdatedBy, Integer customerDivision){
         try {
             String sqlModifyCustomer = "UPDATE customers SET customerName = ?, customerAddress = ?, customerZipCode = ?, customerPhone = ?, customerUpdatedBy = ?, customerDivision = ?";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
 
-
-            psmodifyCustomer.setString(1,customerNameCol);
-            psmodifyCustomer.setString(2,customerAddyCol);
+            psmodifyCustomer.setString(1,customerName);
+            psmodifyCustomer.setString(2,customerAddy);
             psmodifyCustomer.setString(3,customerZipCode);
             psmodifyCustomer.setString(4,customerPhone);
             psmodifyCustomer.setString(5,customerUpdatedBy);
@@ -91,7 +90,7 @@ public class DBCustomers {
     }
 
     //Deletes an exisiting customer from the database.
-    public void deleteCustomer(Integer customerID){
+    public static void deleteCustomer(Integer customerID){
         try {
             String sqldeleteCustomer = "DELETE from customers WHERE Customer_ID = ?";
             PreparedStatement psdeleteCustomer = JDBC.getConnection().prepareStatement(sqldeleteCustomer);

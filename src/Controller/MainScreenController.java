@@ -1,5 +1,6 @@
 package Controller;
 
+import Controller.editCustomers;
 import Dao.DBAppointments;
 import Dao.DBCountries;
 import Dao.DBCustomers;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
@@ -158,6 +160,21 @@ public class MainScreenController implements Initializable {
     }
 
     public void onActionDeleteCustomer(ActionEvent event) throws IOException{
+
+        Customers customers = customersTableView.getSelectionModel().getSelectedItem();
+        if (customers == null)
+            return;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("CONFIRMATION");
+        alert.setHeaderText("This will delete the selected customer!");
+        alert.setContentText("Are you sure you want to continue?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            DBCustomers.getAllCustomers();
+        }
+
         System.out.println("Test DELETE customer from database");
 
     }
