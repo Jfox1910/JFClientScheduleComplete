@@ -18,7 +18,12 @@ public class AddCustomerController {
     private Scene scene;
     private Parent root;
 
+    public void onActionAddCustomer(){
 
+
+    }
+
+    //Exit to the main screen
     public void onActionMainScreen(ActionEvent event) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
