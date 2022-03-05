@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -64,9 +65,23 @@ public class MainScreenController implements Initializable {
     private ObservableList<Appointments> appointments;
 
 
-
     @Override
     public void initialize (URL location, ResourceBundle resources){
+
+      /*  LocalTime start = LocalTime.of(6, 0);
+        LocalTime end = LocalTime.NOON;
+        while(start.isBefore(end.plusSeconds(1))){
+            testBox.getItems().add(start);
+            start = start.plusMinutes(15);
+        }
+        testBox.getSelectionModel().select(LocalTime.of(8,0));
+
+        testBox.setPromptText("Whatever");
+
+        @Override
+        public String toString(){
+        return (Integer.toString(objectName)); }
+        */
 
         //Appointments
         appointments = DBAppointments.getAllAppointments();
@@ -95,6 +110,29 @@ public class MainScreenController implements Initializable {
          * EDIT TO SHOW ACTUAL DIVISION INSTEAD OF THE ID*/
 
         customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivisionCol"));
+
+
+
+
+/*        if (customerTableView.getSelectionModel().getSelectedItem() != null){
+            //set selected customer to new customer object
+            Customer selectedCustomer = (Customer) customerTableView.getSelectionModel().getSelectedItem();
+            selectedCustomerName = selectedCustomer.getCustomerName();
+            //See if selected customer has any appts, if so, delete those first
+            for(int i = 0; i < allAppts.size(); i++){
+                if(allAppts.get(i).getCustomerID() == selectedCustomer.getCustomerID()){
+                    DBAppointment.deleteAppointment(allAppts.get(i).getAppointmentID());
+                }
+            }
+            //deletes customer from database
+            DBCustomer.deleteCustomer(selectedCustomer.getCustomerID());
+            customerTableView.setItems(DBCustomer.getAllCustomers());
+            //displays message on interface to confirm deletion
+            messageLabel.setVisible(true);
+            messageLabel.setText(selectedCustomerName + " has been deleted.");
+            customerDeleted = true;
+
+        }*/
 
     }
 
@@ -159,22 +197,34 @@ public class MainScreenController implements Initializable {
         stage.show();
     }
 
+
+    //Selects the customer and deletes them and any appointments they have scheduled.
     public void onActionDeleteCustomer(ActionEvent event) throws IOException{
 
-        Customers customers = customersTableView.getSelectionModel().getSelectedItem();
-        if (customers == null)
-            return;
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("CONFIRMATION");
-        alert.setHeaderText("This will delete the selected customer!");
-        alert.setContentText("Are you sure you want to continue?");
+            if (customersTableView.getSelectionModel().getSelectedItem() != null){
+                Customers thisCustomer = customersTableView.getSelectionModel().getSelectedItem();
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            DBCustomers.getAllCustomers();
+                for (int i = 0; i < appointments.size(); i++) {
+                    if (appointments.get(i).getApptIDCol() == thisCustomer.getCustomerIdCol()) {
+                        DBAppointments.deleteAppointment(appointments.get(i).getApptIDCol());
+                    }
+                }
+
+                //Hold and alert the user before deleting the selected customer.
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("ATTENTION!");
+                alert.setHeaderText("The selected customer will be deleted from the database.");
+                alert.setContentText("Are you sure you wish to continue?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+
+                    DBCustomers.deleteCustomer(thisCustomer.getCustomerIdCol());
+                    customersTableView.setItems(DBCustomers.getAllCustomers());
+                }
+
         }
-
         System.out.println("Test DELETE customer from database");
 
     }

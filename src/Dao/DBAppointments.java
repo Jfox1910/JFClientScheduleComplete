@@ -48,4 +48,24 @@ public final class DBAppointments {
 
         return appointments;
     }
+
+    public static void deleteAppointment(int appointmentID) {
+        try {
+
+            //SQL statement
+            String sqldc = "DELETE from appointments where Appointment_ID = ?";
+
+            //Create a PreparedStatement
+            PreparedStatement psdc = JDBC.getConnection().prepareStatement(sqldc);
+            //add question mark
+            psdc.setInt(1, appointmentID);
+
+            psdc.execute();
+
+
+        }
+        catch (SQLException exception){
+            exception.printStackTrace();
+        }
+    }
 }
