@@ -1,6 +1,7 @@
 package Controller;
 
 import Dao.DBCustomers;
+import Dao.DBDivisions;
 import Model.Countries;
 import Model.Divisions;
 import javafx.beans.value.ObservableValue;
@@ -64,6 +65,22 @@ public class AddCustomerController implements Initializable {
         stage.show();
         }
     }
+
+/*    public int onActionDivisionBox(ActionEvent actionEvent){
+        if(addCustomerDivision.getSelectionModel().getSelectedItem() != null) {
+            Object selectedDivision = addCustomerDivision.getSelectionModel().getSelectedItem();
+
+            String d = selectedDivision.toString();
+            for (int i = 0; i < DBDivisions.getAllDivisions().size(); i++) {
+                if (d.equalsIgnoreCase(DBDivisions.getAllDivisions().get(i).getDivisionName())) {
+                    selectedDivisionID = DBDivisions.getAllDivisions().get(i).getDivisionID();
+                    break;
+                }
+
+            }
+        }
+        return selectedDivisionID;
+    }*/
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
