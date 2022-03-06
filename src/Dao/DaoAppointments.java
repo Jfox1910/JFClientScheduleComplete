@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 /**
  Appointment table database access
  */
-public final class DBAppointments {
+public final class DaoAppointments {
 
     public static ObservableList<Appointments> getAllAppointments(){
         ObservableList<Appointments> appointments = FXCollections.observableArrayList();

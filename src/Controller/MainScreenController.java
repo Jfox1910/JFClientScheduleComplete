@@ -1,13 +1,10 @@
 package Controller;
 
-import Controller.editCustomers;
-import Dao.DBAppointments;
-import Dao.DBCountries;
-import Dao.DBCustomers;
+import Dao.DaoAppointments;
+import Dao.DaoCustomers;
 import Model.Appointments;
 import Model.Countries;
 import Model.Customers;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +21,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -84,7 +80,7 @@ public class MainScreenController implements Initializable {
         */
 
         //Appointments
-        appointments = DBAppointments.getAllAppointments();
+        appointments = DaoAppointments.getAllAppointments();
         apptTableview.setItems(appointments);
         apptIDCol.setCellValueFactory(new PropertyValueFactory<>("apptIDCol"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitleCol"));
@@ -98,7 +94,7 @@ public class MainScreenController implements Initializable {
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("apptUserIDCol"));
 
         //Customers
-        customers = DBCustomers.getAllCustomers();
+        customers = DaoCustomers.getAllCustomers();
         customersTableView.setItems(customers);
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerIdCol"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerNameCol"));
@@ -207,7 +203,7 @@ public class MainScreenController implements Initializable {
 
                 for (int i = 0; i < appointments.size(); i++) {
                     if (appointments.get(i).getApptIDCol() == thisCustomer.getCustomerIdCol()) {
-                        DBAppointments.deleteAppointment(appointments.get(i).getApptIDCol());
+                        DaoAppointments.deleteAppointment(appointments.get(i).getApptIDCol());
                     }
                 }
 
@@ -220,8 +216,8 @@ public class MainScreenController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
 
-                    DBCustomers.deleteCustomer(thisCustomer.getCustomerIdCol());
-                    customersTableView.setItems(DBCustomers.getAllCustomers());
+                    DaoCustomers.deleteCustomer(thisCustomer.getCustomerIdCol());
+                    customersTableView.setItems(DaoCustomers.getAllCustomers());
                 }
 
         }

@@ -1,10 +1,7 @@
 package Controller;
 
-import Dao.DBCustomers;
-import Dao.DBDivisions;
 import Model.Countries;
 import Model.Divisions;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,7 +39,7 @@ public class AddCustomerController implements Initializable {
 
     public void onActionAddCustomer(){
 
-        //Dao.DBCustomers.newCustomer();
+        //Dao.DaoCustomers.newCustomer();
 
         //.setVisibleRowCount(5);
         //.getSelectionModel().selectFirst();
@@ -71,9 +68,9 @@ public class AddCustomerController implements Initializable {
             Object selectedDivision = addCustomerDivision.getSelectionModel().getSelectedItem();
 
             String d = selectedDivision.toString();
-            for (int i = 0; i < DBDivisions.getAllDivisions().size(); i++) {
-                if (d.equalsIgnoreCase(DBDivisions.getAllDivisions().get(i).getDivisionName())) {
-                    selectedDivisionID = DBDivisions.getAllDivisions().get(i).getDivisionID();
+            for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
+                if (d.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
+                    selectedDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
                     break;
                 }
 

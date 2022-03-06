@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DBCountries {
+public class DaoCountries {
     public static ObservableList<Countries> getAllCountries(){
         ObservableList<Countries> countries = FXCollections.observableArrayList();
 

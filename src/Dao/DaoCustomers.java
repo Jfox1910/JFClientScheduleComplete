@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class DBCustomers {
+public class DaoCustomers {
 
 
     public static ObservableList<Customers> getAllCustomers(){
