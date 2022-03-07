@@ -46,6 +46,7 @@ public class AddCustomerController implements Initializable {
 
 
     //Handles populating the country combobox in the addCustomerScreen
+    //NEEDS WORK. KEEPS REPOPULATING AFTER EVERY CLICK
     public void handleCountryComboBox(ActionEvent actionEvent){
 
         addCustomerCountry.getItems().addAll(getAllCountryNames());
@@ -53,9 +54,10 @@ public class AddCustomerController implements Initializable {
         if(addCustomerCountry.getSelectionModel().getSelectedItem() != null) {
             Object selectedCountry = addCustomerCountry.getSelectionModel().getSelectedItem();
             String countryDivision = selectedCountry.toString();
-            if (countryDivision.equalsIgnoreCase("United States")) {
+
+            if (countryDivision.equalsIgnoreCase("U.S")) {
                 addCustomerDivision.setItems(getUSDivisionNames());
-            } else if (countryDivision.equalsIgnoreCase("United Kingdom")) {
+            } else if (countryDivision.equalsIgnoreCase("UK")) {
                 addCustomerDivision.setItems(getUKDivisionNames());
             } else if (countryDivision.equalsIgnoreCase("Canada")) {
                 addCustomerDivision.setItems(getCanadaDivisionNames());
