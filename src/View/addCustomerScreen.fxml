@@ -58,7 +58,7 @@
                         <Insets left="50.0" right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="addCustomerDivision" prefHeight="30.0" prefWidth="150.0" promptText="Select:">
+                  <ComboBox fx:id="addCustomerDivision" onAction="#handleDivisionComboBox" prefHeight="30.0" prefWidth="150.0" promptText="Select:">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

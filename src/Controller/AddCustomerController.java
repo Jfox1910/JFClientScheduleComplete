@@ -32,6 +32,8 @@ public class AddCustomerController implements Initializable {
     @FXML private ComboBox addCustomerDivision;
     @FXML private Button addCustomerButton;
 
+    int retrieveDivisionID = 0;
+
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
@@ -107,21 +109,21 @@ public class AddCustomerController implements Initializable {
         return UKDivisionNames;
     }
 
-/*    public int handleDivisionComboBox(ActionEvent actionEvent){
+    public int handleDivisionComboBox(ActionEvent actionEvent){
         if(addCustomerDivision.getSelectionModel().getSelectedItem() != null) {
             Object selectedDivision = addCustomerDivision.getSelectionModel().getSelectedItem();
 
             String d = selectedDivision.toString();
             for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
                 if (d.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
-                    selectedDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
+                    retrieveDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
                     break;
                 }
 
             }
         }
-        return selectedDivisionID;
-    }*/
+        return retrieveDivisionID;
+    }
 
 
     public void onActionAddCustomer(){
