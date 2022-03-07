@@ -20,9 +20,7 @@ public class DaoCustomers {
             PreparedStatement psgetCustomers = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = psgetCustomers.executeQuery();
 
-
             while(rs.next()){
-
                 int customerId = rs.getInt("Customer_ID");
                 String customerName = rs.getString("Customer_Name");
                 String customerAddy = rs.getString("Address");

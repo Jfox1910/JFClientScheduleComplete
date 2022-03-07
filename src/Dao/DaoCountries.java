@@ -14,9 +14,7 @@ public class DaoCountries {
 
         try {
             String sql = "SELECT * from countries";
-
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){

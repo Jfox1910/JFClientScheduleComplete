@@ -1,5 +1,7 @@
 package Controller;
 
+import Dao.DaoDivisions;
+import Dao.DaoCountries;
 import Model.Countries;
 import Model.Divisions;
 import javafx.collections.FXCollections;
@@ -21,21 +23,106 @@ import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
 
-    private final ObservableList<Countries> countries = FXCollections.observableArrayList();
-    private final ObservableList<Divisions> divisions = FXCollections.observableArrayList();
-
     @FXML private TextField addCustomerID;
     @FXML private TextField addCustomerName;
     @FXML private TextField addCustomerAddy;
-    @FXML private ComboBox addCustomerDivision;
-    @FXML private ComboBox addCustomerCountry;
+    @FXML private TextField addCustomerPostal;
     @FXML private TextField addCustomerPhone;
-    @FXML private TextField addCustomerZip;
+    @FXML private ComboBox addCustomerCountry;
+    @FXML private ComboBox addCustomerDivision;
     @FXML private Button addCustomerButton;
+
+    public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
+    public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
+    public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
+    private ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
+    //public ObservableList<Divisions> allDivisions = DaoDivisions.getAllDivisions;
 
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+
+    //Handles populating the country combobox in the addCustomerScreen
+    public void handleCountryComboBox(ActionEvent actionEvent){
+
+        addCustomerCountry.getItems().addAll(getAllCountryNames());
+
+        if(addCustomerCountry.getSelectionModel().getSelectedItem() != null) {
+            Object selectedCountry = addCustomerCountry.getSelectionModel().getSelectedItem();
+            String countryDivision = selectedCountry.toString();
+            if (countryDivision.equalsIgnoreCase("United States")) {
+                addCustomerDivision.setItems(getUSDivisionNames());
+            } else if (countryDivision.equalsIgnoreCase("United Kingdom")) {
+                addCustomerDivision.setItems(getUKDivisionNames());
+            } else if (countryDivision.equalsIgnoreCase("Canada")) {
+                addCustomerDivision.setItems(getCanadaDivisionNames());
+            }
+
+        }
+    }
+
+    //Retrieves the country names from DaoCountries
+    public ObservableList<String> getAllCountryNames(){
+        ObservableList<String> allCountryNames = FXCollections.observableArrayList();
+        for(int i = 0; i < allCountries.size(); i++)
+        {
+            String countryName;
+            countryName = allCountries.get(i).getName();
+            allCountryNames.add(countryName);
+        }
+        return allCountryNames;
+    }
+
+    public ObservableList<String> getUSDivisionNames(){
+        ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
+        for(int i = 0; i < usDivisionsList.size(); i++)
+        {
+            String americans;
+            americans = usDivisionsList.get(i).getDivisionName();
+            USDivisionNames.add(americans);
+        }
+        return USDivisionNames;
+    }
+
+    public ObservableList<String> getCanadaDivisionNames(){
+        ObservableList<String> CanadaDivisionNames = FXCollections.observableArrayList();
+        for(int i = 0; i < canadianDivisionList.size(); i++)
+        {
+            String canadians;
+            canadians = canadianDivisionList.get(i).getDivisionName();
+            CanadaDivisionNames.add(canadians);
+        }
+        return CanadaDivisionNames;
+    }
+
+    public ObservableList<String> getUKDivisionNames(){
+        ObservableList<String> UKDivisionNames = FXCollections.observableArrayList();
+        for(int i = 0; i < UKDivisionList.size(); i++)
+        {
+            String british;
+            british = UKDivisionList.get(i).getDivisionName();
+            UKDivisionNames.add(british);
+        }
+        return UKDivisionNames;
+    }
+
+/*    public int handleDivisionComboBox(ActionEvent actionEvent){
+        if(addCustomerDivision.getSelectionModel().getSelectedItem() != null) {
+            Object selectedDivision = addCustomerDivision.getSelectionModel().getSelectedItem();
+
+            String d = selectedDivision.toString();
+            for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
+                if (d.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
+                    selectedDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
+                    break;
+                }
+
+            }
+        }
+        return selectedDivisionID;
+    }*/
+
 
     public void onActionAddCustomer(){
 
@@ -63,26 +150,17 @@ public class AddCustomerController implements Initializable {
         }
     }
 
-/*    public int onActionDivisionBox(ActionEvent actionEvent){
-        if(addCustomerDivision.getSelectionModel().getSelectedItem() != null) {
-            Object selectedDivision = addCustomerDivision.getSelectionModel().getSelectedItem();
+    /*public int onActionSelectCountry(ActionEvent actionEvent){
 
-            String d = selectedDivision.toString();
-            for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
-                if (d.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
-                    selectedDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
-                    break;
-                }
-
-            }
-        }
-        return selectedDivisionID;
     }*/
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        addCustomerCountry.getItems().addAll(countries);
+        //Initializes the customer/country combobox
+        addCustomerCountry.getItems().addAll(getAllCountryNames());
+
+
 
     }
 }
