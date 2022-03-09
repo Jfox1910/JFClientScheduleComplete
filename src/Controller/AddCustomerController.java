@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -31,8 +32,11 @@ public class AddCustomerController implements Initializable {
     @FXML private ComboBox addCustomerCountry;
     @FXML private ComboBox addCustomerDivision;
     @FXML private Button addCustomerButton;
+    private ComboBox<String> clearCountry;
+
 
     int retrieveDivisionID = 0;
+    int divisionId = 0;
 
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
@@ -44,9 +48,51 @@ public class AddCustomerController implements Initializable {
     private Scene scene;
     private Parent root;
 
+    /* TODO LIST
+    MUST HAVE
+    Add customer to DB
+    fix handleCountryBox populating issue. Add a clear function ----addCustomerCountry.setValue(null);----
+    link to DaoCustomers
+    get customerID
+
+    NICE TO HAVE ITEMS
+    maybe simplfy countryname methods? Kinda excessive
+    Change labels based on country selection? What are the UK "divisions" called?
+     */
+
+    public void onActionAddCustomer(ActionEvent actionEvent){
+
+        //Retrieves the customers info from the fields.
+        String customerName = addCustomerName.getText();
+        String customerAddress = addCustomerAddy.getText();
+        String customerZip = addCustomerPostal.getText();
+        String customerPhone = addCustomerPhone.getText();
+        //int divisionId = addCustomerDivision;
+
+        //Check that information has been entered and gives an appropriate alert if it isn't there.
+        if (customerName.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Attention!");
+            alert.setContentText("A name must be entered for the customer.");
+            alert.showAndWait();
+            return;
+        }if (customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Attention!");
+            alert.setContentText("Complete contact information must be entered for the customer.");
+            alert.showAndWait();
+            return;
+        }
+
+        //Dao.DaoCustomers.newCustomer();
+
+        //.setVisibleRowCount(5);
+        //.getSelectionModel().selectFirst();
+        System.out.println("Testing Add Customer Button");
+
+    }
 
     //Handles populating the country combobox in the addCustomerScreen
-    //NEEDS WORK. KEEPS REPOPULATING AFTER EVERY CLICK
     public void handleCountryComboBox(ActionEvent actionEvent){
 
         addCustomerCountry.getItems().addAll(getAllCountryNames());
@@ -54,6 +100,8 @@ public class AddCustomerController implements Initializable {
         if(addCustomerCountry.getSelectionModel().getSelectedItem() != null) {
             Object selectedCountry = addCustomerCountry.getSelectionModel().getSelectedItem();
             String countryDivision = selectedCountry.toString();
+            //clearCountry.getSelectionModel().clearSelection();
+            //clearCountry.clear();
 
             if (countryDivision.equalsIgnoreCase("U.S")) {
                 addCustomerDivision.setItems(getUSDivisionNames());
@@ -62,7 +110,6 @@ public class AddCustomerController implements Initializable {
             } else if (countryDivision.equalsIgnoreCase("Canada")) {
                 addCustomerDivision.setItems(getCanadaDivisionNames());
             }
-
         }
     }
 
@@ -121,22 +168,16 @@ public class AddCustomerController implements Initializable {
                     retrieveDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
                     break;
                 }
-
             }
         }
         return retrieveDivisionID;
     }
 
+  /*  public void handleComboBoxClosed(ActionEvent actionEvent){
+        addCustomerCountry.setValue(null);
+        System.out.println("Testing clear method");
+    }*/
 
-    public void onActionAddCustomer(){
-
-        //Dao.DaoCustomers.newCustomer();
-
-        //.setVisibleRowCount(5);
-        //.getSelectionModel().selectFirst();
-        System.out.println("Testing Add Customer Button");
-
-    }
 
     //Exit to the main screen
     public void onActionMainScreen(ActionEvent event) throws IOException {
@@ -154,9 +195,6 @@ public class AddCustomerController implements Initializable {
         }
     }
 
-    /*public int onActionSelectCountry(ActionEvent actionEvent){
-
-    }*/
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
