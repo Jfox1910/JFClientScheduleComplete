@@ -99,6 +99,7 @@
                   </TextField>
                </children>
             </HBox>
+            <TextField fx:id="username" />
          </children>
       </VBox>
       <HBox alignment="CENTER" layoutY="404.0" prefHeight="75.0" prefWidth="640.0">

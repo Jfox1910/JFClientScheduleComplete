@@ -1,7 +1,7 @@
 package Controller;
 
-import Dao.DaoDivisions;
-import Dao.DaoCountries;
+import Dao.*;
+import Model.Appointments;
 import Model.Countries;
 import Model.Divisions;
 import javafx.collections.FXCollections;
@@ -29,11 +29,13 @@ public class AddCustomerController implements Initializable {
     @FXML private TextField addCustomerAddy;
     @FXML private TextField addCustomerPostal;
     @FXML private TextField addCustomerPhone;
+    @FXML private TextField addCustomerCreatedBy;
     @FXML private ComboBox addCustomerCountry;
     @FXML private ComboBox addCustomerDivision;
     @FXML private Button addCustomerButton;
     private ComboBox<String> clearCountry;
 
+    @FXML private TextField username;
 
     int retrieveDivisionID = 0;
     int divisionId = 0;
@@ -42,7 +44,7 @@ public class AddCustomerController implements Initializable {
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
     private ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
-    //public ObservableList<Divisions> allDivisions = DaoDivisions.getAllDivisions;
+    public ObservableList<Appointments> allAppointments = DaoAppointments.getAllAppointments();
 
     private Stage stage;
     private Scene scene;
@@ -51,6 +53,7 @@ public class AddCustomerController implements Initializable {
     /* TODO LIST
     MUST HAVE
     Add customer to DB
+    ALERT for deleting or modifying
     fix handleCountryBox populating issue. Add a clear function ----addCustomerCountry.setValue(null);----
     link to DaoCustomers
     get customerID
@@ -58,6 +61,7 @@ public class AddCustomerController implements Initializable {
     NICE TO HAVE ITEMS
     maybe simplfy countryname methods? Kinda excessive
     Change labels based on country selection? What are the UK "divisions" called?
+    lambda function. Alerts?
      */
 
     public void onActionAddCustomer(ActionEvent actionEvent){
@@ -67,9 +71,13 @@ public class AddCustomerController implements Initializable {
         String customerAddress = addCustomerAddy.getText();
         String customerZip = addCustomerPostal.getText();
         String customerPhone = addCustomerPhone.getText();
+        //String createdBy = addCustomerCreatedBy.getText();
+        String createdBy = username.getText();
+        int divisionId = addCustomerDivision.getSelectionModel().getSelectedIndex();
+
         //int divisionId = addCustomerDivision;
 
-        //Check that information has been entered and gives an appropriate alert if it isn't there.
+        //Check that a name, address and phone has been entered and gives an alert if it isn't there.
         if (customerName.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
@@ -82,6 +90,8 @@ public class AddCustomerController implements Initializable {
             alert.setContentText("Complete contact information must be entered for the customer.");
             alert.showAndWait();
             return;
+        }else {
+            DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, createdBy, divisionId);
         }
 
         //Dao.DaoCustomers.newCustomer();

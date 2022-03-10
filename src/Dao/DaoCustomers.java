@@ -43,11 +43,10 @@ public class DaoCustomers {
     }
 
     //Adds a new customer to the database.
-    public void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerCreatedBy, Integer customerDivision){
+    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerCreatedBy, Integer customerDivision){
 
         try {
             String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,?,?,?,?,NOW(),?,NOW(),?,?)";
-
             PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer);
 
 
@@ -57,7 +56,7 @@ public class DaoCustomers {
             psnewCustomer.setString(3,customerZipCode);
             psnewCustomer.setString(4,customerPhone);
             psnewCustomer.setString(5,customerCreatedBy);
-            psnewCustomer.setInt(6,customerDivision);
+            psnewCustomer.setInt(7,customerDivision);
 
             psnewCustomer.execute();
 
