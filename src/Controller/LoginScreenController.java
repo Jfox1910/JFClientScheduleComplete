@@ -29,6 +29,8 @@ public class LoginScreenController implements Initializable {
     public Button cancelButton;
     public Label userLocale;
 
+    boolean loginSuccess = false;
+
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -48,9 +50,14 @@ public class LoginScreenController implements Initializable {
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
+                loginSuccess = true;
+                break;
             }else {
+                loginSuccess = false;
+                usernameTextField.clear();
+                usernamePasswordField.clear();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Username and/or password is incorrect. You must be really embarassed right? Maybe a little nervous? Did we call the password police? Maybe we did. Do you hear a helicopter in the distance? Quick! Verify your information and try again!");
+                alert.setContentText("Username and/or password is incorrect. You must be really embarrassed right? Maybe a little nervous? Did we call the password police? It's possible. Do you hear a helicopter in the distance? Quick! Verify your information and try again!");
                 alert.showAndWait();
                 return;
             }
