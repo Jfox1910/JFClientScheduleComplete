@@ -50,7 +50,7 @@ public class LoginScreenController implements Initializable {
                 stage.show();
             }else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Username and/or password is incorrect. You must be really embarassed right? Maybe a little nervous? Did we call the password police? Yes. yes we did. Please verify your information and try again.");
+                alert.setContentText("Username and/or password is incorrect. You must be really embarassed right? Maybe a little nervous? Did we call the password police? Maybe we did. Do you hear a helicopter in the distance? Quick! Verify your information and try again!");
                 alert.showAndWait();
                 return;
             }
