@@ -1,6 +1,8 @@
 package Controller;
 
 import Dao.DaoLogin;
+import Model.loginUser;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -34,21 +36,25 @@ public class LoginScreenController implements Initializable {
 
     //Login Method
     public void onActionLogin(ActionEvent event) throws IOException {
+        ObservableList<loginUser> verifyUser = DaoLogin.getAllUsers();
         String userName = usernameTextField.getText();
         String userPassword = usernamePasswordField.getText();
-        boolean verifyUser = DaoLogin.verifyUser(userName, userPassword);
 
-        if (verifyUser) {
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("ERROR! Username or password is incorrect. Please check your spelling and try again.");
-            return;
+        for (int i = 0; i < verifyUser.size(); i++) {
+            if (userName.equals(verifyUser.get(i).getUserName()) && userPassword.equals(verifyUser.get(i).getUserPassword())) {
+                Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            }else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("ERROR! Username or password is incorrect. Please check your spelling and try again.");
+                return;
+            }
         }
+
+
     }
 
     //Exit Method
