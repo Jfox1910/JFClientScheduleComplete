@@ -3,6 +3,7 @@ package Controller;
 import Dao.*;
 import Model.Appointments;
 import Model.Countries;
+import Model.Customers;
 import Model.Divisions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +20,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -73,9 +76,9 @@ public class AddCustomerController implements Initializable {
         String customerPhone = addCustomerPhone.getText();
         //String createdBy = addCustomerCreatedBy.getText();
         String createdBy = username.getText();
+        //Time currentTime = LocalDateTime.now();
         int divisionId = addCustomerDivision.getSelectionModel().getSelectedIndex();
 
-        //int divisionId = addCustomerDivision;
 
         //Check that a name, address and phone has been entered and gives an alert if it isn't there.
         if (customerName.isEmpty()){
@@ -94,10 +97,6 @@ public class AddCustomerController implements Initializable {
             DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, createdBy, divisionId);
         }
 
-        //Dao.DaoCustomers.newCustomer();
-
-        //.setVisibleRowCount(5);
-        //.getSelectionModel().selectFirst();
         System.out.println("Testing Add Customer Button");
 
     }

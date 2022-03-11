@@ -4,10 +4,8 @@ import Model.Customers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.time.LocalDateTime;
 
 public class DaoCustomers {
 
@@ -23,16 +21,16 @@ public class DaoCustomers {
             while(rs.next()){
                 int customerId = rs.getInt("Customer_ID");
                 String customerName = rs.getString("Customer_Name");
-                String customerAddy = rs.getString("Address");
-                String customerZip = rs.getString("Postal_Code");
+                String customerAddress = rs.getString("Address");
+                String customerPostalCode = rs.getString("Postal_Code");
                 String customerPhone = rs.getString("Phone");
-                String customerCreatedDate = rs.getString("Create_Date");
-                String customerCreated = rs.getString("Created_By");
-                Timestamp customerUpdatedOn = rs.getTimestamp("Last_Update");
-                String customerUpdatedBy = rs.getString("Last_Updated_By");
-                int customerDivision = rs.getInt("Division_ID");
+                String customerCreateDate = rs.getString("Create_Date");
+                String customerCreatedBy = rs.getString("Created_By");
+                Timestamp customerLastUpdate = rs.getTimestamp("Last_Update");
+                String customerLastUpdatedBy = rs.getString("Last_Updated_By");
+                int customerDivisionId = rs.getInt("Division_ID");
 
-                Customers customers = new Customers(customerId,customerName,customerAddy,customerZip,customerPhone,customerCreatedDate,customerCreated,customerUpdatedOn,customerUpdatedBy,customerDivision);
+                Customers customers = new Customers(customerId,customerName,customerAddress,customerPostalCode,customerPhone,customerCreateDate,customerCreatedBy,customerLastUpdate,customerLastUpdatedBy,customerDivisionId);
                 customerList.add(customers);
             }
         } catch (SQLException throwables) {
@@ -46,7 +44,7 @@ public class DaoCustomers {
     public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerCreatedBy, Integer customerDivision){
 
         try {
-            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,?,?,?,?,NOW(),?,NOW(),?,?)";
+            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,?,?,?,?,NOW(),?,?)";
             PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer);
 
 
@@ -55,8 +53,9 @@ public class DaoCustomers {
             psnewCustomer.setString(2,customerAddy);
             psnewCustomer.setString(3,customerZipCode);
             psnewCustomer.setString(4,customerPhone);
+           // psnewCustomer.setTime(6,createDate);
             psnewCustomer.setString(5,customerCreatedBy);
-            psnewCustomer.setInt(7,customerDivision);
+            psnewCustomer.setInt(6,customerDivision);
 
             psnewCustomer.execute();
 
