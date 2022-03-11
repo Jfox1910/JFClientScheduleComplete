@@ -34,12 +34,13 @@ public class LoginScreenController implements Initializable {
     private Parent root;
 
 
-    //Login Method
+    //Login Method. Creates a list and populates it with all the users in the DB.
     public void onActionLogin(ActionEvent event) throws IOException {
         ObservableList<loginUser> verifyUser = DaoLogin.getAllUsers();
         String userName = usernameTextField.getText();
         String userPassword = usernamePasswordField.getText();
 
+        //Verifys that the login creds are valid and either opens the main application or denies entry and throws an error screen.
         for (int i = 0; i < verifyUser.size(); i++) {
             if (userName.equals(verifyUser.get(i).getUserName()) && userPassword.equals(verifyUser.get(i).getUserPassword())) {
                 Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
@@ -49,12 +50,11 @@ public class LoginScreenController implements Initializable {
                 stage.show();
             }else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("ERROR! Username or password is incorrect. Please check your spelling and try again.");
+                alert.setContentText("Username and/or password is incorrect. You must be really embarassed right? Maybe a little nervous? Did we call the password police? Yes. yes we did. Please verify your information and try again.");
+                alert.showAndWait();
                 return;
             }
         }
-
-
     }
 
     //Exit Method

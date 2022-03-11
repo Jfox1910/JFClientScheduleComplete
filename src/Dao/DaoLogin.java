@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+//This is the DAO class that checks the user table for the correct login credentials and stores it in an OL.
 public class DaoLogin {
 
     public static ObservableList<loginUser> getAllUsers() {
