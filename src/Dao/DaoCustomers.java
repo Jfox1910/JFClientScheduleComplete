@@ -1,6 +1,7 @@
 package Dao;
 
 import Model.Customers;
+import Controller.LoginScreenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,8 +10,8 @@ import java.time.LocalDateTime;
 
 public class DaoCustomers {
 
-    private static final Connection connection = JDBC.getConnection();
-    private static final ObservableList<Customers> customers = FXCollections.observableArrayList();
+    //private static final Connection connection = JDBC.getConnection();
+   // private static final ObservableList<Customers> customers = FXCollections.observableArrayList();
 
     public static ObservableList<Customers> getAllCustomers(){
         ObservableList<Customers> customerList = FXCollections.observableArrayList();
@@ -43,24 +44,24 @@ public class DaoCustomers {
     }
 
     //Adds a new customer to the database.
-    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
+    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String loggedInUser, int customerDivision){
 
-        int customerid = 1;
         try {
 
-            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,?,?,?,?,NOW(),?,NOW(), ?, ?)";
+            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,Customer_Name=?,Address=?,Postal_Code=?,Phone=?,Create_Date=NOW(),Created_By=?,Last_Update=NOW(),Last_Updated_By=?,Division_ID=?)";
             PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer);
 
-            //psnewCustomer.setInt(1,customerid);
+            assert psnewCustomer != null;
+            //psnewCustomer.setInt(1,customerid); Customer_ID=AUTO_INCREMENT ,
             psnewCustomer.setString(1,customerName);
             psnewCustomer.setString(2,customerAddy);
             psnewCustomer.setString(3,customerZipCode);
             psnewCustomer.setString(4,customerPhone);
-            psnewCustomer.setString(5, "TEST");
-            psnewCustomer.setString(6, "DaoLogin.getLoggedInUser().getUserName()");
+            psnewCustomer.setString(5,loggedInUser);
+            psnewCustomer.setString(6,loggedInUser);
+            //psnewCustomer.setString(6, LoginScreenController.getLoggedInUser().getUserName());
+            //psnewCustomer.setString(7, LoginScreenController.getLoggedInUser().getUserName());
             psnewCustomer.setInt(7,customerDivision);
-            //DaoLogin.getLoggedInUser().getUserName()
-
 
             psnewCustomer.execute();
             psnewCustomer.close();
@@ -74,7 +75,7 @@ public class DaoCustomers {
     //Modifies a selected customer and updates the database
     public void modifyCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerUpdatedBy, Integer customerDivision){
         try {
-            String sqlModifyCustomer = "UPDATE customers SET customerName = ?, customerAddress = ?, customerZipCode = ?, customerPhone = ?, customerUpdatedBy = ?, customerDivision = ?";
+            String sqlModifyCustomer = "UPDATE customers SET customerName=?, customerAddress=?, customerZipCode=?, customerPhone=?, customerUpdatedBy=?, customerDivision=?";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
 
             psmodifyCustomer.setString(1,customerName);

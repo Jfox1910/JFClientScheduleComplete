@@ -74,6 +74,7 @@ public class AddCustomerController implements Initializable {
         String customerAddress = addCustomerAddy.getText();
         String customerZip = addCustomerPostal.getText();
         String customerPhone = addCustomerPhone.getText();
+        String loggedInUser = username.getText();
         int divisionId = addCustomerDivision.getSelectionModel().getSelectedIndex();
 
 
@@ -92,11 +93,9 @@ public class AddCustomerController implements Initializable {
             alert.showAndWait();
             return;
         }else {
-            DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, divisionId);
+            DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, loggedInUser, divisionId);
         }
-
         System.out.println("Testing Add Customer Button");
-
     }
 
     //Handles populating the country combobox in the addCustomerScreen

@@ -1,7 +1,7 @@
 package Model;
 
 public class loginUser {
-    private static int userId;
+    private int userId;
     private String userName;
     private String userPassword;
     private String createdOn;
@@ -10,14 +10,16 @@ public class loginUser {
     private String lastUpdatedOn;
 
     //Constructor
-    public loginUser(String name, String password){
+    public loginUser(int id, String name, String password){
+        this.userId = id;
         this.userName = name;
         this.userPassword = password;
+        this.createdBy = userName;
     }
 
     //Getters
 
-    public static int getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -45,10 +47,11 @@ public class loginUser {
         return lastUpdatedOn;
     }
 
+
     //Setters
 
-    public static void setUserId(int userId) {
-        loginUser.userId = userId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setUserName(String userName) {

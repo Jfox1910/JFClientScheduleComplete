@@ -30,22 +30,24 @@ public class LoginScreenController implements Initializable {
     public Button cancelButton;
     public Label userLocale;
 
-    loginUser loggedinUser;
-    String createdByUser;
     boolean loginSuccess = false;
 
     private Stage stage;
     private Scene scene;
     private Parent root;
 
+    private static loginUser loggedInUser;
+     public static loginUser getLoggedInUser() {return loggedInUser;}
 
     //Login Method. Creates a list and populates it with all the users in the DB.
     public void onActionLogin(ActionEvent event) throws IOException {
+        //Pulls the DBs user table from the DaoLogin class and creates an OL.
         ObservableList<loginUser> verifyUser = DaoLogin.getAllUsers();
+
         String userName = usernameTextField.getText();
         String userPassword = usernamePasswordField.getText();
 
-        //Verifys that the login creds are valid and either opens the main application or denies entry and throws an error screen.
+        //Verifys that the login creds are valid by looping through the OL. Then either opens the main application or denies entry and throws an error screen.
         for (int i = 0; i < verifyUser.size(); i++) {
             if (userName.equals(verifyUser.get(i).getUserName()) && userPassword.equals(verifyUser.get(i).getUserPassword())) {
                 Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
@@ -54,7 +56,6 @@ public class LoginScreenController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
                 loginSuccess = true;
-                createdByUser = verifyUser.get(i).getUserName();
 
                 break;
             }else {
