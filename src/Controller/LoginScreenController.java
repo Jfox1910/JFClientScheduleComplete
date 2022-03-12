@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -29,6 +30,8 @@ public class LoginScreenController implements Initializable {
     public Button cancelButton;
     public Label userLocale;
 
+    loginUser loggedinUser;
+    String createdByUser;
     boolean loginSuccess = false;
 
     private Stage stage;
@@ -51,6 +54,8 @@ public class LoginScreenController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
                 loginSuccess = true;
+                createdByUser = verifyUser.get(i).getUserName();
+
                 break;
             }else {
                 loginSuccess = false;
@@ -80,6 +85,8 @@ public class LoginScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        Locale locale = Locale.getDefault();
 
     }
 }

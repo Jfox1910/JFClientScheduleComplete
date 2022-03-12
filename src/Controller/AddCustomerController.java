@@ -74,10 +74,8 @@ public class AddCustomerController implements Initializable {
         String customerAddress = addCustomerAddy.getText();
         String customerZip = addCustomerPostal.getText();
         String customerPhone = addCustomerPhone.getText();
-        //String createdBy = addCustomerCreatedBy.getText();
-        String createdBy = username.getText();
-        //Time currentTime = LocalDateTime.now();
         int divisionId = addCustomerDivision.getSelectionModel().getSelectedIndex();
+
 
 
         //Check that a name, address and phone has been entered and gives an alert if it isn't there.
@@ -94,7 +92,7 @@ public class AddCustomerController implements Initializable {
             alert.showAndWait();
             return;
         }else {
-            DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, createdBy, divisionId);
+            DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, divisionId);
         }
 
         System.out.println("Testing Add Customer Button");

@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 
 public class DaoCustomers {
 
+    private static final Connection connection = JDBC.getConnection();
+    private static final ObservableList<Customers> customers = FXCollections.observableArrayList();
 
     public static ObservableList<Customers> getAllCustomers(){
         ObservableList<Customers> customerList = FXCollections.observableArrayList();
@@ -41,23 +43,28 @@ public class DaoCustomers {
     }
 
     //Adds a new customer to the database.
-    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerCreatedBy, Integer customerDivision){
+    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
 
+        int customerid = 1;
         try {
-            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,?,?,?,?,NOW(),?,?)";
+
+            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,?,?,?,?,NOW(),?,NOW(), ?, ?)";
             PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer);
 
-
-            assert psnewCustomer != null;
+            //psnewCustomer.setInt(1,customerid);
             psnewCustomer.setString(1,customerName);
             psnewCustomer.setString(2,customerAddy);
             psnewCustomer.setString(3,customerZipCode);
             psnewCustomer.setString(4,customerPhone);
-           // psnewCustomer.setTime(6,createDate);
-            psnewCustomer.setString(5,customerCreatedBy);
-            psnewCustomer.setInt(6,customerDivision);
+            psnewCustomer.setString(5, "TEST");
+            psnewCustomer.setString(6, "DaoLogin.getLoggedInUser().getUserName()");
+            psnewCustomer.setInt(7,customerDivision);
+            //DaoLogin.getLoggedInUser().getUserName()
+
 
             psnewCustomer.execute();
+            psnewCustomer.close();
+            getAllCustomers();
 
         } catch (SQLException throwables){
             throwables.printStackTrace();
