@@ -48,7 +48,8 @@ public class DaoCustomers {
 
         try {
 
-            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,Customer_Name=?,Address=?,Postal_Code=?,Phone=?,Create_Date=NOW(),Created_By=?,Last_Update=NOW(),Last_Updated_By=?,Division_ID=?)";
+            //"INSERT INTO customers VALUES(NULL,Customer_Name=?,Address=?,Postal_Code=?,Phone=?,Create_Date=NOW(),Created_By=?,Last_Update=NOW(),Last_Updated_By=?,Division_ID=?)";
+            String sqlnewCustomer = "INSERT INTO customers(Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Updated_By, Division_ID) VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer);
 
             assert psnewCustomer != null;
@@ -59,9 +60,9 @@ public class DaoCustomers {
             psnewCustomer.setString(4,customerPhone);
             psnewCustomer.setString(5,loggedInUser);
             psnewCustomer.setString(6,loggedInUser);
-            //psnewCustomer.setString(6, LoginScreenController.getLoggedInUser().getUserName());
-            //psnewCustomer.setString(7, LoginScreenController.getLoggedInUser().getUserName());
-            psnewCustomer.setInt(7,customerDivision);
+            psnewCustomer.setString(7,);
+            psnewCustomer.setString(8,);
+            psnewCustomer.setInt(9,customerDivision);
 
             psnewCustomer.execute();
             psnewCustomer.close();

@@ -77,8 +77,6 @@ public class AddCustomerController implements Initializable {
         String loggedInUser = username.getText();
         int divisionId = addCustomerDivision.getSelectionModel().getSelectedIndex();
 
-
-
         //Check that a name, address and phone has been entered and gives an alert if it isn't there.
         if (customerName.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -106,8 +104,6 @@ public class AddCustomerController implements Initializable {
         if(addCustomerCountry.getSelectionModel().getSelectedItem() != null) {
             Object selectedCountry = addCustomerCountry.getSelectionModel().getSelectedItem();
             String countryDivision = selectedCountry.toString();
-            //clearCountry.getSelectionModel().clearSelection();
-            //clearCountry.clear();
 
             if (countryDivision.equalsIgnoreCase("U.S")) {
                 addCustomerDivision.setItems(getUSDivisionNames());
