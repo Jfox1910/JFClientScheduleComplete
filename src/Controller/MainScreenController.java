@@ -61,76 +61,7 @@ public class MainScreenController implements Initializable {
     private ObservableList<Appointments> appointments;
 
 
-    @Override
-    public void initialize (URL location, ResourceBundle resources){
 
-      /*  LocalTime start = LocalTime.of(6, 0);
-        LocalTime end = LocalTime.NOON;
-        while(start.isBefore(end.plusSeconds(1))){
-            testBox.getItems().add(start);
-            start = start.plusMinutes(15);
-        }
-        testBox.getSelectionModel().select(LocalTime.of(8,0));
-
-        testBox.setPromptText("Whatever");
-
-        @Override
-        public String toString(){
-        return (Integer.toString(objectName)); }
-        */
-
-        //Appointments
-        appointments = DaoAppointments.getAllAppointments();
-        apptTableview.setItems(appointments);
-        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("apptIDCol"));
-        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitleCol"));
-        apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescriptionCol"));
-        apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocationCol"));
-        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("apptContactCol"));
-        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("apptTypeCol"));
-        apptStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptStartTimeCol"));
-        apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptEndTimeCol"));
-        apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerIDCol"));
-        apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("apptUserIDCol"));
-
-        //Customers
-        customers = DaoCustomers.getAllCustomers();
-        customersTableView.setItems(customers);
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerIdCol"));
-        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerNameCol"));
-        customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("customerAddyCol"));
-        customerZipCol.setCellValueFactory(new PropertyValueFactory<>("customerZipCol"));
-        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneCol"));
-
-        /**
-         * EDIT TO SHOW ACTUAL DIVISION INSTEAD OF THE ID*/
-
-        customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivisionCol"));
-
-
-
-
-/*        if (customerTableView.getSelectionModel().getSelectedItem() != null){
-            //set selected customer to new customer object
-            Customer selectedCustomer = (Customer) customerTableView.getSelectionModel().getSelectedItem();
-            selectedCustomerName = selectedCustomer.getCustomerName();
-            //See if selected customer has any appts, if so, delete those first
-            for(int i = 0; i < allAppts.size(); i++){
-                if(allAppts.get(i).getCustomerID() == selectedCustomer.getCustomerID()){
-                    DBAppointment.deleteAppointment(allAppts.get(i).getAppointmentID());
-                }
-            }
-            //deletes customer from database
-            DBCustomer.deleteCustomer(selectedCustomer.getCustomerID());
-            customerTableView.setItems(DBCustomer.getAllCustomers());
-            //displays message on interface to confirm deletion
-            messageLabel.setVisible(true);
-            messageLabel.setText(selectedCustomerName + " has been deleted.");
-            customerDeleted = true;
-
-        }*/
-
-    }
 
     //----APPOINTMENT TAB METHODS----
 
@@ -222,6 +153,54 @@ public class MainScreenController implements Initializable {
 
         }
         System.out.println("Test DELETE customer from database");
+
+    }
+
+    @Override
+    public void initialize (URL location, ResourceBundle resources){
+
+      /*  LocalTime start = LocalTime.of(6, 0);
+        LocalTime end = LocalTime.NOON;
+        while(start.isBefore(end.plusSeconds(1))){
+            testBox.getItems().add(start);
+            start = start.plusMinutes(15);
+        }
+        testBox.getSelectionModel().select(LocalTime.of(8,0));
+
+        testBox.setPromptText("Whatever");
+
+        @Override
+        public String toString(){
+        return (Integer.toString(objectName)); }
+        */
+
+        //Appointments
+        appointments = DaoAppointments.getAllAppointments();
+        apptTableview.setItems(appointments);
+        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("apptIDCol"));
+        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitleCol"));
+        apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescriptionCol"));
+        apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocationCol"));
+        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("apptContactCol"));
+        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("apptTypeCol"));
+        apptStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptStartTimeCol"));
+        apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptEndTimeCol"));
+        apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerIDCol"));
+        apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("apptUserIDCol"));
+
+        //Customers
+        customers = DaoCustomers.getAllCustomers();
+        customersTableView.setItems(customers);
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerIdCol"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerNameCol"));
+        customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("customerAddyCol"));
+        customerZipCol.setCellValueFactory(new PropertyValueFactory<>("customerZipCol"));
+        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneCol"));
+
+        /**
+         * EDIT TO SHOW ACTUAL DIVISION INSTEAD OF THE ID*/
+
+        customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivisionCol"));
 
     }
 }

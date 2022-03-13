@@ -9,20 +9,7 @@
    <children>
       <VBox alignment="TOP_CENTER" layoutY="51.0" prefHeight="355.0" prefWidth="640.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="640.0">
-               <children>
-                  <Label text="Customer ID:">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="addCustomerID" alignment="CENTER" editable="false" prefHeight="30.0" prefWidth="100.0">
-                     <HBox.margin>
-                        <Insets right="50.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="640.0" />
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                <children>
                   <Label text="Name:">
@@ -99,7 +86,6 @@
                   </TextField>
                </children>
             </HBox>
-            <TextField fx:id="username" />
          </children>
       </VBox>
       <HBox alignment="CENTER" layoutY="404.0" prefHeight="75.0" prefWidth="640.0">

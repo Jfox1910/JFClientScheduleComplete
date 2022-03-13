@@ -1,15 +1,17 @@
 package Dao;
 
 import Model.Customers;
+import Model.loginUser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
+import utils.Utils;
 
 import java.sql.*;
 
 public class DaoCustomers {
 
-    //private static final Connection connection = JDBC.getConnection();
+    private static final Connection connection = JDBC.getConnection();
    // private static final ObservableList<Customers> customers = FXCollections.observableArrayList();
 
     public static ObservableList<Customers> getAllCustomers(){
@@ -43,27 +45,47 @@ public class DaoCustomers {
     }
 
     //Adds a new customer to the database.
-    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String loggedInUser, int customerDivision){
+    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone,int customerDivision){
 
         try {
+            //setting the customer ID to 1 then adding 1 to the highest ID.
+            int customerID = 1;
+            try {
+                Statement id = connection.createStatement();
+                ResultSet rs = id.executeQuery("select max(Customer_ID) as Last_Customer from customers");
+                if (rs.next()) {
+                    customerID = rs.getInt("Last_Customer") + 1;
+                }
+                id.close();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
 
-            //"INSERT INTO customers('Customer_Name', Address, Postal_Code, Phone, Create_Date, Created_By, Last_Updated_By, Division_ID) VALUES (NULL,?,?,?,?,?,?,?,?,?)";
-            //"INSERT INTO customers VALUES(NULL,Customer_Name=?,Address=?,Postal_Code=?,Phone=?,Create_Date=NOW(),Created_By=?,Last_Update=NOW(),Last_Updated_By=?,Division_ID=?)";
-            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,Customer_Name=?,Address=?,Postal_Code=?,Phone=?,Create_Date=NOW(),Created_By=?,Last_Update=NOW(),Last_Updated_By=?,Division_ID=?)";
-            PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer, Statement.RETURN_GENERATED_KEYS);
+            String sqlnewCustomer = "INSERT INTO customers SET Customer_ID = ?, Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Create_Date = now(), Created_By = ?,last_update = now(),last_updated_by = ?, Division_ID = ?;";
+            PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer);
 
-            //assert psnewCustomer != null;
-            psnewCustomer.setString(1,customerName);
-            psnewCustomer.setString(2,customerAddy);
-            psnewCustomer.setString(3,customerZipCode);
-            psnewCustomer.setString(4,customerPhone);
-            psnewCustomer.setString(5,loggedInUser);
-            psnewCustomer.setString(6,loggedInUser);
-            psnewCustomer.setString(7,loggedInUser);
-            psnewCustomer.setString(8,loggedInUser);
-            psnewCustomer.setInt(9,customerDivision);
+            psnewCustomer.setInt(1, customerID);
+            psnewCustomer.setString(2,customerName);
+            psnewCustomer.setString(3,customerAddy);
+            psnewCustomer.setString(4,customerZipCode);
+            psnewCustomer.setString(5,customerPhone);
+            psnewCustomer.setString(6, null);
+            psnewCustomer.setString(7, null);
+            //psnewCustomer.setString(8, null);
+            psnewCustomer.setInt(8, customerDivision);
+            //psnewCustomer.setString(7,JDBC.getLoginUser());
+           // psnewCustomer.setString(8, null);
 
-            psnewCustomer.execute();
+
+           /* psnewCustomer.setString(5, Utils.getUTCDateTimeString());
+            psnewCustomer.setString(6, Utils.getUser().getUserName());
+            psnewCustomer.setString(7, Utils.getUTCDateTimeString());
+            psnewCustomer.setString(8, Utils.getUser().getUserName());
+            psnewCustomer.setInt(9,customerDivision);*/
+
+            //customers.setCustomerCreatedCol(JDBC.getLoginUser());
+            psnewCustomer.executeUpdate();
+            psnewCustomer.close();
             getAllCustomers();
 
         } catch (SQLException throwables){

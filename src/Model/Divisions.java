@@ -22,6 +22,10 @@ public class Divisions {
         this.divisionID = divisionID;
     }
 
+    public String divisionToString(){
+        return "[" + divisionID + "]" + divisionName;
+    }
+
     public void setDivisionName(String divisionName) {
         this.divisionName = divisionName;
     }

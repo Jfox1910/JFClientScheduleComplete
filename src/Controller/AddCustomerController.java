@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -41,7 +42,6 @@ public class AddCustomerController implements Initializable {
     @FXML private TextField username;
 
     int retrieveDivisionID = 0;
-    int divisionId = 0;
 
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
@@ -55,11 +55,8 @@ public class AddCustomerController implements Initializable {
 
     /* TODO LIST
     MUST HAVE
-    Add customer to DB
     ALERT for deleting or modifying
     fix handleCountryBox populating issue. Add a clear function ----addCustomerCountry.setValue(null);----
-    link to DaoCustomers
-    get customerID
 
     NICE TO HAVE ITEMS
     maybe simplfy countryname methods? Kinda excessive
@@ -74,8 +71,7 @@ public class AddCustomerController implements Initializable {
         String customerAddress = addCustomerAddy.getText();
         String customerZip = addCustomerPostal.getText();
         String customerPhone = addCustomerPhone.getText();
-        String loggedInUser = username.getText();
-        int divisionId = addCustomerDivision.getSelectionModel().getSelectedIndex();
+        int divisionId = addCustomerDivision.getSelectionModel().getSelectedIndex() + 1;
 
         //Check that a name, address and phone has been entered and gives an alert if it isn't there.
         if (customerName.isEmpty()){
@@ -91,7 +87,8 @@ public class AddCustomerController implements Initializable {
             alert.showAndWait();
             return;
         }else {
-            DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, loggedInUser, divisionId);
+            DaoCustomers.newCustomer(customerName,customerAddress, customerZip, customerPhone, divisionId);
+            //customerName, customerAddress, customerZip, customerPhone, loggedInUser, divisionId
         }
         System.out.println("Testing Add Customer Button");
     }
@@ -127,6 +124,7 @@ public class AddCustomerController implements Initializable {
         return allCountryNames;
     }
 
+    //
     public ObservableList<String> getUSDivisionNames(){
         ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
         for(int i = 0; i < usDivisionsList.size(); i++)
@@ -159,6 +157,7 @@ public class AddCustomerController implements Initializable {
         }
         return UKDivisionNames;
     }
+
 
     public int handleDivisionComboBox(ActionEvent actionEvent){
         if(addCustomerDivision.getSelectionModel().getSelectedItem() != null) {
