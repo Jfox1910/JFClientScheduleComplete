@@ -3,6 +3,7 @@ package Dao;
 import Model.Divisions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import utils.JDBC;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

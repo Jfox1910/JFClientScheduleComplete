@@ -1,12 +1,11 @@
 package Dao;
 
 import Model.Customers;
-import Controller.LoginScreenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import utils.JDBC;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 
 public class DaoCustomers {
 
@@ -48,24 +47,23 @@ public class DaoCustomers {
 
         try {
 
+            //"INSERT INTO customers('Customer_Name', Address, Postal_Code, Phone, Create_Date, Created_By, Last_Updated_By, Division_ID) VALUES (NULL,?,?,?,?,?,?,?,?,?)";
             //"INSERT INTO customers VALUES(NULL,Customer_Name=?,Address=?,Postal_Code=?,Phone=?,Create_Date=NOW(),Created_By=?,Last_Update=NOW(),Last_Updated_By=?,Division_ID=?)";
-            String sqlnewCustomer = "INSERT INTO customers(Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Updated_By, Division_ID) VALUES (?,?,?,?,?,?,?,?,?)";
-            PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer);
+            String sqlnewCustomer = "INSERT INTO customers VALUES(NULL,Customer_Name=?,Address=?,Postal_Code=?,Phone=?,Create_Date=NOW(),Created_By=?,Last_Update=NOW(),Last_Updated_By=?,Division_ID=?)";
+            PreparedStatement psnewCustomer = JDBC.getConnection().prepareStatement(sqlnewCustomer, Statement.RETURN_GENERATED_KEYS);
 
-            assert psnewCustomer != null;
-            //psnewCustomer.setInt(1,customerid); Customer_ID=AUTO_INCREMENT ,
+            //assert psnewCustomer != null;
             psnewCustomer.setString(1,customerName);
             psnewCustomer.setString(2,customerAddy);
             psnewCustomer.setString(3,customerZipCode);
             psnewCustomer.setString(4,customerPhone);
             psnewCustomer.setString(5,loggedInUser);
             psnewCustomer.setString(6,loggedInUser);
-            psnewCustomer.setString(7,);
-            psnewCustomer.setString(8,);
+            psnewCustomer.setString(7,loggedInUser);
+            psnewCustomer.setString(8,loggedInUser);
             psnewCustomer.setInt(9,customerDivision);
 
             psnewCustomer.execute();
-            psnewCustomer.close();
             getAllCustomers();
 
         } catch (SQLException throwables){
