@@ -111,8 +111,8 @@ public class AddCustomerController implements Initializable {
 
         //Handles populating the country combobox in the addCustomerScreen
     public void handleCountryComboBox(ActionEvent actionEvent){
-        addCustomerCountry.getSelectionModel().clearSelection();
-        addCustomerName.clear();
+        //addCustomerCountry.getSelectionModel().clearSelection();
+        //addCustomerName.clear();
 
         addCustomerCountry.getItems().addAll(getAllCountryNames());
 
