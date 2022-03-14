@@ -82,6 +82,7 @@ public class DaoDivisions {
                 Divisions divisions = new Divisions(divisonID, divisionName);
                 allDivisions.add(divisions);
             }
+            ps.close();
         } catch (SQLException throwables){
             throwables.printStackTrace();;
         }

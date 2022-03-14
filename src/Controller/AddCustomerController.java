@@ -66,7 +66,7 @@ public class AddCustomerController implements Initializable {
 
     public void onActionAddCustomer(ActionEvent event) throws IOException{
 
-        //Retrieves the customers info from the fields.
+        //Retrieves the customer's info from the fields.
         String customerName = addCustomerName.getText();
         String customerAddress = addCustomerAddy.getText();
         String customerZip = addCustomerPostal.getText();
@@ -87,13 +87,14 @@ public class AddCustomerController implements Initializable {
             alert.showAndWait();
             return;
         }else {
+        //popup confirmation confirming that a customer is about to be added.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
             alert.setContentText("By clicking OK, you will be adding " + addCustomerName.getText() + " to the system. Are you sure you wish to continue?");
             alert.showAndWait();
         }
         DaoCustomers.newCustomer(customerName,customerAddress, customerZip, customerPhone, divisionId);
-
+        //popup alerting the user that a customer has been added to the db. Returns to the main screen when the OK button is clicked.
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Success!");
         alert.setContentText(addCustomerName.getText() + " has been added.");
@@ -108,8 +109,10 @@ public class AddCustomerController implements Initializable {
         }
     }
 
-    //Handles populating the country combobox in the addCustomerScreen
+        //Handles populating the country combobox in the addCustomerScreen
     public void handleCountryComboBox(ActionEvent actionEvent){
+        addCustomerCountry.getSelectionModel().clearSelection();
+        addCustomerName.clear();
 
         addCustomerCountry.getItems().addAll(getAllCountryNames());
 
