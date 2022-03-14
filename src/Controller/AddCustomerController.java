@@ -64,7 +64,7 @@ public class AddCustomerController implements Initializable {
     lambda function. Alerts?
      */
 
-    public void onActionAddCustomer(ActionEvent actionEvent){
+    public void onActionAddCustomer(ActionEvent event) throws IOException{
 
         //Retrieves the customers info from the fields.
         String customerName = addCustomerName.getText();
@@ -87,10 +87,25 @@ public class AddCustomerController implements Initializable {
             alert.showAndWait();
             return;
         }else {
-            DaoCustomers.newCustomer(customerName,customerAddress, customerZip, customerPhone, divisionId);
-            //customerName, customerAddress, customerZip, customerPhone, loggedInUser, divisionId
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Adding a new customer.");
+            alert.setContentText("By clicking OK, you will be adding " + addCustomerName.getText() + " to the system. Are you sure you wish to continue?");
+            alert.showAndWait();
         }
-        System.out.println("Testing Add Customer Button");
+        DaoCustomers.newCustomer(customerName,customerAddress, customerZip, customerPhone, divisionId);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Success!");
+        alert.setContentText(addCustomerName.getText() + " has been added.");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     //Handles populating the country combobox in the addCustomerScreen

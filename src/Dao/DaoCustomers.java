@@ -5,7 +5,6 @@ import Model.loginUser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
-//import utils.Utils;
 
 import java.sql.*;
 

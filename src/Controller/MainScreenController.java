@@ -30,7 +30,6 @@ public class MainScreenController implements Initializable {
     private Scene scene;
     private Parent root;
 
-
     @FXML private TableView<Appointments> apptTableview;
     @FXML private TableColumn<Appointments, Integer> apptIDCol;
     @FXML private TableColumn<Appointments, String> apptTitleCol;
@@ -42,7 +41,6 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Appointments, LocalDateTime> apptEndTimeCol;
     @FXML private TableColumn<Appointments, Integer> apptCustomerIDCol;
     @FXML private TableColumn<Appointments, Integer> apptUserIDCol;
-
 
     @FXML private TableView<Customers> customersTableView;
     @FXML private TableColumn<Customers, Integer> customerIdCol;
