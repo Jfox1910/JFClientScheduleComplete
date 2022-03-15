@@ -59,7 +59,6 @@ public class AddCustomerController implements Initializable {
     fix handleCountryBox populating issue. Add a clear function ----addCustomerCountry.setValue(null);----
 
     NICE TO HAVE ITEMS
-    maybe simplfy countryname methods? Kinda excessive
     Change labels based on country selection? What are the UK "divisions" called?
     lambda function. Alerts?
      */
