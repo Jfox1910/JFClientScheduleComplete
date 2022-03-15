@@ -112,14 +112,21 @@ public class MainScreenController implements Initializable {
         stage.show();
     }
 
-    //Modify existing customer method
+    //Modifies an existing customer. Throws an error if a name wasn't selected, otherwise loads the modifyCustomer screen.
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
-
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("modifyCustomerScreen.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        if (!customersTableView.getSelectionModel().isEmpty()){
+            ModCustomerController controller = new ModCustomerController();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("modifyCustomerScreen.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
+            alert.showAndWait();
+        }
     }
 
 
