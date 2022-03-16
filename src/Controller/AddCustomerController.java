@@ -36,10 +36,6 @@ public class AddCustomerController implements Initializable {
     @FXML private TextField addCustomerCreatedBy;
     @FXML private ComboBox addCustomerCountry;
     @FXML private ComboBox addCustomerDivision;
-    @FXML private Button addCustomerButton;
-    private ComboBox<String> clearCountry;
-
-    @FXML private TextField username;
 
     int retrieveDivisionID = 0;
 
@@ -56,7 +52,7 @@ public class AddCustomerController implements Initializable {
     /* TODO LIST
     MUST HAVE
     ALERT for deleting or modifying
-    fix handleCountryBox populating issue. Add a clear function ----addCustomerCountry.setValue(null);----
+    fix handleCountryBox populating issue
 
     NICE TO HAVE ITEMS
     Change labels based on country selection? What are the UK "divisions" called?

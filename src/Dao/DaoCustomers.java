@@ -2,6 +2,7 @@ package Dao;
 
 import Model.Customers;
 import Model.loginUser;
+import Controller.ModCustomerController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
@@ -93,17 +94,17 @@ public class DaoCustomers {
     }
 
     //Modifies a selected customer and updates the database
-    public void modifyCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerUpdatedBy, Integer customerDivision){
+    public static void modifyCustomer(String modifyCustomerName, String modifyCustomerAddress, String modifyCustomerZip, String modifyCustomerPhone, String customerUpdatedBy, Integer modifyCustomerDivision){
         try {
-            String sqlModifyCustomer = "UPDATE customers SET customerName=?, customerAddress=?, customerZipCode=?, customerPhone=?, customerUpdatedBy=?, customerDivision=?";
+            String sqlModifyCustomer = "UPDATE customers WHERE Customer_ID = ? SET customerName=?, customerAddress=?, customerZipCode=?, customerPhone=?, customerUpdatedBy=?, customerDivision=?";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
 
-            psmodifyCustomer.setString(1,customerName);
-            psmodifyCustomer.setString(2,customerAddy);
-            psmodifyCustomer.setString(3,customerZipCode);
-            psmodifyCustomer.setString(4,customerPhone);
-            psmodifyCustomer.setString(5,customerUpdatedBy);
-            psmodifyCustomer.setInt(6,customerDivision);
+            psmodifyCustomer.setString(1,modifyCustomerName);
+            psmodifyCustomer.setString(2,modifyCustomerAddress);
+            psmodifyCustomer.setString(3,modifyCustomerZip);
+            psmodifyCustomer.setString(4,modifyCustomerPhone);
+            psmodifyCustomer.setString(5,customerUpdatedBy = "TEST");
+            psmodifyCustomer.setInt(6,modifyCustomerDivision);
 
             psmodifyCustomer.execute();
 
