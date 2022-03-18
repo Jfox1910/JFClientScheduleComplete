@@ -19,62 +19,35 @@ public class loginUser {
 
     //Getters
 
-    public int getUserId() {
-        return userId;
-    }
+    public int getUserId() {return userId;}
 
-    public String getUserName() {
-        return userName;
-    }
+    public String getUserName() {return userName;}
 
-    public String getUserPassword() {
-        return userPassword;
-    }
+    public String getUserPassword() {return userPassword;}
 
-    public String getCreatedOn() {
-        return createdOn;
-    }
+    public String getCreatedOn() {return createdOn;}
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
+    public String getCreatedBy() {return createdBy;}
 
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
+    public String getLastUpdatedBy() {return lastUpdatedBy;}
 
-    public String getLastUpdatedOn() {
-        return lastUpdatedOn;
-    }
+    public String getLastUpdatedOn() {return lastUpdatedOn;}
 
 
     //Setters
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    public void setUserId(int userId) {this.userId = userId;}
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
+    public void setUserName(String userName) {this.userName = userName;}
 
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
-    }
+    public void setUserPassword(String userPassword) {this.userPassword = userPassword;}
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+    public void setCreatedOn(String createdOn) {this.createdOn = createdOn;}
 
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
+    public void setCreatedBy(String createdBy) {this.createdBy = createdBy;}
 
-    public void setLastUpdatedOn(String lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-    }
+    public void setLastUpdatedBy(String lastUpdatedBy) {this.lastUpdatedBy = lastUpdatedBy;}
+
+    public void setLastUpdatedOn(String lastUpdatedOn) {this.lastUpdatedOn = lastUpdatedOn;}
 }

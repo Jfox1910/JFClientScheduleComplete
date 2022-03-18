@@ -16,6 +16,7 @@ public class Customers {
     private String customerUpdatedByCol;
     private int customerDivisionCol;
 
+    private static Customers selectedCustomer;
     //Constructor
     public Customers(int customerIdCol, String customerNameCol, String customerAddyCol, String customerZipCol, String customerPhoneCol, String customerCreatedDateCol,
                      String customerCreatedCol, Timestamp customerUpdatedOnCol, String customerUpdatedByCol, int customerDivisionCol) {
@@ -30,6 +31,9 @@ public class Customers {
         this.customerUpdatedByCol = customerUpdatedByCol;
         this.customerDivisionCol = customerDivisionCol;
     }
+
+    public static Customers getSelectedCustomer(){return selectedCustomer;}
+
 
     //Getters
         public int getCustomerIdCol() {

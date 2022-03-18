@@ -1,5 +1,6 @@
 package Controller;
 
+import Dao.DaoAppointments;
 import Dao.DaoCustomers;
 import Dao.DaoDivisions;
 import Model.Appointments;
@@ -41,6 +42,13 @@ public class ModCustomerController implements Initializable {
     @FXML private ComboBox customerDivision;
     @FXML private ComboBox customerCountry;
 
+    private static Customers selectedCustomer;
+
+    public static Customers getSelectedCustomer() {
+        return selectedCustomer;
+    }
+
+
     public void onActionMainScreen(ActionEvent event) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -56,9 +64,20 @@ public class ModCustomerController implements Initializable {
         }
     }
 
+
     public void onActionSelectCountry(ActionEvent event) throws IOException{
         System.out.println("TESTING COUNTRY SELECTION.");
     }
+
+    public void getSelectedCustomer(Customers customers){
+        selectedCustomer = customers;
+        customerId.setText(String.valueOf(selectedCustomer.getCustomerIdCol()));
+        customerName.setText(String.valueOf(selectedCustomer.getCustomerNameCol()));
+        customerCountry.getSelectionModel().select(selectedCustomer.getCustomerDivisionCol());
+        customerAddress.setText(String.valueOf(selectedCustomer.getCustomerAddyCol()));
+        customerZip.setText(String.valueOf(selectedCustomer.getCustomerZipCol()));
+    }
+
 
     public void onActionSaveChanges(ActionEvent event) throws IOException {
 
@@ -110,13 +129,17 @@ public class ModCustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Customers = DaoCustomers.getAllCustomers();
+
+        Customers customers = Customers.getSelectedCustomer();
+        //customerId.setText(String.valueOf(customers.getCustomerIdCol()));
+        //customerName.setText(String.valueOf(Customers.getCustomerNameCol()));
+
         //customersTableView.setItems(customers);
-       /* customerName.setText(String.valueOf(modifyCustomer.getCustomerNameCol()));
-        customerId.setText(String.valueOf(modifyCustomer.getCustomerIdCol()));
-        customerAddress.setText(String.valueOf(modifyCustomer.getCustomerAddyCol()));
-        customerZip.setText(String.valueOf(modifyCustomer.getCustomerZipCol()));
-        customerPhone.setText(String.valueOf(modifyCustomer.getCustomerPhoneCol()));*/
+        customerName.setText(String.valueOf(customers.getCustomerNameCol()));
+        customerId.setText(String.valueOf(customers.getCustomerIdCol()));
+        customerAddress.setText(String.valueOf(customers.getCustomerAddyCol()));
+        customerZip.setText(String.valueOf(customers.getCustomerZipCol()));
+        customerPhone.setText(String.valueOf(customers.getCustomerPhoneCol()));
         //divID.getSelectionModel().select(Customers.getCustomerDivisionCol);
         //customerCountry.getSelectionModel().select(Customers.getCustomerDivisionCol);
     }

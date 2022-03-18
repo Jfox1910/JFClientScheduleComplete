@@ -114,7 +114,7 @@ public class MainScreenController implements Initializable {
 
     //Modifies an existing customer. Throws an error if a name wasn't selected, otherwise loads the modifyCustomer screen.
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
-        if (!customersTableView.getSelectionModel().isEmpty()){
+        if (customersTableView.getSelectionModel().getSelectedItem() != null){
             ModCustomerController controller = new ModCustomerController();
             Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("modifyCustomerScreen.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -133,12 +133,11 @@ public class MainScreenController implements Initializable {
     //Selects the customer and deletes them and any appointments they have scheduled.
     public void onActionDeleteCustomer(ActionEvent event) throws IOException{
 
-
             if (customersTableView.getSelectionModel().getSelectedItem() != null){
-                Customers thisCustomer = customersTableView.getSelectionModel().getSelectedItem();
+                Customers selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
 
                 for (int i = 0; i < appointments.size(); i++) {
-                    if (appointments.get(i).getApptIDCol() == thisCustomer.getCustomerIdCol()) {
+                    if (appointments.get(i).getApptIDCol() == selectedCustomer.getCustomerIdCol()) {
                         DaoAppointments.deleteAppointment(appointments.get(i).getApptIDCol());
                     }
                 }
@@ -152,7 +151,7 @@ public class MainScreenController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
 
-                    DaoCustomers.deleteCustomer(thisCustomer.getCustomerIdCol());
+                    DaoCustomers.deleteCustomer(selectedCustomer.getCustomerIdCol());
                     customersTableView.setItems(DaoCustomers.getAllCustomers());
                 }
 

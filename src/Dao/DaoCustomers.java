@@ -40,7 +40,6 @@ public class DaoCustomers {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
         return customerList;
     }
 
@@ -48,7 +47,7 @@ public class DaoCustomers {
     public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone,int customerDivision){
 
         try {
-            //setting the customer ID to 1 then adding 1 to the highest ID.
+            //Selects the highest existing customer ID then adds 1 to it to increment sequentially.
             int customerID = 1;
             try {
                 Statement id = connection.createStatement();
@@ -76,13 +75,6 @@ public class DaoCustomers {
             //psnewCustomer.setString(7,JDBC.getLoginUser());
            // psnewCustomer.setString(8, null);
 
-
-           /* psnewCustomer.setString(5, Utils.getUTCDateTimeString());
-            psnewCustomer.setString(6, Utils.getUser().getUserName());
-            psnewCustomer.setString(7, Utils.getUTCDateTimeString());
-            psnewCustomer.setString(8, Utils.getUser().getUserName());
-            psnewCustomer.setInt(9,customerDivision);*/
-
             //customers.setCustomerCreatedCol(JDBC.getLoginUser());
             psnewCustomer.executeUpdate();
             psnewCustomer.close();
@@ -96,7 +88,7 @@ public class DaoCustomers {
     //Modifies a selected customer and updates the database
     public static void modifyCustomer(String modifyCustomerName, String modifyCustomerAddress, String modifyCustomerZip, String modifyCustomerPhone, String customerUpdatedBy, Integer modifyCustomerDivision){
         try {
-            String sqlModifyCustomer = "UPDATE customers WHERE Customer_ID = ? SET customerName=?, customerAddress=?, customerZipCode=?, customerPhone=?, customerUpdatedBy=?, customerDivision=?";
+            String sqlModifyCustomer = "UPDATE customers SET customerName=?, customerAddress=?, customerZipCode=?, customerPhone=?, customerUpdatedBy=?, customerDivision=?";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
 
             psmodifyCustomer.setString(1,modifyCustomerName);
@@ -111,7 +103,6 @@ public class DaoCustomers {
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
-
     }
 
     //Deletes an exisiting customer from the database.

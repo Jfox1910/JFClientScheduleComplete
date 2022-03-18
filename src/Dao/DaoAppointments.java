@@ -10,11 +10,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import Dao.DaoCustomers;
 
 /**
  Appointment table database access
  */
 public final class DaoAppointments {
+
+    public static DaoCustomers customer;
 
     public static ObservableList<Appointments> getAllAppointments(){
         ObservableList<Appointments> appointments = FXCollections.observableArrayList();
