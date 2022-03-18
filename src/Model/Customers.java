@@ -32,10 +32,9 @@ public class Customers {
         this.customerDivisionCol = customerDivisionCol;
     }
 
-    public static Customers getSelectedCustomer(){return selectedCustomer;}
-
-
     //Getters
+        public static Customers getSelectedCustomer(){return selectedCustomer;}
+
         public int getCustomerIdCol() {
             return customerIdCol;
         }
@@ -97,21 +96,15 @@ public class Customers {
             this.customerPhoneCol = customerPhoneCol;
         }
 
-        public void setCustomerCreatedDateCol(String customerCreatedDateCol) {
-            this.customerCreatedDateCol = customerCreatedDateCol;
-        }
+        public void setCustomerCreatedDateCol(String customerCreatedDateCol) {this.customerCreatedDateCol = customerCreatedDateCol;}
 
         public void setCustomerCreatedCol(String customerCreatedCol) {
             this.customerCreatedCol = customerCreatedCol;
         }
 
-        public void setCustomerUpdatedOnCol(Timestamp customerUpdatedOnCol) {
-            this.customerUpdatedOnCol = customerUpdatedOnCol;
-        }
+        public void setCustomerUpdatedOnCol(Timestamp customerUpdatedOnCol) {this.customerUpdatedOnCol = customerUpdatedOnCol;}
 
-        public void setCustomerUpdatedByCol(String customerUpdatedByCol) {
-            this.customerUpdatedByCol = customerUpdatedByCol;
-        }
+        public void setCustomerUpdatedByCol(String customerUpdatedByCol) {this.customerUpdatedByCol = customerUpdatedByCol;}
 
         public void setCustomerDivisionCol(int customerDivisionCol) {
             this.customerDivisionCol = customerDivisionCol;
