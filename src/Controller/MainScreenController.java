@@ -167,13 +167,13 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    //Modifies an existing customer. Throws an error if a name wasn't selected, otherwise loads the modifyCustomer screen.
+    //Modifies an existing customer. Throws an error if a name isn't selected, otherwise modifies the customer.
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
         if (customersTableView.getSelectionModel().getSelectedItem() != null){
 
             System.out.println("Testing Modify Customer");
         }
-        else {
+        else {//Hold and alert the user that a customer name must be selected.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
