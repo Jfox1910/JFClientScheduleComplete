@@ -69,8 +69,10 @@ public class MainScreenController implements Initializable {
     @FXML private ComboBox customerCountry;
     @FXML private ComboBox customerDivision;
 
-
+    Customers modifyCustomers;
     int retrieveDivisionID = 0;
+    int CustomerId;
+    private boolean customerSelected = false;
 
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
@@ -85,7 +87,7 @@ public class MainScreenController implements Initializable {
 
 
 
-    //----APPOINTMENT TAB METHODS----
+    //----ALL APPOINTMENT TAB METHODS----
 
     //Add Appointments Method
     public void onActionAddAppt(ActionEvent event) throws IOException {
@@ -124,7 +126,7 @@ public class MainScreenController implements Initializable {
     }
 
 
-    //----CUSTOMER TAB METHODS----
+    //----ALL CUSTOMER TAB METHODS----
 
     //Add a customer method (Contained within the customer tab)
     public void onActionAddCustomer(ActionEvent event) throws IOException {
@@ -172,9 +174,21 @@ public class MainScreenController implements Initializable {
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
         if (customersTableView.getSelectionModel().getSelectedItem() != null){
 
+        modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
+        ObservableList<Divisions> updateDivision = FXCollections.observableArrayList();
+
+        CustomerId = modifyCustomers.getCustomerId();
+        CustomerName.setText(String.valueOf(modifyCustomers.getCustomerName()));
+        CustomerAddress.setText(String.valueOf(modifyCustomers.getCustomerAddy()));
+        CustomerPhone.setText(String.valueOf(modifyCustomers.getCustomerPhone()));
+        CustomerZip.setText(String.valueOf(modifyCustomers.getCustomerZip()));
+        customerCountry.setValue(customerCountry);
+        customerDivision.setValue(customerDivision);
+
             System.out.println("Testing Modify Customer");
         }
-        else {//Hold and alert the user that a customer name must be selected.
+        else {
+            //Hold and alert the user that a customer name must be selected.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
@@ -215,8 +229,6 @@ public class MainScreenController implements Initializable {
 
     //Handles populating the country combobox in the addCustomerScreen
     public void handleCountryComboBox(ActionEvent actionEvent){
-        //addCustomerCountry.getSelectionModel().clearSelection();
-        //addCustomerName.clear();
 
         customerCountry.getItems().addAll(getAllCountryNames());
 
@@ -246,7 +258,7 @@ public class MainScreenController implements Initializable {
         return allCountryNames;
     }
 
-    //
+    //US division selections
     public ObservableList<String> getUSDivisionNames(){
         ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
         for(int i = 0; i < usDivisionsList.size(); i++)
@@ -258,6 +270,7 @@ public class MainScreenController implements Initializable {
         return USDivisionNames;
     }
 
+    //Canadian division selections
     public ObservableList<String> getCanadaDivisionNames(){
         ObservableList<String> CanadaDivisionNames = FXCollections.observableArrayList();
         for(int i = 0; i < canadianDivisionList.size(); i++)
@@ -269,6 +282,7 @@ public class MainScreenController implements Initializable {
         return CanadaDivisionNames;
     }
 
+    //UK division selections
     public ObservableList<String> getUKDivisionNames(){
         ObservableList<String> UKDivisionNames = FXCollections.observableArrayList();
         for(int i = 0; i < UKDivisionList.size(); i++)
