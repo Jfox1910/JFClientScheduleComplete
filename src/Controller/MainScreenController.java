@@ -1,10 +1,14 @@
 package Controller;
 
 import Dao.DaoAppointments;
+import Dao.DaoCountries;
 import Dao.DaoCustomers;
+import Dao.DaoDivisions;
 import Model.Appointments;
 import Model.Countries;
 import Model.Customers;
+import Model.Divisions;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,6 +59,23 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Customers, String> customerUpdatedByCol;
     @FXML private TableColumn<Customers, Integer> customerDivisionCol;
 
+    @FXML
+    private TextField addCustomerID;
+    @FXML private TextField CustomerName;
+    @FXML private TextField CustomerAddress;
+    @FXML private TextField CustomerZip;
+    @FXML private TextField CustomerPhone;
+    @FXML private ComboBox customerCountry;
+    @FXML private ComboBox customerDivision;
+
+
+    int retrieveDivisionID = 0;
+
+    public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
+    public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
+    public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
+    private ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
+    public ObservableList<Appointments> allAppointments = DaoAppointments.getAllAppointments();
 
     private ObservableList<Customers> customers;
     private ObservableList<Appointments> appointments;
@@ -107,11 +128,47 @@ public class MainScreenController implements Initializable {
     //Add a customer method (Contained within the customer tab)
     public void onActionAddCustomer(ActionEvent event) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("addCustomerScreen.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        //Retrieves the customer's info from the fields.
+        String customerName = CustomerName.getText();
+        String customerAddress = CustomerAddress.getText();
+        String customerZip = CustomerZip.getText();
+        String customerPhone = CustomerPhone.getText();
+        int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
+
+        //Check that a name, address and phone has been entered and gives an alert if it isn't there.
+        if (customerName.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Attention!");
+            alert.setContentText("A name must be entered for the customer.");
+            alert.showAndWait();
+            return;
+        }if (customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Attention!");
+            alert.setContentText("Complete contact information must be entered for the customer.");
+            alert.showAndWait();
+            return;
+        }else {
+            //popup confirmation confirming that a customer is about to be added.
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Adding a new customer.");
+            alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
+            alert.showAndWait();
+        }
+        DaoCustomers.newCustomer(customerName,customerAddress, customerZip, customerPhone, divisionId);
+        //popup alerting the user that a customer has been added to the db. Returns to the main screen when the OK button is clicked.
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Success!");
+        alert.setContentText(CustomerName.getText() + " has been added.");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     //Modifies an existing customer. Throws an error if a name wasn't selected, otherwise loads the modifyCustomer screen.
@@ -168,9 +225,95 @@ public class MainScreenController implements Initializable {
 
     }
 
+    //Handles populating the country combobox in the addCustomerScreen
+    public void handleCountryComboBox(ActionEvent actionEvent){
+        //addCustomerCountry.getSelectionModel().clearSelection();
+        //addCustomerName.clear();
+
+        customerCountry.getItems().addAll(getAllCountryNames());
+
+        if(customerCountry.getSelectionModel().getSelectedItem() != null) {
+            Object selectedCountry = customerCountry.getSelectionModel().getSelectedItem();
+            String countryDivision = selectedCountry.toString();
+
+            if (countryDivision.equalsIgnoreCase("U.S")) {
+                customerDivision.setItems(getUSDivisionNames());
+            } else if (countryDivision.equalsIgnoreCase("UK")) {
+                customerDivision.setItems(getUKDivisionNames());
+            } else if (countryDivision.equalsIgnoreCase("Canada")) {
+                customerDivision.setItems(getCanadaDivisionNames());
+            }
+        }
+    }
+
+    //Retrieves the country names from DaoCountries
+    public ObservableList<String> getAllCountryNames(){
+        ObservableList<String> allCountryNames = FXCollections.observableArrayList();
+        for(int i = 0; i < allCountries.size(); i++)
+        {
+            String countryName;
+            countryName = allCountries.get(i).getName();
+            allCountryNames.add(countryName);
+        }
+        return allCountryNames;
+    }
+
+    //
+    public ObservableList<String> getUSDivisionNames(){
+        ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
+        for(int i = 0; i < usDivisionsList.size(); i++)
+        {
+            String americans;
+            americans = usDivisionsList.get(i).getDivisionName();
+            USDivisionNames.add(americans);
+        }
+        return USDivisionNames;
+    }
+
+    public ObservableList<String> getCanadaDivisionNames(){
+        ObservableList<String> CanadaDivisionNames = FXCollections.observableArrayList();
+        for(int i = 0; i < canadianDivisionList.size(); i++)
+        {
+            String canadians;
+            canadians = canadianDivisionList.get(i).getDivisionName();
+            CanadaDivisionNames.add(canadians);
+        }
+        return CanadaDivisionNames;
+    }
+
+    public ObservableList<String> getUKDivisionNames(){
+        ObservableList<String> UKDivisionNames = FXCollections.observableArrayList();
+        for(int i = 0; i < UKDivisionList.size(); i++)
+        {
+            String british;
+            british = UKDivisionList.get(i).getDivisionName();
+            UKDivisionNames.add(british);
+        }
+        return UKDivisionNames;
+    }
+
+
+    public int handleDivisionComboBox(ActionEvent actionEvent){
+        if(customerDivision.getSelectionModel().getSelectedItem() != null) {
+            Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
+
+            String division = selectedDivision.toString();
+            for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
+                if (division.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
+                    retrieveDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
+                    break;
+                }
+            }
+        }
+        return retrieveDivisionID;
+    }
+
+
     @Override
     public void initialize (URL location, ResourceBundle resources){
 
+        //Initializes the customer/country combobox
+        customerCountry.getItems().addAll(getAllCountryNames());
 
         //Appointments
         appointments = DaoAppointments.getAllAppointments();

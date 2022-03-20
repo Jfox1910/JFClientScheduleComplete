@@ -56,7 +56,7 @@ public class CustomerController implements Initializable {
     lambda function. Alerts?
      */
 
-    public void onActionAddCustomer(ActionEvent event) throws IOException {
+/*    public void onActionAddCustomer(ActionEvent event) throws IOException {
 
         System.out.printf("TESTING NEW CONTROLLER CLASS");
 
@@ -101,7 +101,7 @@ public class CustomerController implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
-    }
+    }*/
 
     //Handles populating the country combobox in the addCustomerScreen
     public void handleCountryComboBox(ActionEvent actionEvent){

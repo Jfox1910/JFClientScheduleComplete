@@ -107,10 +107,8 @@ public class ModCustomerController implements Initializable {
         }return UKDivisionNames;
     }
 
-    //Handles populating the country combobox in the addCustomerScreen
+    //Handles populating the COUNTRY combobox customer tableview
     public void handleCountryComboBox(ActionEvent actionEvent){
-        //addCustomerCountry.getSelectionModel().clearSelection();
-        //addCustomerName.clear();
 
         customerCountry.getItems().addAll(getAllCountryNames());
 
@@ -128,6 +126,7 @@ public class ModCustomerController implements Initializable {
         }
     }
 
+    //Handles populating the DIVISION combobox customer tableview
     public int handleDivisionComboBox(ActionEvent actionEvent){
         if(customerDivision.getSelectionModel().getSelectedItem() != null) {
             Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
@@ -143,16 +142,8 @@ public class ModCustomerController implements Initializable {
         return retrieveDivisionID;
     }
 
-    public void onActionSelectCountry(ActionEvent event) throws IOException{
-        System.out.println("TESTING COUNTRY SELECTION.");
-
-
-    }
-
     //Retrieve the selected customer
     public void getSelectedCustomer(Customers customers){
-
-        //SWITCH
 
         selectedCustomer = customers;
         customerId.setText(String.valueOf(customers.getCustomerId()));
