@@ -58,7 +58,7 @@
                         <Insets left="50.0" right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="customerDivision" prefHeight="30.0" prefWidth="150.0" promptText="Select:">
+                  <ComboBox fx:id="customerDivision" onAction="#handleDivisionComboBox" prefHeight="30.0" prefWidth="150.0" promptText="Select:">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -82,7 +82,7 @@
                         <Insets left="35.0" right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="customerCountry" onAction="#onActionSelectCountry" prefHeight="30.0" prefWidth="150.0" promptText="Select:">
+                  <ComboBox fx:id="customerCountry" onAction="#handleCountryComboBox" prefHeight="30.0" prefWidth="150.0" promptText="Select:">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

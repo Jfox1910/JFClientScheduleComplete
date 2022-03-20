@@ -30,6 +30,7 @@ public class MainScreenController implements Initializable {
     private Scene scene;
     private Parent root;
 
+
     @FXML private TableView<Appointments> apptTableview;
     @FXML private TableColumn<Appointments, Integer> apptIDCol;
     @FXML private TableColumn<Appointments, String> apptTitleCol;
@@ -58,6 +59,7 @@ public class MainScreenController implements Initializable {
     private ObservableList<Customers> customers;
     private ObservableList<Appointments> appointments;
 
+    public static Customers customer;
 
 
 
@@ -115,13 +117,19 @@ public class MainScreenController implements Initializable {
     //Modifies an existing customer. Throws an error if a name wasn't selected, otherwise loads the modifyCustomer screen.
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
         if (customersTableView.getSelectionModel().getSelectedItem() != null){
-            ModCustomerController controller = new ModCustomerController();
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("modifyCustomerScreen.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("modifyCustomerScreen.fxml"));
+            loader.load();
+            ModCustomerController modifyCustomer = loader.getController();
+            modifyCustomer.getSelectedCustomer(customer);
+
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            Parent scene = loader.getRoot();
+            stage.setScene(new Scene(scene));
             stage.show();
-        }else {
+        }
+        else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
@@ -137,7 +145,7 @@ public class MainScreenController implements Initializable {
                 Customers selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
 
                 for (int i = 0; i < appointments.size(); i++) {
-                    if (appointments.get(i).getApptIDCol() == selectedCustomer.getCustomerIdCol()) {
+                    if (appointments.get(i).getApptIDCol() == selectedCustomer.getCustomerId()) {
                         DaoAppointments.deleteAppointment(appointments.get(i).getApptIDCol());
                     }
                 }
@@ -151,32 +159,18 @@ public class MainScreenController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
 
-                    DaoCustomers.deleteCustomer(selectedCustomer.getCustomerIdCol());
+                    DaoCustomers.deleteCustomer(selectedCustomer.getCustomerId());
                     customersTableView.setItems(DaoCustomers.getAllCustomers());
                 }
 
         }
-        System.out.println("Test DELETE customer from database");
+        System.out.println("DELETE customer from database");
 
     }
 
     @Override
     public void initialize (URL location, ResourceBundle resources){
 
-      /*  LocalTime start = LocalTime.of(6, 0);
-        LocalTime end = LocalTime.NOON;
-        while(start.isBefore(end.plusSeconds(1))){
-            testBox.getItems().add(start);
-            start = start.plusMinutes(15);
-        }
-        testBox.getSelectionModel().select(LocalTime.of(8,0));
-
-        testBox.setPromptText("Whatever");
-
-        @Override
-        public String toString(){
-        return (Integer.toString(objectName)); }
-        */
 
         //Appointments
         appointments = DaoAppointments.getAllAppointments();
@@ -195,16 +189,12 @@ public class MainScreenController implements Initializable {
         //Customers
         customers = DaoCustomers.getAllCustomers();
         customersTableView.setItems(customers);
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerIdCol"));
-        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerNameCol"));
-        customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("customerAddyCol"));
-        customerZipCol.setCellValueFactory(new PropertyValueFactory<>("customerZipCol"));
-        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneCol"));
-
-        /**
-         * EDIT TO SHOW ACTUAL DIVISION INSTEAD OF THE ID*/
-
-        customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivisionCol"));
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("customerAddy"));
+        customerZipCol.setCellValueFactory(new PropertyValueFactory<>("customerZip"));
+        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
+        customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivision"));
 
     }
 }

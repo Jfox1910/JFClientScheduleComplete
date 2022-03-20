@@ -1,10 +1,16 @@
 package Model;
 
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.Initializable;
 
+import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
-public class Appointments {
+public class Appointments implements Initializable {
+
+    public static Customers customers;
+    public static Appointments appointments;
 
     private int apptIDCol;
     private String apptTitleCol;
@@ -110,5 +116,10 @@ public class Appointments {
 
     public void setApptUserIDCol(int apptUserIDCol) {
         this.apptUserIDCol = apptUserIDCol;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }

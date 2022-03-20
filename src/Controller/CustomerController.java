@@ -1,4 +1,3 @@
-/*
 package Controller;
 
 import Dao.*;
@@ -21,15 +20,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AddCustomerController implements Initializable {
-
-    @FXML private TextField addCustomerID;
+public class CustomerController implements Initializable {
+    @FXML
+    private TextField addCustomerID;
     @FXML private TextField addCustomerName;
     @FXML private TextField addCustomerAddy;
     @FXML private TextField addCustomerPostal;
@@ -50,8 +46,7 @@ public class AddCustomerController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    */
-/* TODO LIST
+    /* TODO LIST
     MUST HAVE
     ALERT for deleting or modifying
     fix handleCountryBox populating issue
@@ -59,10 +54,11 @@ public class AddCustomerController implements Initializable {
     NICE TO HAVE ITEMS
     Change labels based on country selection? What are the UK "divisions" called?
     lambda function. Alerts?
-     *//*
+     */
 
+    public void onActionAddCustomer(ActionEvent event) throws IOException {
 
-    public void onActionAddCustomer(ActionEvent event) throws IOException{
+        System.out.printf("TESTING NEW CONTROLLER CLASS");
 
         //Retrieves the customer's info from the fields.
         String customerName = addCustomerName.getText();
@@ -85,7 +81,7 @@ public class AddCustomerController implements Initializable {
             alert.showAndWait();
             return;
         }else {
-        //popup confirmation confirming that a customer is about to be added.
+            //popup confirmation confirming that a customer is about to be added.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
             alert.setContentText("By clicking OK, you will be adding " + addCustomerName.getText() + " to the system. Are you sure you wish to continue?");
@@ -107,7 +103,7 @@ public class AddCustomerController implements Initializable {
         }
     }
 
-        //Handles populating the country combobox in the addCustomerScreen
+    //Handles populating the country combobox in the addCustomerScreen
     public void handleCountryComboBox(ActionEvent actionEvent){
         //addCustomerCountry.getSelectionModel().clearSelection();
         //addCustomerName.clear();
@@ -190,12 +186,10 @@ public class AddCustomerController implements Initializable {
         return retrieveDivisionID;
     }
 
-  */
-/*  public void handleComboBoxClosed(ActionEvent actionEvent){
+  /*  public void handleComboBoxClosed(ActionEvent actionEvent){
         addCustomerCountry.setValue(null);
         System.out.println("Testing clear method");
-    }*//*
-
+    }*/
 
 
     //Exit to the main screen
@@ -206,11 +200,11 @@ public class AddCustomerController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
     }
 
@@ -225,4 +219,3 @@ public class AddCustomerController implements Initializable {
 
     }
 }
-*/

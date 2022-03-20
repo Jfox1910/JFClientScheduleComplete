@@ -69,7 +69,7 @@ public class DaoCustomers {
             psnewCustomer.setString(4,customerZipCode);
             psnewCustomer.setString(5,customerPhone);
             psnewCustomer.setString(6, null);
-            psnewCustomer.setString(7, null);
+            psnewCustomer.setString(7, "null");
             //psnewCustomer.setString(8, null);
             psnewCustomer.setInt(8, customerDivision);
             //psnewCustomer.setString(7,JDBC.getLoginUser());
