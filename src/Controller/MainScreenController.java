@@ -8,6 +8,7 @@ import Model.Appointments;
 import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
+import Controller.CustomerController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

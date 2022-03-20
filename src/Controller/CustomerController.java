@@ -46,6 +46,9 @@ public class CustomerController implements Initializable {
     private Scene scene;
     private Parent root;
 
+
+
+
     /* TODO LIST
     MUST HAVE
     ALERT for deleting or modifying
