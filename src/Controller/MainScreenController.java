@@ -161,13 +161,9 @@ public class MainScreenController implements Initializable {
         alert.setTitle("Success!");
         alert.setContentText(CustomerName.getText() + " has been added.");
         Optional<ButtonType> result = alert.showAndWait();
+        //Reloads the customer table view with the updated information
         if (result.get() == ButtonType.OK) {
-
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            customersTableView.setItems(DaoCustomers.getAllCustomers());
         }
     }
 
@@ -175,16 +171,7 @@ public class MainScreenController implements Initializable {
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
         if (customersTableView.getSelectionModel().getSelectedItem() != null){
 
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("modifyCustomerScreen.fxml"));
-            loader.load();
-            ModCustomerController modifyCustomer = loader.getController();
-            modifyCustomer.getSelectedCustomer(customer);
-
-            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            Parent scene = loader.getRoot();
-            stage.setScene(new Scene(scene));
-            stage.show();
+            System.out.println("Testing Modify Customer");
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -215,7 +202,7 @@ public class MainScreenController implements Initializable {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-
+                    //Reloads the customer table view with the updated information
                     DaoCustomers.deleteCustomer(selectedCustomer.getCustomerId());
                     customersTableView.setItems(DaoCustomers.getAllCustomers());
                 }

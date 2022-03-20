@@ -103,7 +103,7 @@ public class CustomerController implements Initializable {
         }
     }*/
 
-    //Handles populating the country combobox in the addCustomerScreen
+/*    //Handles populating the country combobox in the addCustomerScreen
     public void handleCountryComboBox(ActionEvent actionEvent){
         //addCustomerCountry.getSelectionModel().clearSelection();
         //addCustomerName.clear();
@@ -186,10 +186,10 @@ public class CustomerController implements Initializable {
         return retrieveDivisionID;
     }
 
-  /*  public void handleComboBoxClosed(ActionEvent actionEvent){
+  *//*  public void handleComboBoxClosed(ActionEvent actionEvent){
         addCustomerCountry.setValue(null);
         System.out.println("Testing clear method");
-    }*/
+    }*//*
 
 
     //Exit to the main screen
@@ -206,16 +206,11 @@ public class CustomerController implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
-    }
+    }*/
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        //Initializes the customer/country combobox
-        addCustomerCountry.getItems().addAll(getAllCountryNames());
-
-
 
     }
 }
