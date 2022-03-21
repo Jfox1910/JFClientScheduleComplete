@@ -60,8 +60,7 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Customers, String> customerUpdatedByCol;
     @FXML private TableColumn<Customers, Integer> customerDivisionCol;
 
-    @FXML
-    private TextField addCustomerID;
+    @FXML private TextField addCustomerID;
     @FXML private TextField CustomerName;
     @FXML private TextField CustomerAddress;
     @FXML private TextField CustomerZip;
@@ -72,7 +71,7 @@ public class MainScreenController implements Initializable {
     Customers modifyCustomers;
     int retrieveDivisionID = 0;
     int CustomerId;
-    private boolean customerSelected = false;
+    private boolean modifyCustomer = false;
 
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
@@ -86,6 +85,15 @@ public class MainScreenController implements Initializable {
     public static Customers customer;
 
 
+    /*
+
+    TODO LIST
+    get and display customer ID
+    Division to string on modify box
+    cleanup functionality and move into customerController class?
+    Add appointments
+    Add alerts to everything Modify, Add, Delete, Cancel etc.
+     */
 
     //----ALL APPOINTMENT TAB METHODS----
 
@@ -129,7 +137,8 @@ public class MainScreenController implements Initializable {
     //----ALL CUSTOMER TAB METHODS----
 
     //Add a customer method (Contained within the customer tab)
-    public void onActionAddCustomer(ActionEvent event) throws IOException {
+    public void onActionSaveCustomer
+    (ActionEvent event) throws IOException {
 
         //Retrieves the customer's info from the fields.
         String customerName = CustomerName.getText();
@@ -174,17 +183,19 @@ public class MainScreenController implements Initializable {
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
         if (customersTableView.getSelectionModel().getSelectedItem() != null){
 
-        modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
-        ObservableList<Divisions> updateDivision = FXCollections.observableArrayList();
+            modifyCustomer = true;
+            int divID = customerDivision.getSelectionModel().getSelectedIndex() +1;
+            modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
 
-        CustomerId = modifyCustomers.getCustomerId();
-        CustomerName.setText(String.valueOf(modifyCustomers.getCustomerName()));
-        CustomerAddress.setText(String.valueOf(modifyCustomers.getCustomerAddy()));
-        CustomerPhone.setText(String.valueOf(modifyCustomers.getCustomerPhone()));
-        CustomerZip.setText(String.valueOf(modifyCustomers.getCustomerZip()));
-        customerCountry.setValue(customerCountry);
-        customerDivision.setValue(customerDivision);
+            CustomerId = modifyCustomers.getCustomerId();
+            CustomerName.setText(String.valueOf(modifyCustomers.getCustomerName()));
+            CustomerAddress.setText(String.valueOf(modifyCustomers.getCustomerAddy()));
+            CustomerPhone.setText(String.valueOf(modifyCustomers.getCustomerPhone()));
+            CustomerZip.setText(String.valueOf(modifyCustomers.getCustomerZip()));
+            customerCountry.setValue(modifyCustomers.getCustomerDivision());
+            customerDivision.setValue(modifyCustomers.getCustomerDivision());
 
+            //DaoCustomers.modifyCustomer();
             System.out.println("Testing Modify Customer");
         }
         else {
@@ -223,11 +234,34 @@ public class MainScreenController implements Initializable {
                 }
 
         }
-        System.out.println("DELETE customer from database");
+    }
+
+    public void onActionCancel(ActionEvent actionEvent) {
+
+        modifyCustomer = false;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("ATTENTION!");
+        alert.setHeaderText("Cancel customer update.");
+        alert.setContentText("This will cancel the customer update. Are you sure you wish to continue?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            //CustomerId.setText("");
+            CustomerName.clear();
+            CustomerAddress.clear();
+            CustomerZip.clear();
+            CustomerPhone.clear();
+            customerCountry.getItems().clear();
+            customerCountry.getItems().addAll(getAllCountryNames());
+            customerDivision.getItems().clear();
+            customersTableView.setItems(DaoCustomers.getAllCustomers());
+        }
+
 
     }
 
-    //Handles populating the country combobox in the addCustomerScreen
+    //Handles populating the country and division comboboxes
     public void handleCountryComboBox(ActionEvent actionEvent){
 
         customerCountry.getItems().addAll(getAllCountryNames());

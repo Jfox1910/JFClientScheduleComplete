@@ -35,22 +35,6 @@ public class Customers {
 
 
 
-   /* public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, String customerCreatedDate,
-                     String customerCreated, Timestamp customerUpdatedOn, String customerUpdatedBy, int customerDivision) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.customerAddy = customerAddy;
-        this.customerZip = customerZip;
-        this.customerPhone = customerPhone;
-        this.customerCreatedDate = customerCreatedDate;
-        this.customerCreated = customerCreated;
-        this.customerUpdatedOn = customerUpdatedOn;
-        this.customerUpdatedBy = customerUpdatedBy;
-        this.customerDivision = customerDivision;
-    }*/
-
-
-
     //Getters
 
         public int getCustomerId() {
@@ -94,11 +78,8 @@ public class Customers {
         }
 
 
-        //public static Customers getSelectedCustomer(){return selectedCustomer;}
-
-        public void setCustomerId(int customerId) {
-            this.customerId = customerId;
-        }
+        //Setters
+        public void setCustomerId(int customerId) {this.customerId = customerId;}
 
         public void setCustomerName(String customerName) {
             this.customerName = customerName;
@@ -116,9 +97,7 @@ public class Customers {
             this.customerPhone = customerPhone;
         }
 
-        public void setCustomerCreatedDate(String customerCreatedDate) {
-            this.customerCreatedDate = customerCreatedDate;
-        }
+        public void setCustomerCreatedDate(String customerCreatedDate) {this.customerCreatedDate = customerCreatedDate;}
 
         public void setCustomerCreated(String customerCreated) {
             this.customerCreated = customerCreated;
@@ -136,81 +115,4 @@ public class Customers {
             this.customerDivision = customerDivision;
         }
 
-/*        public int getCustomerIdCol() {
-            return customerId;
-        }
-
-        public String getCustomerNameCol() {
-            return customerName;
-        }
-
-        public String getCustomerAddyCol() {
-            return customerAddy;
-        }
-
-        public String getCustomerZipCol() {
-            return customerZip;
-        }
-
-        public String getCustomerPhoneCol() {
-            return customerPhone;
-        }
-
-        public String getCustomerCreatedDateCol() {
-            return customerCreatedDate;
-        }
-
-        public String getCustomerCreatedCol() {
-            return customerCreated;
-        }
-
-        public Timestamp getCustomerUpdatedOnCol() {
-            return customerUpdatedOn;
-        }
-
-        public String getCustomerUpdatedByCol() {
-            return customerUpdatedBy;
-        }
-
-        public int getCustomerDivisionCol() {
-            return customerDivision;
-        }
-
-        //Setters
-
-
-
-        public void setCustomerIdCol(int customerId) {
-            this.customerId = customerId;
-        }
-
-        public void setCustomerNameCol(String customerNameCol) {
-            this.customerName = customerNameCol;
-        }
-
-        public void setCustomerAddyCol(String customerAddyCol) {
-            this.customerAddy = customerAddyCol;
-        }
-
-        public void setCustomerZipCol(String customerZipCol) {
-            this.customerZip = customerZipCol;
-        }
-
-        public void setCustomerPhoneCol(String customerPhoneCol) {
-            this.customerPhone = customerPhoneCol;
-        }
-
-        public void setCustomerCreatedDateCol(String customerCreatedDateCol) {this.customerCreatedDate = customerCreatedDateCol;}
-
-        public void setCustomerCreatedCol(String customerCreatedCol) {
-            this.customerCreated = customerCreatedCol;
-        }
-
-        public void setCustomerUpdatedOnCol(Timestamp customerUpdatedOnCol) {this.customerUpdatedOn = customerUpdatedOnCol;}
-
-        public void setCustomerUpdatedByCol(String customerUpdatedByCol) {this.customerUpdatedBy = customerUpdatedByCol;}
-
-        public void setCustomerDivisionCol(int customerDivisionCol) {
-            this.customerDivision = customerDivisionCol;
-        }*/
     }

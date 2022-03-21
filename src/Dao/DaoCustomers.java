@@ -2,7 +2,7 @@ package Dao;
 
 import Model.Customers;
 import Model.loginUser;
-import Controller.ModCustomerController;
+import Controller.CustomerController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;

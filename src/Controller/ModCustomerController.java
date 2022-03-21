@@ -1,3 +1,4 @@
+/*
 package Controller;
 
 import Dao.DaoAppointments;
@@ -53,7 +54,8 @@ public class ModCustomerController implements Initializable {
     Customers selectedCustomer;
 
 
-    //Exits back to the main screen
+*/
+/*    //Exits back to the main screen
     public void onActionMainScreen(ActionEvent event) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -67,7 +69,8 @@ public class ModCustomerController implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
-    }
+    }*//*
+
 
 
     public ObservableList<String> getAllCountryNames(){
@@ -217,3 +220,4 @@ public class ModCustomerController implements Initializable {
         customerZip.setText(String.valueOf(modifyCustomer.getCustomerZip()));
     }
 }
+*/

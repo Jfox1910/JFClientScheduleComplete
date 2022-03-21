@@ -5,6 +5,7 @@ import Model.Appointments;
 import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
+import Controller.MainScreenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,12 +21,25 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomerController implements Initializable {
-    @FXML
-    private TextField addCustomerID;
+
+    @FXML public TableView<Customers> customersTableView;
+    @FXML public TableColumn<Customers, Integer> customerIdCol;
+    @FXML public TableColumn<Customers, String> customerNameCol;
+    @FXML public TableColumn<Customers, String> customerAddyCol;
+    @FXML public TableColumn<Customers, String> customerZipCol;
+    @FXML public TableColumn<Countries, String> customerPhoneCol;
+    @FXML public TableColumn<Customers, String> customerCreatedDateCol;
+    @FXML public TableColumn<Customers,String> customerCreatedCol;
+    @FXML public TableColumn<Customers, Timestamp> customerUpdatedOnCol;
+    @FXML public TableColumn<Customers, String> customerUpdatedByCol;
+    @FXML public TableColumn<Customers, Integer> customerDivisionCol;
+
+    @FXML private TextField addCustomerID;
     @FXML private TextField addCustomerName;
     @FXML private TextField addCustomerAddy;
     @FXML private TextField addCustomerPostal;
@@ -34,8 +48,24 @@ public class CustomerController implements Initializable {
     @FXML private ComboBox addCustomerCountry;
     @FXML private ComboBox addCustomerDivision;
 
-    int retrieveDivisionID = 0;
 
+    @FXML public TextField CustomerName;
+    @FXML public TextField CustomerAddress;
+    @FXML public TextField CustomerZip;
+    @FXML public TextField CustomerPhone;
+    @FXML public ComboBox customerCountry;
+    @FXML public ComboBox customerDivision;
+
+    public static Customers customer;
+
+    Customers modifyCustomers;
+    int retrieveDivisionID = 0;
+    int CustomerId;
+    private boolean modifyCustomer = false;
+
+
+    private ObservableList<Customers> customers;
+    private ObservableList<Appointments> appointments;
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
@@ -46,6 +76,121 @@ public class CustomerController implements Initializable {
     private Scene scene;
     private Parent root;
 
+
+    public void onActionSaveCustomer(ActionEvent event) throws IOException {
+
+        //Retrieves the customer's info from the fields.
+        String customerName = CustomerName.getText();
+        String customerAddress = CustomerAddress.getText();
+        String customerZip = CustomerZip.getText();
+        String customerPhone = CustomerPhone.getText();
+        int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
+
+        //Check that a name, address and phone has been entered and gives an alert if it isn't there.
+        if (customerName.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Attention!");
+            alert.setContentText("A name must be entered for the customer.");
+            alert.showAndWait();
+            return;
+        }if (customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Attention!");
+            alert.setContentText("Complete contact information must be entered for the customer.");
+            alert.showAndWait();
+            return;
+        }else {
+            //popup confirmation confirming that a customer is about to be added.
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Adding a new customer.");
+            alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
+            alert.showAndWait();
+        }
+        DaoCustomers.newCustomer(customerName,customerAddress, customerZip, customerPhone, divisionId);
+        //popup alerting the user that a customer has been added to the db. Returns to the main screen when the OK button is clicked.
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Success!");
+        alert.setContentText(CustomerName.getText() + " has been added.");
+        Optional<ButtonType> result = alert.showAndWait();
+        //Reloads the customer table view with the updated information
+        if (result.get() == ButtonType.OK) {
+            customersTableView.setItems(DaoCustomers.getAllCustomers());
+        }
+    }
+
+    //Modifies an existing customer. Throws an error if a name isn't selected, otherwise modifies the customer.
+    public void onActionModifyCustomer(ActionEvent event) throws IOException {
+        if (customersTableView.getSelectionModel().getSelectedItem() != null){
+
+            modifyCustomer = true;
+            int divID = customerDivision.getSelectionModel().getSelectedIndex() +1;
+            modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
+
+            CustomerId = modifyCustomers.getCustomerId();
+            CustomerName.setText(String.valueOf(modifyCustomers.getCustomerName()));
+            CustomerAddress.setText(String.valueOf(modifyCustomers.getCustomerAddy()));
+            CustomerPhone.setText(String.valueOf(modifyCustomers.getCustomerPhone()));
+            CustomerZip.setText(String.valueOf(modifyCustomers.getCustomerZip()));
+            customerCountry.setValue(modifyCustomers.getCustomerDivision());
+            customerDivision.setValue(modifyCustomers.getCustomerDivision());
+
+            //DaoCustomers.modifyCustomer();
+            System.out.println("Testing Modify Customer");
+        }
+        else {
+            //Hold and alert the user that a customer name must be selected.
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
+            alert.showAndWait();
+        }
+    }
+
+
+    //Selects the customer and deletes them and any appointments they have scheduled.
+    public void onActionDeleteCustomer(ActionEvent event) throws IOException{
+
+        if (customersTableView.getSelectionModel().getSelectedItem() != null){
+            Customers selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+
+            for (int i = 0; i < appointments.size(); i++) {
+                if (appointments.get(i).getApptIDCol() == selectedCustomer.getCustomerId()) {
+                    DaoAppointments.deleteAppointment(appointments.get(i).getApptIDCol());
+                }
+            }
+
+            //Hold and alert the user before deleting the selected customer.
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("The selected customer will be deleted from the database.");
+            alert.setContentText("Are you sure you wish to continue?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                //Reloads the customer table view with the updated information
+                DaoCustomers.deleteCustomer(selectedCustomer.getCustomerId());
+                customersTableView.setItems(DaoCustomers.getAllCustomers());
+            }
+
+        }
+        System.out.println("DELETE customer from database");
+
+    }
+
+    public int handleDivisionComboBox(ActionEvent actionEvent){
+        if(customerDivision.getSelectionModel().getSelectedItem() != null) {
+            Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
+
+            String division = selectedDivision.toString();
+            for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
+                if (division.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
+                    retrieveDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
+                    break;
+                }
+            }
+        }
+        return retrieveDivisionID;
+    }
 
 
 
@@ -214,6 +359,16 @@ public class CustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        //Customers
+        customers = DaoCustomers.getAllCustomers();
+        customersTableView.setItems(customers);
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("customerAddy"));
+        customerZipCol.setCellValueFactory(new PropertyValueFactory<>("customerZip"));
+        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
+        customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivision"));
 
     }
 }
