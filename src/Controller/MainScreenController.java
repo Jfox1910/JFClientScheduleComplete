@@ -89,6 +89,7 @@ public class MainScreenController implements Initializable {
     /*
 
     TODO LIST
+    FIX MODIFY CUSTOMER
     Division to string on modify box
     cleanup functionality and move into customerController class?
     Add appointments
