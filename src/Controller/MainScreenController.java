@@ -93,7 +93,6 @@ public class MainScreenController implements Initializable {
     Division to string on modify box
     cleanup functionality and move into customerController class?
     Add appointments
-    Add alerts to everything Modify, Add, Delete, Cancel etc.
      */
 
     //----ALL APPOINTMENT TAB METHODS----
@@ -141,6 +140,7 @@ public class MainScreenController implements Initializable {
     public void onActionSaveCustomer
     (ActionEvent event) throws IOException {
 
+        //CustomerController.saveCustomer();
 
         //Retrieves the customer's info from the fields.
         String customerName = CustomerName.getText();
@@ -182,13 +182,6 @@ public class MainScreenController implements Initializable {
             if (result.get() == ButtonType.OK) {
                 System.out.println("Testing modify customer");
                 DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, loggedInUser, divisionId, CustomerId);
-            }
-        }
-        //popup alerting the user that a customer has been added to the db. Returns to the main screen when the OK button is clicked.
-       else {
-            if (newCustomer = false) {
-                System.out.println("TESTING MODIFY CUSTOMER");
-                // DaoCustomers.modifyCustomer();
             }
         }
     }
@@ -365,6 +358,7 @@ public class MainScreenController implements Initializable {
 
         //Initializes the customer/country combobox
         customerCountry.getItems().addAll(getAllCountryNames());
+
 
         //Appointments
         appointments = DaoAppointments.getAllAppointments();

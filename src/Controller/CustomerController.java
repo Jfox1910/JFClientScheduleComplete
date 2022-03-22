@@ -77,7 +77,7 @@ public class CustomerController implements Initializable {
     private Parent root;
 
 
-    public void onActionSaveCustomer(ActionEvent event) throws IOException {
+    public void saveCustomer(ActionEvent event) throws IOException {
 
         //Retrieves the customer's info from the fields.
         String customerName = CustomerName.getText();
