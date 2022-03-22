@@ -86,17 +86,18 @@ public class DaoCustomers {
     }
 
     //Modifies a selected customer and updates the database
-    public static void modifyCustomer(String modifyCustomerName, String modifyCustomerAddress, String modifyCustomerZip, String modifyCustomerPhone, String customerUpdatedBy, Integer modifyCustomerDivision){
+    public static void modifyCustomer(String customerName, String customerAddress, String customerZip, String customerPhone, String customerUpdatedBy, int customerDivision, int customerId){
         try {
-            String sqlModifyCustomer = "UPDATE customers SET customerName=?, customerAddress=?, customerZipCode=?, customerPhone=?, customerUpdatedBy=?, customerDivision=?";
+            String sqlModifyCustomer = "UPDATE customers  WHERE Customer_ID = ? SET customerName=?, customerAddress=?, customerZipCode=?, customerPhone=?, customerUpdatedBy=?, customerDivision=?";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
 
-            psmodifyCustomer.setString(1,modifyCustomerName);
-            psmodifyCustomer.setString(2,modifyCustomerAddress);
-            psmodifyCustomer.setString(3,modifyCustomerZip);
-            psmodifyCustomer.setString(4,modifyCustomerPhone);
+            psmodifyCustomer.setString(1,customerName);
+            psmodifyCustomer.setString(2,customerAddress);
+            psmodifyCustomer.setString(3,customerZip);
+            psmodifyCustomer.setString(4,customerPhone);
             psmodifyCustomer.setString(5,customerUpdatedBy = "TEST");
-            psmodifyCustomer.setInt(6,modifyCustomerDivision);
+            psmodifyCustomer.setInt(6,customerDivision);
+            psmodifyCustomer.setInt(7,customerId);
 
             psmodifyCustomer.execute();
 
