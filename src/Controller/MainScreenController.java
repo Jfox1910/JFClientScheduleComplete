@@ -60,7 +60,7 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Customers, String> customerUpdatedByCol;
     @FXML private TableColumn<Customers, Integer> customerDivisionCol;
 
-    @FXML private TextField CustomerID;
+    @FXML private TextField addCustomerID;
     @FXML private TextField CustomerName;
     @FXML private TextField CustomerAddress;
     @FXML private TextField CustomerZip;
@@ -89,7 +89,6 @@ public class MainScreenController implements Initializable {
     /*
 
     TODO LIST
-    get and display customer ID
     Division to string on modify box
     cleanup functionality and move into customerController class?
     Add appointments
@@ -194,7 +193,9 @@ public class MainScreenController implements Initializable {
             int divID = customerDivision.getSelectionModel().getSelectedIndex() +1;
             modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
 
+
             CustomerId = modifyCustomers.getCustomerId();
+            addCustomerID.setText(String.valueOf(modifyCustomers.getCustomerId()));
             CustomerName.setText(String.valueOf(modifyCustomers.getCustomerName()));
             CustomerAddress.setText(String.valueOf(modifyCustomers.getCustomerAddy()));
             CustomerPhone.setText(String.valueOf(modifyCustomers.getCustomerPhone()));
@@ -241,6 +242,7 @@ public class MainScreenController implements Initializable {
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("SUCCESS!");
                     alert2.setContentText("The customer has been deleted from the system.");
+                    alert2.showAndWait();
                 }
 
         }
