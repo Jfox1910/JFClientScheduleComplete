@@ -3,7 +3,7 @@ package Dao;
 import Controller.LoginScreenController;
 import Model.Customers;
 import Model.loginUser;
-import Controller.CustomerController;
+//import Controller.CustomerController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;

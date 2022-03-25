@@ -5,7 +5,7 @@ import Model.Appointments;
 import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
-import Controller.CustomerController;
+//import Controller.CustomerController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,7 +71,6 @@ public class MainScreenController implements Initializable {
     int CustomerId;
     int userId;
     String userName;
-    boolean newCustomer = true;
 
     /*public void setUserName(int userID, String userName){
         this.userId = userID;
@@ -158,46 +157,36 @@ public class MainScreenController implements Initializable {
             alert.setContentText("All customer fields must be filled before saving.");
             alert.showAndWait();
             return;
-        }else
-        if (newCustomer) {
-            //popup confirmation confirming that a customer is about to be added.
+        }else {
+        {//popup confirmation confirming that a customer is about to be added.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
             alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
             Optional<ButtonType> result = alert.showAndWait();
+
             if (result.get() == ButtonType.OK) {
+
                 DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
                 //Confirmation that the customer has been added.
                 Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                 alert2.setTitle("Success!");
                 alert2.setContentText(CustomerName.getText() + " has been added.");
                 Optional<ButtonType> result2 = alert2.showAndWait();
+
                 //Reloads the customer table view with the updated information
                 if (result2.get() == ButtonType.OK) {
                     customersTableView.setItems(DaoCustomers.getAllCustomers());
                 }
             }
-        }if (!newCustomer){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Updating an existing customer.");
-            alert.setContentText("By clicking OK, you will be updating" + CustomerName.getText() + "'s . Are you sure you wish to continue?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                System.out.println("Testing modify customer");
-                DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
-                newCustomer = true;
-            }
         }
-    }
+    }}
 
-
-    //Modifies an existing customer. Throws an error if a name isn't selected, otherwise modifies the customer.
-    public void onActionModifyCustomer(ActionEvent event) throws IOException {
+    public void onActionSelectCustomer(ActionEvent event) throws IOException{
         if (customersTableView.getSelectionModel().getSelectedItem() != null){
 
-            newCustomer = false;
+            System.out.println("TESTING MODIFY");
             int divID = customerDivision.getSelectionModel().getSelectedIndex() +1;
-            modifyCustomers = (Customers) customersTableView.getSelectionModel().getSelectedItem();
+            modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
 
             CustomerId = modifyCustomers.getCustomerId();
             addCustomerID.setText(String.valueOf(CustomerId));
@@ -215,6 +204,26 @@ public class MainScreenController implements Initializable {
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
             alert.showAndWait();
+        }
+
+    }
+
+    //Modifies an existing customer. Throws an error if a name isn't selected, otherwise modifies the customer.
+    public void onActionModifyCustomer(ActionEvent event) throws IOException {
+
+        String customerName = CustomerName.getText();
+        String customerAddress = CustomerAddress.getText();
+        String customerZip = CustomerZip.getText();
+        String customerPhone = CustomerPhone.getText();
+        int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Updating an existing customer.");
+        alert.setContentText("By clicking OK, you will be updating" + CustomerName.getText() + "'s . Are you sure you wish to continue?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            System.out.println("Testing modify customer");
+            DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
         }
     }
 
@@ -249,7 +258,6 @@ public class MainScreenController implements Initializable {
                     alert2.setContentText("The customer has been deleted from the system.");
                     alert2.showAndWait();
                 }
-
         }
     }
 
@@ -388,7 +396,6 @@ public class MainScreenController implements Initializable {
         customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("customerAddy"));
         customerZipCol.setCellValueFactory(new PropertyValueFactory<>("customerZip"));
         customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
-
         customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivision"));
 
     }
