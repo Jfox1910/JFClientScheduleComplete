@@ -6,6 +6,7 @@ import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
 import Controller.CustomerController;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -68,12 +69,11 @@ public class MainScreenController implements Initializable {
     Customers modifyCustomers;
     int retrieveDivisionID = 0;
     int CustomerId;
-    String loggedInUser;
     int userId;
     String userName;
-    boolean newCustomer = false;
+    boolean newCustomer = true;
 
-    /*public void setLoginUser(int userID, String userName){
+    /*public void setUserName(int userID, String userName){
         this.userId = userID;
         this.userName = userName;
     }*/
@@ -159,7 +159,7 @@ public class MainScreenController implements Initializable {
             alert.showAndWait();
             return;
         }else
-        if (newCustomer == true) {
+        if (newCustomer) {
             //popup confirmation confirming that a customer is about to be added.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
@@ -177,15 +177,15 @@ public class MainScreenController implements Initializable {
                     customersTableView.setItems(DaoCustomers.getAllCustomers());
                 }
             }
-        }else if (newCustomer == false){
+        }if (!newCustomer){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Updating an existing customer.");
             alert.setContentText("By clicking OK, you will be updating" + CustomerName.getText() + "'s . Are you sure you wish to continue?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 System.out.println("Testing modify customer");
-                DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, loggedInUser, divisionId/*, CustomerId*/);
-                //newCustomer = true;
+                DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
+                newCustomer = true;
             }
         }
     }
@@ -262,7 +262,7 @@ public class MainScreenController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            //CustomerId.setText("");
+            addCustomerID.clear();
             CustomerName.clear();
             CustomerAddress.clear();
             CustomerZip.clear();
@@ -388,6 +388,7 @@ public class MainScreenController implements Initializable {
         customerAddyCol.setCellValueFactory(new PropertyValueFactory<>("customerAddy"));
         customerZipCol.setCellValueFactory(new PropertyValueFactory<>("customerZip"));
         customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
+
         customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivision"));
 
     }
