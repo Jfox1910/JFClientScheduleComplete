@@ -1,11 +1,13 @@
 package Dao;
 
+import Controller.LoginScreenController;
 import Model.Customers;
 import Model.loginUser;
 import Controller.CustomerController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
+import utils.Utils;
 
 import java.sql.*;
 
@@ -44,7 +46,7 @@ public class DaoCustomers {
     }
 
     //Adds a new customer to the database.
-    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone,int customerDivision){
+    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String loginUser, int customerDivision){
 
         try {
             //Selects the highest existing customer ID then adds 1 to it to increment sequentially.
@@ -69,13 +71,9 @@ public class DaoCustomers {
             psnewCustomer.setString(4,customerZipCode);
             psnewCustomer.setString(5,customerPhone);
             psnewCustomer.setString(6, null);
-            psnewCustomer.setString(7, "null");
-            //psnewCustomer.setString(8, null);
+            psnewCustomer.setString(7, null);
             psnewCustomer.setInt(8, customerDivision);
-            //psnewCustomer.setString(7,JDBC.getLoginUser());
-           // psnewCustomer.setString(8, null);
 
-            //customers.setCustomerCreatedCol(JDBC.getLoginUser());
             psnewCustomer.executeUpdate();
             psnewCustomer.close();
             getAllCustomers();
@@ -86,18 +84,18 @@ public class DaoCustomers {
     }
 
     //Modifies a selected customer and updates the database
-    public static void modifyCustomer(String customerName, String customerAddress, String customerZip, String customerPhone, String customerUpdatedBy, int customerDivision, int customerId){
+    public static void modifyCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerUpdatedBy, int customerDivision/*, int customerId*/){
         try {
-            String sqlModifyCustomer = "UPDATE customers  WHERE Customer_ID = ? SET customerName=?, customerAddress=?, customerZipCode=?, customerPhone=?, customerUpdatedBy=?, customerDivision=?";
+            String sqlModifyCustomer = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Last_Updated_By=? WHERE Customer_ID = ? ";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
 
             psmodifyCustomer.setString(1,customerName);
-            psmodifyCustomer.setString(2,customerAddress);
-            psmodifyCustomer.setString(3,customerZip);
+            psmodifyCustomer.setString(2,customerAddy);
+            psmodifyCustomer.setString(3,customerZipCode);
             psmodifyCustomer.setString(4,customerPhone);
-            psmodifyCustomer.setString(5,customerUpdatedBy = "TEST");
+            psmodifyCustomer.setString(5,customerUpdatedBy = null);
             psmodifyCustomer.setInt(6,customerDivision);
-            psmodifyCustomer.setInt(7,customerId);
+            //psmodifyCustomer.setInt(7,customerId);
 
             psmodifyCustomer.execute();
 

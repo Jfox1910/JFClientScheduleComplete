@@ -16,7 +16,7 @@ public class Customers {
     private String customerUpdatedBy;
     private int customerDivision;
 
-    //private static Customers selectedCustomer;
+    public Customers(String customerName){this.customerName = customerName;}
     //Constructor
 
         public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, String customerCreatedDate, String customerCreated, Timestamp customerUpdatedOn, String customerUpdatedBy, int customerDivision) {

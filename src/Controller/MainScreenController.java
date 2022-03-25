@@ -1,9 +1,6 @@
 package Controller;
 
-import Dao.DaoAppointments;
-import Dao.DaoCountries;
-import Dao.DaoCustomers;
-import Dao.DaoDivisions;
+import Dao.*;
 import Model.Appointments;
 import Model.Countries;
 import Model.Customers;
@@ -72,7 +69,14 @@ public class MainScreenController implements Initializable {
     int retrieveDivisionID = 0;
     int CustomerId;
     String loggedInUser;
-    private boolean newCustomer = true;
+    int userId;
+    String userName;
+    boolean newCustomer = false;
+
+    /*public void setLoginUser(int userID, String userName){
+        this.userId = userID;
+        this.userName = userName;
+    }*/
 
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
@@ -140,8 +144,6 @@ public class MainScreenController implements Initializable {
     public void onActionSaveCustomer
     (ActionEvent event) throws IOException {
 
-        //CustomerController.saveCustomer();
-
         //Retrieves the customer's info from the fields.
         String customerName = CustomerName.getText();
         String customerAddress = CustomerAddress.getText();
@@ -150,20 +152,21 @@ public class MainScreenController implements Initializable {
         int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
 
         //Check that a name, address and phone has been entered and gives an alert if it isn't there.
-        if (customerName.isEmpty() ||customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
+        if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
             alert.setContentText("All customer fields must be filled before saving.");
             alert.showAndWait();
             return;
-        }if (newCustomer = true) {
+        }else
+        if (newCustomer == true) {
             //popup confirmation confirming that a customer is about to be added.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
             alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, divisionId);
+                DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
                 //Confirmation that the customer has been added.
                 Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                 alert2.setTitle("Success!");
@@ -174,17 +177,19 @@ public class MainScreenController implements Initializable {
                     customersTableView.setItems(DaoCustomers.getAllCustomers());
                 }
             }
-        }else if (newCustomer = false){
+        }else if (newCustomer == false){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Adding a new customer.");
+            alert.setTitle("Updating an existing customer.");
             alert.setContentText("By clicking OK, you will be updating" + CustomerName.getText() + "'s . Are you sure you wish to continue?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 System.out.println("Testing modify customer");
-                DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, loggedInUser, divisionId, CustomerId);
+                DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, loggedInUser, divisionId/*, CustomerId*/);
+                //newCustomer = true;
             }
         }
     }
+
 
     //Modifies an existing customer. Throws an error if a name isn't selected, otherwise modifies the customer.
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
@@ -192,11 +197,10 @@ public class MainScreenController implements Initializable {
 
             newCustomer = false;
             int divID = customerDivision.getSelectionModel().getSelectedIndex() +1;
-            modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
-
+            modifyCustomers = (Customers) customersTableView.getSelectionModel().getSelectedItem();
 
             CustomerId = modifyCustomers.getCustomerId();
-            addCustomerID.setText(String.valueOf(modifyCustomers.getCustomerId()));
+            addCustomerID.setText(String.valueOf(CustomerId));
             CustomerName.setText(String.valueOf(modifyCustomers.getCustomerName()));
             CustomerAddress.setText(String.valueOf(modifyCustomers.getCustomerAddy()));
             CustomerPhone.setText(String.valueOf(modifyCustomers.getCustomerPhone()));
@@ -274,7 +278,6 @@ public class MainScreenController implements Initializable {
 
     //Handles populating the country and division comboboxes
     public void handleCountryComboBox(ActionEvent actionEvent){
-
         customerCountry.getItems().addAll(getAllCountryNames());
 
         if(customerCountry.getSelectionModel().getSelectedItem() != null) {

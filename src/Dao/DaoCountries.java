@@ -24,6 +24,7 @@ public class DaoCountries {
                 Countries country = new Countries(countryId,countryName);
                 countries.add(country);
             }
+            ps.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

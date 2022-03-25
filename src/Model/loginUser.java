@@ -9,10 +9,11 @@ public class loginUser {
     private String lastUpdatedBy;
     private String lastUpdatedOn;
 
+
     //Constructor
-    public loginUser(int id, String name, String password){
-        this.userId = id;
-        this.userName = name;
+    public loginUser(int userId, String userName, String password){
+        this.userId = userId;
+        this.userName = userName;
         this.userPassword = password;
         this.createdBy = userName;
     }

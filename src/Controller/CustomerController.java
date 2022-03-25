@@ -106,7 +106,7 @@ public class CustomerController implements Initializable {
             alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
             alert.showAndWait();
         }
-        DaoCustomers.newCustomer(customerName,customerAddress, customerZip, customerPhone, divisionId);
+        //DaoCustomers.newCustomer(customerName,customerAddress, customerZip, customerPhone, divisionId);
         //popup alerting the user that a customer has been added to the db. Returns to the main screen when the OK button is clicked.
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Success!");
