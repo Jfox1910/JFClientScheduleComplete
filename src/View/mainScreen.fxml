@@ -143,7 +143,7 @@
                                                             <Insets left="25.0" right="10.0" />
                                                          </HBox.margin>
                                                       </Label>
-                                                      <TextField fx:id="addCustomerID" alignment="CENTER" editable="false" prefHeight="30.0" prefWidth="100.0" promptText="Auto Generated">
+                                                      <TextField fx:id="CustomerID" alignment="CENTER" editable="false" prefHeight="30.0" prefWidth="100.0" promptText="Auto Generated">
                                                          <HBox.margin>
                                                             <Insets />
                                                          </HBox.margin>

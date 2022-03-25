@@ -84,7 +84,7 @@ public class DaoCustomers {
     }
 
     //Modifies a selected customer and updates the database
-    public static void modifyCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerUpdatedBy, int customerDivision/*, int customerId*/){
+    public static void modifyCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerUpdatedBy, int customerDivision, int customerId){
         try {
             String sqlModifyCustomer = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Last_Updated_By=? WHERE Customer_ID = ? ";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
@@ -95,7 +95,7 @@ public class DaoCustomers {
             psmodifyCustomer.setString(4,customerPhone);
             psmodifyCustomer.setString(5,customerUpdatedBy = null);
             psmodifyCustomer.setInt(6,customerDivision);
-            //psmodifyCustomer.setInt(7,customerId);
+            psmodifyCustomer.setInt(7,customerId);
 
             psmodifyCustomer.execute();
 

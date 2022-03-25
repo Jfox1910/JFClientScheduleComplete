@@ -58,7 +58,7 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Customers, String> customerUpdatedByCol;
     @FXML private TableColumn<Customers, Integer> customerDivisionCol;
 
-    @FXML private TextField addCustomerID;
+    @FXML private TextField CustomerID;
     @FXML private TextField CustomerName;
     @FXML private TextField CustomerAddress;
     @FXML private TextField CustomerZip;
@@ -67,6 +67,7 @@ public class MainScreenController implements Initializable {
     @FXML private ComboBox customerDivision;
 
     Customers modifyCustomers;
+    int modifyCustomerId;
     int retrieveDivisionID = 0;
     int CustomerId;
     int userId;
@@ -189,7 +190,7 @@ public class MainScreenController implements Initializable {
             modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
 
             CustomerId = modifyCustomers.getCustomerId();
-            addCustomerID.setText(String.valueOf(CustomerId));
+            CustomerID.setText(String.valueOf(CustomerId));
             CustomerName.setText(String.valueOf(modifyCustomers.getCustomerName()));
             CustomerAddress.setText(String.valueOf(modifyCustomers.getCustomerAddy()));
             CustomerPhone.setText(String.valueOf(modifyCustomers.getCustomerPhone()));
@@ -211,6 +212,7 @@ public class MainScreenController implements Initializable {
     //Modifies an existing customer. Throws an error if a name isn't selected, otherwise modifies the customer.
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
 
+       // CustomerId =  CustomerID.getText();
         String customerName = CustomerName.getText();
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
@@ -223,7 +225,7 @@ public class MainScreenController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             System.out.println("Testing modify customer");
-            DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
+            DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId, modifyCustomerId);
         }
     }
 
@@ -270,7 +272,7 @@ public class MainScreenController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            addCustomerID.clear();
+            CustomerID.clear();
             CustomerName.clear();
             CustomerAddress.clear();
             CustomerZip.clear();
