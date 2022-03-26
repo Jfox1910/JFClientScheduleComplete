@@ -63,8 +63,7 @@ public class CustomerController implements Initializable {
     int retrieveDivisionID = 0;
     int CustomerId;
     private boolean modifyCustomer = false;
-    String userName;
-    boolean newCustomer = true;
+
 
     private ObservableList<Customers> customers;
     private ObservableList<Appointments> appointments;
@@ -79,8 +78,7 @@ public class CustomerController implements Initializable {
     private Parent root;
 
 
-    @FXML public void onActionSaveCustomer
-            (ActionEvent event) throws IOException {
+    public void saveCustomer(ActionEvent event) throws IOException {
 
         //Retrieves the customer's info from the fields.
         String customerName = CustomerName.getText();
@@ -90,41 +88,62 @@ public class CustomerController implements Initializable {
         int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
 
         //Check that a name, address and phone has been entered and gives an alert if it isn't there.
-        if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
+        if (customerName.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
-            alert.setContentText("All customer fields must be filled before saving.");
+            alert.setContentText("A name must be entered for the customer.");
             alert.showAndWait();
             return;
-        }else
-        //if (newCustomer) {
-        {//popup confirmation confirming that a customer is about to be added.
+        }if (customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Attention!");
+            alert.setContentText("Complete contact information must be entered for the customer.");
+            alert.showAndWait();
+            return;
+        }else {
+            //popup confirmation confirming that a customer is about to be added.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
             alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
-                //Confirmation that the customer has been added.
-                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-                alert2.setTitle("Success!");
-                alert2.setContentText(CustomerName.getText() + " has been added.");
-                Optional<ButtonType> result2 = alert2.showAndWait();
-                //Reloads the customer table view with the updated information
-                if (result2.get() == ButtonType.OK) {
-                    customersTableView.setItems(DaoCustomers.getAllCustomers());
-                }
-            }
-        }if (!newCustomer){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Updating an existing customer.");
-            alert.setContentText("By clicking OK, you will be updating" + CustomerName.getText() + "'s . Are you sure you wish to continue?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                System.out.println("Testing modify customer");
-                DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
-                newCustomer = true;
-            }
+            alert.showAndWait();
+        }
+        DaoCustomers.newCustomer(customerName,customerAddress, customerZip, customerPhone, divisionId);
+        //popup alerting the user that a customer has been added to the db. Returns to the main screen when the OK button is clicked.
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Success!");
+        alert.setContentText(CustomerName.getText() + " has been added.");
+        Optional<ButtonType> result = alert.showAndWait();
+        //Reloads the customer table view with the updated information
+        if (result.get() == ButtonType.OK) {
+            customersTableView.setItems(DaoCustomers.getAllCustomers());
+        }
+    }
+
+    //Modifies an existing customer. Throws an error if a name isn't selected, otherwise modifies the customer.
+    public void onActionModifyCustomer(ActionEvent event) throws IOException {
+        if (customersTableView.getSelectionModel().getSelectedItem() != null){
+
+            modifyCustomer = true;
+            int divID = customerDivision.getSelectionModel().getSelectedIndex() +1;
+            modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
+
+            CustomerId = modifyCustomers.getCustomerId();
+            CustomerName.setText(String.valueOf(modifyCustomers.getCustomerName()));
+            CustomerAddress.setText(String.valueOf(modifyCustomers.getCustomerAddy()));
+            CustomerPhone.setText(String.valueOf(modifyCustomers.getCustomerPhone()));
+            CustomerZip.setText(String.valueOf(modifyCustomers.getCustomerZip()));
+            customerCountry.setValue(modifyCustomers.getCustomerDivision());
+            customerDivision.setValue(modifyCustomers.getCustomerDivision());
+
+            //DaoCustomers.modifyCustomer();
+            System.out.println("Testing Modify Customer");
+        }
+        else {
+            //Hold and alert the user that a customer name must be selected.
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
+            alert.showAndWait();
         }
     }
 

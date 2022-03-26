@@ -185,7 +185,6 @@ public class MainScreenController implements Initializable {
     public void onActionSelectCustomer(ActionEvent event) throws IOException{
         if (customersTableView.getSelectionModel().getSelectedItem() != null){
 
-            System.out.println("TESTING MODIFY");
             int divID = customerDivision.getSelectionModel().getSelectedIndex() +1;
             modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
 
@@ -212,23 +211,36 @@ public class MainScreenController implements Initializable {
     //Modifies an existing customer. Throws an error if a name isn't selected, otherwise modifies the customer.
     public void onActionModifyCustomer(ActionEvent event) throws IOException {
 
-       // CustomerId =  CustomerID.getText();
-        String customerName = CustomerName.getText();
-        String customerAddress = CustomerAddress.getText();
-        String customerZip = CustomerZip.getText();
-        String customerPhone = CustomerPhone.getText();
-        int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
+        if (customersTableView.getSelectionModel().getSelectedItem() != null) {
+            //modifyCustomerId =  CustomerID.getText();
+            String customerName = CustomerName.getText();
+            String customerAddress = CustomerAddress.getText();
+            String customerZip = CustomerZip.getText();
+            String customerPhone = CustomerPhone.getText();
+            int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Updating an existing customer.");
-        alert.setContentText("By clicking OK, you will be updating" + CustomerName.getText() + "'s . Are you sure you wish to continue?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            System.out.println("Testing modify customer");
-            DaoCustomers.modifyCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId, modifyCustomerId);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Updating an existing customer.");
+            alert.setContentText("By clicking OK, you will be updating " + CustomerName.getText() + "'s information. Are you sure you wish to continue?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                DaoCustomers.modifyCustomer(modifyCustomers.getCustomerId(), customerName, customerAddress, customerZip, customerPhone, divisionId);
+                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert2.setTitle("SUCCESS!");
+                alert2.setContentText("The customer has been updated.");
+                alert2.showAndWait();
+                customersTableView.setItems(DaoCustomers.getAllCustomers());
+                System.out.println("Testing modify customer");
+
+            }
+        }else {
+            //Hold and alert the user that a customer name must be selected.
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
+            alert.showAndWait();
         }
     }
-
 
     //Selects the customer and deletes them and any appointments they have scheduled.
     public void onActionDeleteCustomer(ActionEvent event) throws IOException{
@@ -260,7 +272,13 @@ public class MainScreenController implements Initializable {
                     alert2.setContentText("The customer has been deleted from the system.");
                     alert2.showAndWait();
                 }
-        }
+        }else {
+                //Hold and alert the user that a customer name must be selected.
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ATTENTION!");
+                alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
+                alert.showAndWait();
+            }
     }
 
     public void onActionCancel(ActionEvent actionEvent) {
@@ -316,6 +334,22 @@ public class MainScreenController implements Initializable {
         return allCountryNames;
     }
 
+    public int handleDivisionComboBox(ActionEvent actionEvent){
+        if(customerDivision.getSelectionModel().getSelectedItem() != null) {
+            Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
+
+            String division = selectedDivision.toString();
+            for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
+                if (division.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
+                    retrieveDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
+                    break;
+                }
+            }
+        }
+        return retrieveDivisionID;
+    }
+
+
     //US division selections
     public ObservableList<String> getUSDivisionNames(){
         ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
@@ -352,21 +386,6 @@ public class MainScreenController implements Initializable {
         return UKDivisionNames;
     }
 
-
-    public int handleDivisionComboBox(ActionEvent actionEvent){
-        if(customerDivision.getSelectionModel().getSelectedItem() != null) {
-            Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
-
-            String division = selectedDivision.toString();
-            for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
-                if (division.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
-                    retrieveDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
-                    break;
-                }
-            }
-        }
-        return retrieveDivisionID;
-    }
 
 
     @Override

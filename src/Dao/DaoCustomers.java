@@ -14,7 +14,6 @@ import java.sql.*;
 public class DaoCustomers {
 
     private static final Connection connection = JDBC.getConnection();
-   // private static final ObservableList<Customers> customers = FXCollections.observableArrayList();
 
     public static ObservableList<Customers> getAllCustomers(){
         ObservableList<Customers> customerList = FXCollections.observableArrayList();
@@ -84,18 +83,19 @@ public class DaoCustomers {
     }
 
     //Modifies a selected customer and updates the database
-    public static void modifyCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String customerUpdatedBy, int customerDivision, int customerId){
+    public static void modifyCustomer(int modifyCustomerId, String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
         try {
-            String sqlModifyCustomer = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Last_Updated_By=? WHERE Customer_ID = ? ";
+
+            String sqlModifyCustomer = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Last_Update=NOW(),Phone=?, Last_Updated_By=?, Division_ID=? WHERE Customer_ID=? ";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
 
             psmodifyCustomer.setString(1,customerName);
             psmodifyCustomer.setString(2,customerAddy);
             psmodifyCustomer.setString(3,customerZipCode);
             psmodifyCustomer.setString(4,customerPhone);
-            psmodifyCustomer.setString(5,customerUpdatedBy = null);
+            psmodifyCustomer.setString(5, null);
             psmodifyCustomer.setInt(6,customerDivision);
-            psmodifyCustomer.setInt(7,customerId);
+            psmodifyCustomer.setInt(7,modifyCustomerId);
 
             psmodifyCustomer.execute();
 
