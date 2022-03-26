@@ -91,10 +91,10 @@ public class MainScreenController implements Initializable {
 
 
     /*
-
     TODO LIST
     FIX MODIFY CUSTOMER
     Division to string on modify box
+    Add an alert controller
     cleanup functionality and move into customerController class?
     Add appointments
      */
@@ -281,6 +281,7 @@ public class MainScreenController implements Initializable {
             }
     }
 
+    //Cancels either modifying or adding a customer then resets the textfields.
     public void onActionCancel(ActionEvent actionEvent) {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -296,7 +297,7 @@ public class MainScreenController implements Initializable {
             CustomerZip.clear();
             CustomerPhone.clear();
             customerCountry.getItems().clear();
-            customerCountry.getItems().addAll(getAllCountryNames());
+            customerCountry.getItems().addAll(allCountryNames());
             customerDivision.getItems().clear();
             customersTableView.setItems(DaoCustomers.getAllCustomers());
         }
@@ -306,7 +307,6 @@ public class MainScreenController implements Initializable {
 
     //Handles populating the country and division comboboxes
     public void handleCountryComboBox(ActionEvent actionEvent){
-        customerCountry.getItems().addAll(getAllCountryNames());
 
         if(customerCountry.getSelectionModel().getSelectedItem() != null) {
             Object selectedCountry = customerCountry.getSelectionModel().getSelectedItem();
@@ -322,8 +322,8 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    //Retrieves the country names from DaoCountries
-    public ObservableList<String> getAllCountryNames(){
+    //Retrieves the country names from the database
+    public ObservableList<String> allCountryNames(){
         ObservableList<String> allCountryNames = FXCollections.observableArrayList();
         for(int i = 0; i < allCountries.size(); i++)
         {
@@ -392,7 +392,7 @@ public class MainScreenController implements Initializable {
     public void initialize (URL location, ResourceBundle resources){
 
         //Initializes the customer/country combobox
-        customerCountry.getItems().addAll(getAllCountryNames());
+        customerCountry.getItems().addAll(allCountryNames());
 
 
         //Appointments
