@@ -92,6 +92,7 @@ public class MainScreenController implements Initializable {
 
      */
 
+//Handles the cancel button in the customer tab. Resets the comboboxes and textfields.
     public void clearItems(ActionEvent actionEvent) throws IOException{
         CustomerID.clear();
         CustomerName.clear();
@@ -99,8 +100,8 @@ public class MainScreenController implements Initializable {
         CustomerZip.clear();
         CustomerPhone.clear();
         customerCountry.getItems().clear();
-        customerCountry.getItems().addAll(allCountryNames());
         customerDivision.getItems().clear();
+        customerCountry.getItems().addAll(allCountryNames());
     }
 
 
@@ -162,32 +163,31 @@ public class MainScreenController implements Initializable {
             alert.setContentText("All customer fields must be filled before saving.");
             alert.showAndWait();
             return;
-        }else {
+        }else
             {
 
-//popup confirmation confirming that a customer is about to be added.
+//popup confirmation using a LAMBDA EXPRESSION confirming that a customer is about to be added.
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Adding a new customer.");
                 alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
+                /*Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {*/
+                alert.showAndWait().ifPresent((response -> {
+                    if (response == ButtonType.OK) {
                     DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
 
 //Confirmation that the customer has been added.
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("Success!");
                     alert2.setContentText(CustomerName.getText() + " has been added.");
-                    Optional<ButtonType> result2 = alert2.showAndWait();
 
 //Reloads the customer table view with the updated information
-                    if (result2.get() == ButtonType.OK) {
-                        customersTableView.setItems(DaoCustomers.getAllCustomers());
-                    }
-                }
-            }
-        }
-    }
+                    customersTableView.setItems(DaoCustomers.getAllCustomers());
 
+                }
+            }));
+    }
+    }
 
 //grabs the highlighted customer form the tableview and loads them into the textfields
     public void onActionSelectCustomer(ActionEvent event) throws IOException {
