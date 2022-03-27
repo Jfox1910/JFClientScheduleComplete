@@ -36,7 +36,8 @@ public class LoginScreenController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    //Login Method. Creates a list and populates it with all the users in the DB.
+
+//Login Method. Creates a list and populates it with all the users in the DB.
     public void onActionLogin(ActionEvent event) throws IOException {
         //Pulls the DBs user table from the DaoLogin class and creates an OL.
         ObservableList<loginUser> verifyUser = DaoLogin.getAllUsers();
@@ -44,7 +45,7 @@ public class LoginScreenController implements Initializable {
         String userName = usernameTextField.getText();
         String userPassword = usernamePasswordField.getText();
 
-        //Verifys that the login creds are valid, then either opens the main application or denies entry and throws an error screen.
+//Verifys that the login creds are valid, then either opens the main application or denies entry and throws an error screen.
         for (int i = 0; i < verifyUser.size(); i++) {
             if (userName.equals(verifyUser.get(i).getUserName()) && userPassword.equals(verifyUser.get(i).getUserPassword())) {
                 Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
@@ -53,21 +54,21 @@ public class LoginScreenController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
                 loginSuccess = true;
-
                 break;
             }else {
                 loginSuccess = false;
                 usernameTextField.clear();
                 usernamePasswordField.clear();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Username and/or password is incorrect. You must be really embarrassed right? Maybe a little nervous? Did we call the password police? It's possible. Do you hear a helicopter in the distance? Quick! Verify your information and try again!");
+                alert.setContentText("Username and/or password is incorrect. Verify your information and try again.");
                 alert.showAndWait();
                 return;
             }
         }
     }
 
-    //Exit Method
+
+//Exit Method with a confirmation
     @FXML
     void onActionExit(ActionEvent event) {
 
@@ -80,6 +81,7 @@ public class LoginScreenController implements Initializable {
             System.exit(0);
         }
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

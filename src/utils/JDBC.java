@@ -24,7 +24,6 @@ public abstract class JDBC {
         }
         catch(Exception e)
         {
-            //System.out.println("Error:" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -40,8 +39,6 @@ public abstract class JDBC {
         }
         catch(Exception e)
         {
-            //System.out.println("Error:" + e.getMessage());
-            //e.printStackTrace();
         }
     }
 

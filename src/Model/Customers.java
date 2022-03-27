@@ -2,7 +2,7 @@ package Model;
 
 import java.sql.Timestamp;
 
-    //Customer Class
+//Customer Class
 public class Customers {
 
     private int customerId;
@@ -16,9 +16,8 @@ public class Customers {
     private String customerUpdatedBy;
     private int customerDivision;
 
-    public Customers(String customerName){this.customerName = customerName;}
-    //Constructor
 
+//Constructor
         public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, String customerCreatedDate, String customerCreated, Timestamp customerUpdatedOn, String customerUpdatedBy, int customerDivision) {
             this.customerId = customerId;
             this.customerName = customerName;
@@ -33,10 +32,7 @@ public class Customers {
         }
 
 
-
-
-    //Getters
-
+//Getters
         public int getCustomerId() {
             return customerId;
         }
@@ -78,7 +74,7 @@ public class Customers {
         }
 
 
-        //Setters
+ //Setters
         public void setCustomerId(int customerId) {this.customerId = customerId;}
 
         public void setCustomerName(String customerName) {

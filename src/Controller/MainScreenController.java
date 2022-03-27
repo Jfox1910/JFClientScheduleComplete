@@ -5,7 +5,6 @@ import Model.Appointments;
 import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
-//import Controller.CustomerController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,21 +66,14 @@ public class MainScreenController implements Initializable {
     @FXML private ComboBox customerDivision;
 
     Customers modifyCustomers;
-    int modifyCustomerId;
     int retrieveDivisionID = 0;
     int CustomerId;
-    int userId;
     String userName;
-
-    /*public void setUserName(int userID, String userName){
-        this.userId = userID;
-        this.userName = userName;
-    }*/
 
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
-    private ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
+    public ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
     public ObservableList<Appointments> allAppointments = DaoAppointments.getAllAppointments();
 
     private ObservableList<Customers> customers;
@@ -92,16 +84,30 @@ public class MainScreenController implements Initializable {
 
     /*
     TODO LIST
-    FIX MODIFY CUSTOMER
-    Division to string on modify box
+    Must haves----------
+    ADD APPOINTMENTS
+    ADD REPORTS
+
+    Nice to haves-----------
     Add an alert controller
     cleanup functionality and move into customerController class?
-    Add appointments
+
      */
 
-    //----ALL APPOINTMENT TAB METHODS----
+    public void clearItems(ActionEvent actionEvent) throws IOException{
+        CustomerID.clear();
+        CustomerName.clear();
+        CustomerAddress.clear();
+        CustomerZip.clear();
+        CustomerPhone.clear();
+        customerCountry.getItems().clear();
+        customerCountry.getItems().addAll(allCountryNames());
+        customerDivision.getItems().clear();
+    }
 
-    //Add Appointments Method
+
+    //----APPOINTMENT TAB METHODS----
+//Add Appointments Method
     public void onActionAddAppt(ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("addApptScreen.fxml"));
@@ -111,7 +117,7 @@ public class MainScreenController implements Initializable {
         stage.show();
     }
 
-    //Modify Appointments Method
+//Modify Appointments Method
     public void onActionModAppt(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("modApptScreen.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -120,7 +126,7 @@ public class MainScreenController implements Initializable {
         stage.show();
     }
 
-    //Cancel an appointment method
+//Cancel an appointment method
     public void onActionCancelAppt(ActionEvent event) throws IOException {
 
         //NEEDS TO BE IMPLEMENTED
@@ -138,20 +144,20 @@ public class MainScreenController implements Initializable {
     }
 
 
-    //----ALL CUSTOMER TAB METHODS----
+    //----CUSTOMER TAB METHODS----
 
-    //Add a customer method (Contained within the customer tab)
+//Add a customer method (Contained within the customer tab)
     public void onActionSaveCustomer
     (ActionEvent event) throws IOException {
 
-        //Retrieves the customer's info from the fields.
+//Retrieves the customer's info from the fields.
         String customerName = CustomerName.getText();
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
         int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
 
-        //Check that a name, address and phone has been entered and gives an alert if it isn't there.
+//Check that a name, address and phone has been entered and gives an alert if it isn't there.
         if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
@@ -159,66 +165,101 @@ public class MainScreenController implements Initializable {
             alert.showAndWait();
             return;
         }else {
-        {//popup confirmation confirming that a customer is about to be added.
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Adding a new customer.");
-            alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
-            Optional<ButtonType> result = alert.showAndWait();
+            {
 
-            if (result.get() == ButtonType.OK) {
+//popup confirmation confirming that a customer is about to be added.
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Adding a new customer.");
+                alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
 
-                DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, userName, divisionId);
-                //Confirmation that the customer has been added.
-                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-                alert2.setTitle("Success!");
-                alert2.setContentText(CustomerName.getText() + " has been added.");
-                Optional<ButtonType> result2 = alert2.showAndWait();
+//Confirmation that the customer has been added.
+                    Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert2.setTitle("Success!");
+                    alert2.setContentText(CustomerName.getText() + " has been added.");
+                    Optional<ButtonType> result2 = alert2.showAndWait();
 
-                //Reloads the customer table view with the updated information
-                if (result2.get() == ButtonType.OK) {
-                    customersTableView.setItems(DaoCustomers.getAllCustomers());
+//Reloads the customer table view with the updated information
+                    if (result2.get() == ButtonType.OK) {
+                        customersTableView.setItems(DaoCustomers.getAllCustomers());
+                    }
                 }
             }
         }
-    }}
+    }
 
-    public void onActionSelectCustomer(ActionEvent event) throws IOException{
-        if (customersTableView.getSelectionModel().getSelectedItem() != null){
 
-            int divID = customerDivision.getSelectionModel().getSelectedIndex() +1;
+//grabs the highlighted customer form the tableview and loads them into the textfields
+    public void onActionSelectCustomer(ActionEvent event) throws IOException {
+        if (customersTableView.getSelectionModel().getSelectedItem() != null) {
+            ObservableList<Divisions> selectedCustomerDiv = FXCollections.observableArrayList();
+
+            int divID = customerDivision.getSelectionModel().getSelectedIndex() + 1;
             modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
 
+            String getCountry = null;
+            int setCustomerDivision = modifyCustomers.getCustomerDivision();
+            String getDivision = null;
+
+            if (setCustomerDivision <= 54) {
+                selectedCustomerDiv = DaoDivisions.getUsStates();
+                for (Divisions divisions : selectedCustomerDiv) {
+                    if (divisions.getDivisionID() == setCustomerDivision) {
+                        getDivision = divisions.getDivisionName();
+                    }
+                }
+                getCountry = "U.S";
+            } else if (setCustomerDivision > 55 && setCustomerDivision < 99) {
+                getCountry = "Canada";
+                selectedCustomerDiv = DaoDivisions.getCanadianTerritories();
+                for (Divisions divisions : selectedCustomerDiv) {
+                    if (divisions.getDivisionID() == setCustomerDivision) {
+                        getDivision = divisions.getDivisionName();
+                    }
+                }
+            } else {
+                getCountry = "UK";
+                selectedCustomerDiv = DaoDivisions.getUKTerritories();
+                for (Divisions divisions : selectedCustomerDiv) {
+                    if (divisions.getDivisionID() == setCustomerDivision) {
+                        getDivision = divisions.getDivisionName();
+                    }
+
+                }
+            }
             CustomerId = modifyCustomers.getCustomerId();
             CustomerID.setText(String.valueOf(CustomerId));
             CustomerName.setText(String.valueOf(modifyCustomers.getCustomerName()));
             CustomerAddress.setText(String.valueOf(modifyCustomers.getCustomerAddy()));
             CustomerPhone.setText(String.valueOf(modifyCustomers.getCustomerPhone()));
             CustomerZip.setText(String.valueOf(modifyCustomers.getCustomerZip()));
-            customerCountry.setValue(modifyCustomers.getCustomerDivision());
-            customerDivision.setValue(modifyCustomers.getCustomerDivision());
+            customerDivision.setValue(getDivision);
+            customerCountry.setValue(getCountry);
 
-        }
-        else {
-            //Hold and alert the user that a customer name must be selected.
+        }else {
+
+//Hold and alert the user that a customer name must be selected.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
             alert.showAndWait();
         }
-
     }
 
-    //Modifies an existing customer. Throws an error if a name isn't selected, otherwise modifies the customer.
-    public void onActionModifyCustomer(ActionEvent event) throws IOException {
+
+//Modifies an existing customer. First gets the text that was preloaded into the textfields.
+    public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException {
 
         if (customersTableView.getSelectionModel().getSelectedItem() != null) {
-            //modifyCustomerId =  CustomerID.getText();
             String customerName = CustomerName.getText();
             String customerAddress = CustomerAddress.getText();
             String customerZip = CustomerZip.getText();
             String customerPhone = CustomerPhone.getText();
             int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
 
+//Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Updating an existing customer.");
             alert.setContentText("By clicking OK, you will be updating " + CustomerName.getText() + "'s information. Are you sure you wish to continue?");
@@ -229,12 +270,12 @@ public class MainScreenController implements Initializable {
                 alert2.setTitle("SUCCESS!");
                 alert2.setContentText("The customer has been updated.");
                 alert2.showAndWait();
+                clearItems(actionEvent);
                 customersTableView.setItems(DaoCustomers.getAllCustomers());
-                System.out.println("Testing modify customer");
-
             }
         }else {
-            //Hold and alert the user that a customer name must be selected.
+
+//Hold and alert the user that a customer name must be selected.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
@@ -242,19 +283,20 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    //Selects the customer and deletes them and any appointments they have scheduled.
+
+//Selects the customer and deletes them and any appointments they have scheduled.
     public void onActionDeleteCustomer(ActionEvent event) throws IOException{
 
             if (customersTableView.getSelectionModel().getSelectedItem() != null){
                 Customers selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
 
-                for (int i = 0; i < appointments.size(); i++) {
-                    if (appointments.get(i).getApptIDCol() == selectedCustomer.getCustomerId()) {
-                        DaoAppointments.deleteAppointment(appointments.get(i).getApptIDCol());
+                for (Appointments appointment : appointments) {
+                    if (appointment.getApptIDCol() == selectedCustomer.getCustomerId()) {
+                        DaoAppointments.deleteAppointment(appointment.getApptIDCol());
                     }
                 }
 
-                //Hold and alert the user before deleting the selected customer.
+//Hold and alert the user before deleting the selected customer. Holds first and deletes on OK then reloads the tableview.
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("ATTENTION!");
                 alert.setHeaderText("The selected customer will be deleted from the database!");
@@ -262,18 +304,17 @@ public class MainScreenController implements Initializable {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    //Reloads the customer table view with the updated information
                     DaoCustomers.deleteCustomer(selectedCustomer.getCustomerId());
                     customersTableView.setItems(DaoCustomers.getAllCustomers());
 
-                    //Confirmation that the customer has been deleted.
+//Confirmation that the customer has been deleted.
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("SUCCESS!");
                     alert2.setContentText("The customer has been deleted from the system.");
                     alert2.showAndWait();
                 }
         }else {
-                //Hold and alert the user that a customer name must be selected.
+//Hold and alert the user that a customer name must be selected.
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ATTENTION!");
                 alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
@@ -281,8 +322,8 @@ public class MainScreenController implements Initializable {
             }
     }
 
-    //Cancels either modifying or adding a customer then resets the textfields.
-    public void onActionCancel(ActionEvent actionEvent) {
+//Cancels either modifying or adding a customer then resets the textfields.
+    public void onActionCancel(ActionEvent actionEvent) throws IOException{
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("ATTENTION!");
@@ -291,14 +332,7 @@ public class MainScreenController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            CustomerID.clear();
-            CustomerName.clear();
-            CustomerAddress.clear();
-            CustomerZip.clear();
-            CustomerPhone.clear();
-            customerCountry.getItems().clear();
-            customerCountry.getItems().addAll(allCountryNames());
-            customerDivision.getItems().clear();
+            clearItems(actionEvent);
             customersTableView.setItems(DaoCustomers.getAllCustomers());
         }
 
@@ -322,22 +356,21 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    //Retrieves the country names from the database
+//Retrieves the country names from the database
     public ObservableList<String> allCountryNames(){
         ObservableList<String> allCountryNames = FXCollections.observableArrayList();
-        for(int i = 0; i < allCountries.size(); i++)
-        {
+        for (Countries allCountry : allCountries) {
             String countryName;
-            countryName = allCountries.get(i).getName();
+            countryName = allCountry.getName();
             allCountryNames.add(countryName);
         }
         return allCountryNames;
     }
 
+//Handler for the division combobox.
     public int handleDivisionComboBox(ActionEvent actionEvent){
         if(customerDivision.getSelectionModel().getSelectedItem() != null) {
             Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
-
             String division = selectedDivision.toString();
             for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
                 if (division.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
@@ -350,37 +383,34 @@ public class MainScreenController implements Initializable {
     }
 
 
-    //US division selections
+//US division selections
     public ObservableList<String> getUSDivisionNames(){
         ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
-        for(int i = 0; i < usDivisionsList.size(); i++)
-        {
+        for (Divisions divisions : usDivisionsList) {
             String americans;
-            americans = usDivisionsList.get(i).getDivisionName();
+            americans = divisions.getDivisionName();
             USDivisionNames.add(americans);
         }
         return USDivisionNames;
     }
 
-    //Canadian division selections
+//Canadian division selections
     public ObservableList<String> getCanadaDivisionNames(){
         ObservableList<String> CanadaDivisionNames = FXCollections.observableArrayList();
-        for(int i = 0; i < canadianDivisionList.size(); i++)
-        {
+        for (Divisions divisions : canadianDivisionList) {
             String canadians;
-            canadians = canadianDivisionList.get(i).getDivisionName();
+            canadians = divisions.getDivisionName();
             CanadaDivisionNames.add(canadians);
         }
         return CanadaDivisionNames;
     }
 
-    //UK division selections
+//UK division selections
     public ObservableList<String> getUKDivisionNames(){
         ObservableList<String> UKDivisionNames = FXCollections.observableArrayList();
-        for(int i = 0; i < UKDivisionList.size(); i++)
-        {
+        for (Divisions divisions : UKDivisionList) {
             String british;
-            british = UKDivisionList.get(i).getDivisionName();
+            british = divisions.getDivisionName();
             UKDivisionNames.add(british);
         }
         return UKDivisionNames;
@@ -391,11 +421,11 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize (URL location, ResourceBundle resources){
 
-        //Initializes the customer/country combobox
+//Initializes the customer/country combobox
         customerCountry.getItems().addAll(allCountryNames());
 
 
-        //Appointments
+//Appointment table initialization. Loads the columns with the information from the DB appointments table
         appointments = DaoAppointments.getAllAppointments();
         apptTableview.setItems(appointments);
         apptIDCol.setCellValueFactory(new PropertyValueFactory<>("apptIDCol"));
@@ -409,7 +439,7 @@ public class MainScreenController implements Initializable {
         apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerIDCol"));
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("apptUserIDCol"));
 
-        //Customers
+//Customers table initialization. Loads the columns with the information from the DB customers table
         customers = DaoCustomers.getAllCustomers();
         customersTableView.setItems(customers);
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));

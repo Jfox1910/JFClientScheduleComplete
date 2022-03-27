@@ -7,7 +7,7 @@ import Model.loginUser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
-import utils.Utils;
+//import utils.Utils;
 
 import java.sql.*;
 
@@ -69,8 +69,8 @@ public class DaoCustomers {
             psnewCustomer.setString(3,customerAddy);
             psnewCustomer.setString(4,customerZipCode);
             psnewCustomer.setString(5,customerPhone);
-            psnewCustomer.setString(6, null);
-            psnewCustomer.setString(7, null);
+            psnewCustomer.setString(6, JDBC.getLoginUser());
+            psnewCustomer.setString(7, JDBC.getLoginUser());
             psnewCustomer.setInt(8, customerDivision);
 
             psnewCustomer.executeUpdate();
@@ -93,7 +93,7 @@ public class DaoCustomers {
             psmodifyCustomer.setString(2,customerAddy);
             psmodifyCustomer.setString(3,customerZipCode);
             psmodifyCustomer.setString(4,customerPhone);
-            psmodifyCustomer.setString(5, null);
+            psmodifyCustomer.setString(5, JDBC.getLoginUser());
             psmodifyCustomer.setInt(6,customerDivision);
             psmodifyCustomer.setInt(7,modifyCustomerId);
 

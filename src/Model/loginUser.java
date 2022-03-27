@@ -9,6 +9,8 @@ public class loginUser {
     private String lastUpdatedBy;
     private String lastUpdatedOn;
 
+    public String getLoggedInUser = userName;
+    public String getSystemAdmin = userName;
 
     //Constructor
     public loginUser(int userId, String userName, String password){
@@ -18,7 +20,15 @@ public class loginUser {
         this.createdBy = userName;
     }
 
+    public loginUser(String systemAdmin) {
+        this.userName = systemAdmin;
+    }
+
+
     //Getters
+    public String getSystemAdmin() {return getSystemAdmin;}
+
+    public String getLoggedInUser() {return getLoggedInUser;}
 
     public int getUserId() {return userId;}
 
@@ -37,6 +47,10 @@ public class loginUser {
 
     //Setters
 
+
+    public void setGetSystemAdmin(String getSystemAdmin) {this.getSystemAdmin = getSystemAdmin;}
+
+    public void setGetLoggedInUser(String getLoggedInUser) {this.getLoggedInUser = getLoggedInUser;}
 
     public void setUserId(int userId) {this.userId = userId;}
 
