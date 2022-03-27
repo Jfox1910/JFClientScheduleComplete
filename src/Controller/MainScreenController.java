@@ -79,8 +79,6 @@ public class MainScreenController implements Initializable {
     private ObservableList<Customers> customers;
     private ObservableList<Appointments> appointments;
 
-    public static Customers customer;
-
 
     /*
     TODO LIST
