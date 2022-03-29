@@ -18,13 +18,9 @@ public class Divisions {
         return divisionName;
     }
 
-    public void setDivisionID(int divisionID) {
-        this.divisionID = divisionID;
-    }
+    public void setDivisionID(int divisionID) {this.divisionID = divisionID;}
 
-    public String divisionToString(){
-        return "[" + divisionID + "]" + divisionName;
-    }
+    public String divisionToString(){return "[" + divisionID + "]" + divisionName;}
 
     public void setDivisionName(String divisionName) {
         this.divisionName = divisionName;

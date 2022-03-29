@@ -77,9 +77,9 @@ public class DaoDivisions {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                int divisonID = rs.getInt("Division_ID");
+                int divisionID = rs.getInt("Division_ID");
                 String divisionName = rs.getString("Division");
-                Divisions divisions = new Divisions(divisonID, divisionName);
+                Divisions divisions = new Divisions(divisionID, divisionName);
                 allDivisions.add(divisions);
             }
             ps.close();

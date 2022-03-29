@@ -33,9 +33,9 @@ public class DaoCustomers {
                 String customerCreatedBy = rs.getString("Created_By");
                 Timestamp customerLastUpdate = rs.getTimestamp("Last_Update");
                 String customerLastUpdatedBy = rs.getString("Last_Updated_By");
-                int customerDivisionId = rs.getInt("Division_ID");
+                int customerDivision = rs.getInt("Division_ID");
 
-                Customers customers = new Customers(customerId,customerName,customerAddress,customerPostalCode,customerPhone,customerCreateDate,customerCreatedBy,customerLastUpdate,customerLastUpdatedBy,customerDivisionId);
+                Customers customers = new Customers(customerId,customerName,customerAddress,customerPostalCode,customerPhone,customerCreateDate,customerCreatedBy,customerLastUpdate,customerLastUpdatedBy,customerDivision);
                 customerList.add(customers);
             }
         } catch (SQLException throwables) {
@@ -44,11 +44,11 @@ public class DaoCustomers {
         return customerList;
     }
 
-    //Adds a new customer to the database.
-    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, String loginUser, int customerDivision){
+//Adds a new customer to the database.
+    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
 
+//Selects the highest existing customer ID then adds 1 to it to increment sequentially.
         try {
-            //Selects the highest existing customer ID then adds 1 to it to increment sequentially.
             int customerID = 1;
             try {
                 Statement id = connection.createStatement();
@@ -73,7 +73,7 @@ public class DaoCustomers {
             psnewCustomer.setString(7, JDBC.getLoginUser());
             psnewCustomer.setInt(8, customerDivision);
 
-            psnewCustomer.executeUpdate();
+            psnewCustomer.execute();
             psnewCustomer.close();
             getAllCustomers();
 
@@ -83,7 +83,7 @@ public class DaoCustomers {
     }
 
     //Modifies a selected customer and updates the database
-    public static void modifyCustomer(int modifyCustomerId, String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
+    public static void modifyCustomer(int customerId, String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
         try {
 
             String sqlModifyCustomer = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Last_Update=NOW(),Phone=?, Last_Updated_By=?, Division_ID=? WHERE Customer_ID=? ";
@@ -95,7 +95,7 @@ public class DaoCustomers {
             psmodifyCustomer.setString(4,customerPhone);
             psmodifyCustomer.setString(5, JDBC.getLoginUser());
             psmodifyCustomer.setInt(6,customerDivision);
-            psmodifyCustomer.setInt(7,modifyCustomerId);
+            psmodifyCustomer.setInt(7,customerId);
 
             psmodifyCustomer.execute();
 

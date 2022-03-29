@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.time.ZoneId;
 
 public class LoginScreenController implements Initializable {
 
@@ -31,6 +32,7 @@ public class LoginScreenController implements Initializable {
     public Label userLocale;
 
     boolean loginSuccess = false;
+    private final String userLocation = ZoneId.systemDefault().getId();
 
     private Stage stage;
     private Scene scene;
@@ -86,7 +88,7 @@ public class LoginScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        Locale locale = Locale.getDefault();
+        userLocale.setText(userLocation);
 
     }
 }
