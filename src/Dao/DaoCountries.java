@@ -19,9 +19,9 @@ public class DaoCountries {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                int countryId = rs.getInt("Country_ID");
+                int countryID = rs.getInt("Country_ID");
                 String countryName = rs.getString("Country");
-                Countries country = new Countries(countryId,countryName);
+                Countries country = new Countries(countryID,countryName);
                 countries.add(country);
             }
             ps.close();

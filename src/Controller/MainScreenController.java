@@ -202,7 +202,7 @@ public class MainScreenController implements Initializable {
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
-        int divisionId = customerDivision.getSelectionModel().getSelectedIndex() + 1;
+        int divisionID = customerDivision.getSelectionModel().getSelectedIndex() + 1;
 
 //Check that a name, address and phone has been entered and gives an alert if it isn't there.
         if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
@@ -220,7 +220,7 @@ public class MainScreenController implements Initializable {
                 alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
                 alert.showAndWait().ifPresent((response -> {
                     if (response == ButtonType.OK) {
-                    DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, divisionId);
+                    DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, divisionID);
 
 
 //Confirmation that the customer has been added.
