@@ -422,6 +422,7 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize (URL location, ResourceBundle resources){
 
+
 //Initializes the customer/country combobox
         customerCountry.getItems().addAll(allCountryNames());
 
