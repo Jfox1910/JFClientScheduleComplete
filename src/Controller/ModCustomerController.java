@@ -1,4 +1,3 @@
-/*
 package Controller;
 
 import Dao.DaoAppointments;
@@ -28,34 +27,45 @@ import java.util.ResourceBundle;
 
 public class ModCustomerController implements Initializable {
 
+
+    @FXML private Label CustomerID;
+    @FXML private TextField CustomerName;
+    @FXML private TextField CustomerAddress;
+    @FXML private TextField CustomerZip;
+    @FXML private TextField CustomerPhone;
+    @FXML private TextField addCustomerCreatedBy;
+    @FXML private ComboBox customerCountry;
+    @FXML private ComboBox customerDivision;
+    @FXML private Button onActionUpdateCustomer;
+
     private Stage stage;
     private Scene scene;
     private Parent root;
 
-    //SWITCH
+    Customers modifyCustomers;
+    int retrieveDivisionID = 0;
+    int CustomerId;
+    String userName;
+
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
-    private ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
+    public ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
+    public ObservableList<Appointments> allAppointments = DaoAppointments.getAllAppointments();
+
+    private ObservableList<Customers> customers;
+    private ObservableList<Appointments> appointments;
 
     private final ObservableList<Countries> countries = FXCollections.observableArrayList();
     private final ObservableList<String> divID = FXCollections.observableArrayList();
     private final Customers modifyCustomer = AddApptController.customers;
 
-    @FXML private TextField customerId;
-    @FXML private TextField customerName;
-    @FXML private TextField customerAddress;
-    @FXML private TextField customerZip;
-    @FXML private TextField customerPhone;
-    @FXML private ComboBox customerDivision;
-    @FXML private ComboBox customerCountry;
 
-    int retrieveDivisionID = 0;
+
     Customers selectedCustomer;
 
 
-*/
-/*    //Exits back to the main screen
+    //Exits back to the main screen
     public void onActionMainScreen(ActionEvent event) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -69,7 +79,7 @@ public class ModCustomerController implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
-    }*//*
+    }
 
 
 
@@ -149,60 +159,39 @@ public class ModCustomerController implements Initializable {
     public void getSelectedCustomer(Customers customers){
 
         selectedCustomer = customers;
-        customerId.setText(String.valueOf(customers.getCustomerId()));
-        customerName.setText(String.valueOf(customers.getCustomerName()));
+        CustomerID.setText(String.valueOf(customers.getCustomerId()));
+        CustomerName.setText(String.valueOf(customers.getCustomerName()));
         customerCountry.getSelectionModel().select(customers.getCustomerDivision());
-        customerAddress.setText(String.valueOf(customers.getCustomerAddy()));
-        customerPhone.setText(String.valueOf(customers.getCustomerPhone()));
-        customerZip.setText(String.valueOf(customers.getCustomerZip()));
+        CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
+        CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
+        CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
     }
 
 
-    public void onActionSaveChanges(ActionEvent event) throws IOException {
+    public void onActionUpdateCustomer(ActionEvent actionEvent) throws IOException {
 
-            //Retrieves the customer's info from the fields.
-            String modifyCustomerName = customerName.getText();
-            String modifyCustomerAddress = customerAddress.getText();
-            String modifyCustomerZip = customerZip.getText();
-            String modifyCustomerPhone = customerPhone.getText();
-            String customerUpdatedBy = null;
-            int modifyCustomerDivision = customerDivision.getSelectionModel().getSelectedIndex() + 1;
+        //if (customersTableView.getSelectionModel().getSelectedItem() != null) {
+            String customerName = CustomerName.getText();
+            String customerAddress = CustomerAddress.getText();
+            String customerZip = CustomerZip.getText();
+            String customerPhone = CustomerPhone.getText();
+            int modCustomerDivision = customerDivision.getSelectionModel().getSelectedIndex() + 1;
 
-            //Check that a name, address and phone has been entered and gives an alert if it isn't there.
-            if (customerName.getText().isEmpty()){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Attention!");
-                alert.setContentText("A name must be entered for the customer.");
-                alert.showAndWait();
-                return;
-            }if (customerAddress.getText().isEmpty() || customerPhone.getText().isEmpty() || customerZip.getText().isEmpty()){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Attention!");
-                alert.setContentText("Complete contact information must be entered for the customer.");
-                alert.showAndWait();
-                return;
-            }else {
-                //popup confirmation confirming that a customer is about to be added.
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Modifying an existing customer.");
-                alert.setContentText("By clicking OK, you will be modifying " + customerName.getText() + "'s information. Are you sure you wish to continue?");
-                alert.showAndWait();
-            }
-            DaoCustomers.modifyCustomer(modifyCustomerName,modifyCustomerAddress, modifyCustomerZip, modifyCustomerPhone, customerUpdatedBy,modifyCustomerDivision);
-            //popup alerting the user that a customer has been added to the db. Returns to the main screen when the OK button is clicked.
+//Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Success!");
-            alert.setContentText(customerName.getText() + " has been added.");
+            alert.setTitle("Updating an existing customer.");
+            alert.setContentText("By clicking OK, you will be updating " + CustomerName.getText() + "'s information. Are you sure you wish to continue?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-
-                Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
-                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
+                DaoCustomers.modifyCustomer(modifyCustomers.getCustomerId(), customerName, customerAddress, customerZip, customerPhone, modCustomerDivision);
+                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert2.setTitle("SUCCESS!");
+                alert2.setContentText("The customer has been updated.");
+                alert2.showAndWait();
+                //clearItems(actionEvent);
+                //customersTableView.setItems(DaoCustomers.getAllCustomers());
             }
-        }
+    }
 
 
 
@@ -212,12 +201,11 @@ public class ModCustomerController implements Initializable {
         customerCountry.getItems().addAll(getAllCountryNames());
 
         System.out.println(modifyCustomer.getCustomerId());
-        customerId.setText(String.valueOf(modifyCustomer.getCustomerId()));
-        customerName.setText(String.valueOf(modifyCustomer.getCustomerName()));
+        CustomerID.setText(String.valueOf(modifyCustomer.getCustomerId()));
+        CustomerName.setText(String.valueOf(modifyCustomer.getCustomerName()));
         customerCountry.getSelectionModel().select(modifyCustomer.getCustomerDivision());
-        customerAddress.setText(String.valueOf(modifyCustomer.getCustomerAddy()));
-        customerPhone.setText(String.valueOf(modifyCustomer.getCustomerPhone()));
-        customerZip.setText(String.valueOf(modifyCustomer.getCustomerZip()));
+        CustomerAddress.setText(String.valueOf(modifyCustomer.getCustomerAddy()));
+        CustomerPhone.setText(String.valueOf(modifyCustomer.getCustomerPhone()));
+        CustomerZip.setText(String.valueOf(modifyCustomer.getCustomerZip()));
     }
 }
-*/

@@ -68,7 +68,7 @@ public class MainScreenController implements Initializable {
     Customers modifyCustomers;
     int retrieveDivisionID = 0;
     int CustomerId;
-    String userName;
+    private int customerModID = 0;
 
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
@@ -197,7 +197,13 @@ public class MainScreenController implements Initializable {
     public void onActionSaveCustomer
     (ActionEvent event) throws IOException {
 
-//Retrieves the customer's info from the fields.
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("addCustomerScreen.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+/*//Retrieves the customer's info from the fields.
         String customerName = CustomerName.getText();
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
@@ -234,21 +240,35 @@ public class MainScreenController implements Initializable {
 
                 }
             }));
-    }
+    }*/
     }
 
+//TODO COMPARE MAINCONTROLLERS
 
 //Modifies an existing customer. First gets the text that was preloaded into the textfields.
     public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException {
 
-        if (customersTableView.getSelectionModel().getSelectedItem() != null) {
-            String customerName = CustomerName.getText();
+        Customers customer;
+
+            customer = customersTableView.getSelectionModel().getSelectedItem();
+            customer.setCustomerId(customerModID);
+
+            //if (customersTableView.getSelectionModel().getSelectedItem() != null) {
+            /*String customerName = CustomerName.getText();
             String customerAddress = CustomerAddress.getText();
             String customerZip = CustomerZip.getText();
             String customerPhone = CustomerPhone.getText();
-            int modCustomerDivision = customerDivision.getSelectionModel().getSelectedIndex() + 1;
+            int modCustomerDivision = customerDivision.getSelectionModel().getSelectedIndex() + 1;*/
 
-//Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer.
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("modifyCustomerScreen.fxml"));
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        }
+
+/*//Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Updating an existing customer.");
             alert.setContentText("By clicking OK, you will be updating " + CustomerName.getText() + "'s information. Are you sure you wish to continue?");
@@ -262,15 +282,15 @@ public class MainScreenController implements Initializable {
                 clearItems(actionEvent);
                 customersTableView.setItems(DaoCustomers.getAllCustomers());
             }
-        }else {
+        } else {
 
 //Hold and alert the user that a customer name must be selected.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
-            alert.showAndWait();
-        }
-    }
+            alert.showAndWait();*/
+        //}
+    //}
 
 
 //Selects the customer and deletes them and any appointments they have scheduled.
