@@ -111,7 +111,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="85.0">
                      <children>
-                        <ComboBox fx:id="startHour" onAction="#handleHour" prefWidth="75.0" />
+                        <ComboBox fx:id="startHour" prefWidth="75.0" />
                         <ComboBox fx:id="endHour" prefWidth="75.0">
                            <VBox.margin>
                               <Insets top="10.0" />

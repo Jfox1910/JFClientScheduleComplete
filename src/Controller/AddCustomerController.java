@@ -15,7 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -37,11 +36,6 @@ public class AddCustomerController implements Initializable {
 
     int retrieveDivisionID = 0;
 
-    /*private final ObservableList<Countries> allCountries = FXCollections.observableArrayList();
-    private final ObservableList<Divisions> getUsDivisionsList = FXCollections.observableArrayList();
-    private final ObservableList<Divisions> getUKDivisionList = FXCollections.observableArrayList();
-    private final ObservableList<Divisions> getCanadianDivisionList = FXCollections.observableArrayList();*/
-
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
@@ -52,7 +46,7 @@ public class AddCustomerController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    //Add a customer method (Contained within the customer tab)
+//Add a customer method (Contained within the customer tab)
     public void onActionSaveCustomer(ActionEvent event) throws IOException {
 
 //Retrieves the customer's info from the fields.
@@ -61,7 +55,6 @@ public class AddCustomerController implements Initializable {
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
         int divisionID = retrieveDivisionID;
-        //int divisionID = customerDivision.getSelectionModel().getSelectedIndex() + 1;
 
 //Check that a name, address and phone has been entered and gives an alert if it isn't there.
         if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
@@ -69,7 +62,6 @@ public class AddCustomerController implements Initializable {
             alert.setTitle("Attention!");
             alert.setContentText("All customer fields must be filled before saving.");
             alert.showAndWait();
-            return;
         }else
         {
 
@@ -90,7 +82,7 @@ public class AddCustomerController implements Initializable {
 
                     Parent root = null;
                     try {
-                        root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
+                        root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -103,7 +95,7 @@ public class AddCustomerController implements Initializable {
         }
     }
 
-    //Handles populating the country and division comboboxes
+//Handles populating the country and division comboboxes
     public void handleCountryComboBox(ActionEvent actionEvent){
 
         if(customerCountry.getSelectionModel().getSelectedItem() != null) {
@@ -120,7 +112,7 @@ public class AddCustomerController implements Initializable {
         }
     }
 
-    //Retrieves the country names from the database
+//Retrieves the country names from the database
     public ObservableList<String> allCountryNames(){
         ObservableList<String> allCountryNames = FXCollections.observableArrayList();
         for (Countries allCountry : allCountries) {
@@ -131,7 +123,7 @@ public class AddCustomerController implements Initializable {
         return allCountryNames;
     }
 
-    //Handler for the division combobox.
+//Handler for the division combobox.
     public int handleDivisionComboBox(ActionEvent actionEvent){
         if(customerDivision.getSelectionModel().getSelectedItem() != null) {
             Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
@@ -146,7 +138,7 @@ public class AddCustomerController implements Initializable {
         return retrieveDivisionID;
     }
 
-    //US division selections
+//US division selections
     public ObservableList<String> getUSDivisionNames(){
         ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
         for (Divisions divisions : usDivisionsList) {
@@ -157,7 +149,7 @@ public class AddCustomerController implements Initializable {
         return USDivisionNames;
     }
 
-    //Canadian division selections
+//Canadian division selections
     public ObservableList<String> getCanadaDivisionNames(){
         ObservableList<String> CanadaDivisionNames = FXCollections.observableArrayList();
         for (Divisions divisions : canadianDivisionList) {
@@ -168,7 +160,7 @@ public class AddCustomerController implements Initializable {
         return CanadaDivisionNames;
     }
 
-    //UK division selections
+//UK division selections
     public ObservableList<String> getUKDivisionNames(){
         ObservableList<String> UKDivisionNames = FXCollections.observableArrayList();
         for (Divisions divisions : UKDivisionList) {
@@ -180,7 +172,7 @@ public class AddCustomerController implements Initializable {
     }
 
 
-    //Exit to the main screen
+//Exit to the main screen
     public void onActionMainScreen(ActionEvent event) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -188,7 +180,7 @@ public class AddCustomerController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

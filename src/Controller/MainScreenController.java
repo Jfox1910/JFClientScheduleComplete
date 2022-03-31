@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -90,8 +91,6 @@ public class MainScreenController implements Initializable {
 
     Nice to haves-----------
     Add an alert controller
-    cleanup functionality and move into customerController class?
-
      */
 
 
@@ -101,7 +100,7 @@ public class MainScreenController implements Initializable {
 //Add Appointments Method
     public void onActionAddAppt(ActionEvent event) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("addApptScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/addApptScreen.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -110,7 +109,7 @@ public class MainScreenController implements Initializable {
 
 //Modify Appointments Method
     public void onActionModAppt(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("modApptScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/modApptScreen.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -220,7 +219,7 @@ public class MainScreenController implements Initializable {
     public void onActionSaveCustomer
     (ActionEvent event) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("addCustomerScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/addCustomerScreen.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -266,15 +265,21 @@ public class MainScreenController implements Initializable {
     }*/
     }
 
-//TODO COMPARE MAINCONTROLLERS
+    public void customerSelection(MouseEvent mouseEvent){
 
-//Modifies an existing customer. First gets the text that was preloaded into the textfields.
+        modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
+        if(modifyCustomers != null){
+            customerModID = modifyCustomers.getCustomerId();
+        }
+
+    }
+
+//Modifies an existing customer.
     public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException {
 
-        Customers customer;
-
-            customer = customersTableView.getSelectionModel().getSelectedItem();
-            customer.setCustomerId(customerModID);
+        //Customers customer;
+            modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
+            modifyCustomers.setCustomerId(customerModID);
 
             //if (customersTableView.getSelectionModel().getSelectedItem() != null) {
             /*String customerName = CustomerName.getText();
@@ -283,7 +288,7 @@ public class MainScreenController implements Initializable {
             String customerPhone = CustomerPhone.getText();
             int modCustomerDivision = customerDivision.getSelectionModel().getSelectedIndex() + 1;*/
 
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("modifyCustomerScreen.fxml"));
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/modifyCustomerScreen.fxml"));
             stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);

@@ -50,7 +50,7 @@ public class LoginScreenController implements Initializable {
 //Verifys that the login creds are valid, then either opens the main application or denies entry and throws an error screen.
         for (int i = 0; i < verifyUser.size(); i++) {
             if (userName.equals(verifyUser.get(i).getUserName()) && userPassword.equals(verifyUser.get(i).getUserPassword())) {
-                Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
+                Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);

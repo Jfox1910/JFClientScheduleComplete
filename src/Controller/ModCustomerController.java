@@ -73,7 +73,7 @@ public class ModCustomerController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
 
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScreen.fxml"));
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
