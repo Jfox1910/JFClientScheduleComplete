@@ -42,7 +42,7 @@ public class ModCustomerController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    Customers modifyCustomers;
+    private final Customers modifyCustomers = Appointments.customers;
     int retrieveDivisionID = 0;
     int CustomerId;
     String userName;
@@ -82,7 +82,7 @@ public class ModCustomerController implements Initializable {
     }
 
 
-
+//ALL country names
     public ObservableList<String> getAllCountryNames(){
         ObservableList<String> allCountryNames = FXCollections.observableArrayList();
         for(int i = 0; i < allCountries.size(); i++)
@@ -92,7 +92,7 @@ public class ModCustomerController implements Initializable {
             allCountryNames.add(countryName);
         }return allCountryNames;
     }
-
+//US States
     public ObservableList<String> getUSDivisionNames(){
         ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
         for(int i = 0; i < usDivisionsList.size(); i++)
@@ -101,7 +101,7 @@ public class ModCustomerController implements Initializable {
             USDivisionNames.add(americans);
         }return USDivisionNames;
     }
-
+//CANADIAN Territories
     public ObservableList<String> getCanadaDivisionNames(){
         ObservableList<String> CanadaDivisionNames = FXCollections.observableArrayList();
         for(int i = 0; i < canadianDivisionList.size(); i++)
@@ -110,7 +110,7 @@ public class ModCustomerController implements Initializable {
             CanadaDivisionNames.add(canadians);
         }return CanadaDivisionNames;
     }
-
+//UK Territories
     public ObservableList<String> getUKDivisionNames(){
         ObservableList<String> UKDivisionNames = FXCollections.observableArrayList();
         for(int i = 0; i < UKDivisionList.size(); i++)

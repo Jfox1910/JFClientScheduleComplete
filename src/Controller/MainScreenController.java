@@ -64,6 +64,8 @@ public class MainScreenController implements Initializable {
     @FXML private TextField CustomerPhone;
     @FXML private ComboBox customerCountry;
     @FXML private ComboBox customerDivision;
+    @FXML private RadioButton monthSelect;
+    @FXML private RadioButton weekSelect;
 
     Customers modifyCustomers;
     int retrieveDivisionID = 0;
@@ -132,10 +134,31 @@ public class MainScreenController implements Initializable {
         System.out.println("Test LOAD Reports Button.");
     }
 
+    public void onActionSelectCustomer(ActionEvent actionEvent) throws IOException {
+        modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
+
+        if (modifyCustomers != null) {
+            customerModID = modifyCustomers.getCustomerId();
+        }if (monthSelect.isSelected()){
+                apptTableview.setItems((DaoAppointments.getAllAppointments()));
+        }if (weekSelect.isSelected()){
+            apptTableview.setItems(DaoAppointments.getAllAppointments());
+        }
+    }
+
+    public void onActionSelectMonth(ActionEvent actionEvent){
+        System.out.println("Testing month");
+
+    }
+
+    public void onActionSelectWeek(ActionEvent actionEvent){
+        System.out.println("Testing week");
+
+    }
 
     //----CUSTOMER TAB METHODS----
 //grabs the highlighted customer form the tableview and loads them into the textfields
-    public void onActionSelectCustomer(ActionEvent event) throws IOException {
+ /*   public void onActionSelectCustomer(ActionEvent event) throws IOException {
         if (customersTableView.getSelectionModel().getSelectedItem() != null) {
             ObservableList<Divisions> selectedCustomerDiv;
 
@@ -190,7 +213,7 @@ public class MainScreenController implements Initializable {
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
             alert.showAndWait();
         }
-    }
+    }*/
 
 
 //Add a customer method (Contained within the customer tab)

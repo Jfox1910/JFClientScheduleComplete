@@ -37,10 +37,15 @@ public class AddCustomerController implements Initializable {
 
     int retrieveDivisionID = 0;
 
+    /*private final ObservableList<Countries> allCountries = FXCollections.observableArrayList();
+    private final ObservableList<Divisions> getUsDivisionsList = FXCollections.observableArrayList();
+    private final ObservableList<Divisions> getUKDivisionList = FXCollections.observableArrayList();
+    private final ObservableList<Divisions> getCanadianDivisionList = FXCollections.observableArrayList();*/
+
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
-    private ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
+    private ObservableList<Divisions> UKDivisionList = DaoDivisions.getUKTerritories();
     public ObservableList<Appointments> allAppointments = DaoAppointments.getAllAppointments();
 
     private Stage stage;
@@ -55,7 +60,8 @@ public class AddCustomerController implements Initializable {
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
-        int divisionID = customerDivision.getSelectionModel().getSelectedIndex() + 1;
+        int divisionID = retrieveDivisionID;
+        //int divisionID = customerDivision.getSelectionModel().getSelectedIndex() + 1;
 
 //Check that a name, address and phone has been entered and gives an alert if it isn't there.
         if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
@@ -132,14 +138,13 @@ public class AddCustomerController implements Initializable {
             String division = selectedDivision.toString();
             for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
                 if (division.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
-                    DaoDivisions.getAllDivisions().get(i).getDivisionID();
+                    retrieveDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
                     break;
                 }
             }
         }
         return retrieveDivisionID;
     }
-
 
     //US division selections
     public ObservableList<String> getUSDivisionNames(){
