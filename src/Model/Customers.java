@@ -17,7 +17,7 @@ public class Customers {
     private int customerDivision;
 
 
-//Constructor
+//Constructors
         public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, String customerCreatedDate, String customerCreated, Timestamp customerUpdatedOn, String customerUpdatedBy, int customerDivision) {
             this.customerId = customerId;
             this.customerName = customerName;
@@ -29,6 +29,14 @@ public class Customers {
             this.customerUpdatedOn = customerUpdatedOn;
             this.customerUpdatedBy = customerUpdatedBy;
             this.customerDivision = customerDivision;
+        }
+
+        public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone){
+            this.customerId = customerId;
+            this.customerName = customerName;
+            this.customerAddy = customerAddy;
+            this.customerZip = customerZip;
+            this.customerPhone = customerPhone;
         }
 
 

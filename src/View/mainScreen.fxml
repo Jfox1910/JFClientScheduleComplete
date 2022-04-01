@@ -4,21 +4,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainScreenController">
+<AnchorPane maxHeight="-Infinity" prefHeight="520.0" prefWidth="1103.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainScreenController">
     <children>
-        <VBox prefHeight="768.0" prefWidth="1200.0">
+        <VBox>
             <children>
-                <TabPane prefHeight="768.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
+                <TabPane tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                         <Tab text="Appointments">
                             <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                <AnchorPane minHeight="0.0" minWidth="0.0">
                                     <children>
-                                        <VBox layoutY="8.0" prefHeight="735.0" prefWidth="1200.0">
+                                        <VBox layoutY="8.0">
                                             <children>
-                                                <TableView fx:id="apptTableview" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="1200.0">
+                                                <TableView fx:id="apptTableview" minHeight="-Infinity" minWidth="-Infinity">
                                                     <columns>
-                                                        <TableColumn fx:id="apptIDCol" prefWidth="100.0" text="Appointment ID" />
+                                                        <TableColumn fx:id="apptIDCol" prefWidth="50.0" text="ApptID" />
                                                         <TableColumn fx:id="apptTitleCol" prefWidth="100.0" text="Title" />
                                                         <TableColumn fx:id="apptDescriptionCol" prefWidth="175.0" text="Description" />
                                                         <TableColumn fx:id="apptLocationCol" minWidth="6.0" prefWidth="100.0" text="Location" />
@@ -27,12 +27,12 @@
                                                         <TableColumn fx:id="apptStartTimeCol" minWidth="44.0" prefWidth="125.0" text="Start Date/Time" />
                                                         <TableColumn fx:id="apptEndTimeCol" minWidth="26.4000244140625" prefWidth="125.0" text="End Date/Time" />
                                                         <TableColumn fx:id="apptCustomerIDCol" editable="false" prefWidth="100.0" text="Customer_ID" />
-                                                        <TableColumn fx:id="apptUserIDCol" prefWidth="100.0" text="User_ID" />
+                                                        <TableColumn fx:id="apptUserIDCol" prefWidth="50.0" text="User_ID" />
                                                     </columns>
                                                 </TableView>
-                                                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1200.0">
+                                                <HBox alignment="CENTER">
                                                     <children>
-                                                        <Button fx:id="addApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionAddAppt" text="Add Appointment">
+                                                        <Button fx:id="addApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionAddAppt" text="Add Appointment" textFill="#15a937">
                                                             <HBox.margin>
                                                                 <Insets left="10.0" right="10.0" />
                                                             </HBox.margin>
@@ -40,7 +40,7 @@
                                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                             </padding>
                                                         </Button>
-                                                        <Button fx:id="modifyApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionModAppt" text="Modify Appointment">
+                                                        <Button fx:id="modifyApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionModAppt" text="Modify Appointment" textFill="#0385dc">
                                                             <HBox.margin>
                                                                 <Insets left="10.0" right="10.0" />
                                                             </HBox.margin>
@@ -48,7 +48,7 @@
                                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                             </padding>
                                                         </Button>
-                                                        <Button fx:id="cancelApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionCancelAppt" text="Cancel Appointment">
+                                                        <Button fx:id="cancelApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionCancelAppt" text="Cancel Appointment" textFill="#f20404">
                                                             <HBox.margin>
                                                                 <Insets left="10.0" right="10.0" />
                                                             </HBox.margin>
@@ -66,7 +66,7 @@
                                                         </Button>
                                                     </children>
                                                 </HBox>
-                                                <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1200.0">
+                                                <HBox alignment="CENTER">
                                                     <children>
                                                         <RadioButton fx:id="weekSelect" mnemonicParsing="false" onAction="#onActionSelectWeek" text="Sort By Week">
                                                             <HBox.margin>
@@ -83,6 +83,9 @@
                                                             </padding>
                                                         </RadioButton>
                                                     </children>
+                                       <padding>
+                                          <Insets top="20.0" />
+                                       </padding>
                                                 </HBox>
                                             </children>
                                         </VBox>
@@ -94,9 +97,9 @@
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
-                                        <VBox alignment="TOP_CENTER" prefHeight="735.0" prefWidth="1200.0">
+                                        <VBox alignment="TOP_CENTER" prefHeight="462.0" prefWidth="1102.0">
                                             <children>
-                                                <TableView fx:id="customersTableView" prefHeight="475.0" prefWidth="1200.0">
+                                                <TableView fx:id="customersTableView" prefHeight="407.0" prefWidth="1093.0">
                                                     <columns>
                                                         <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="Customer ID" />
                                                         <TableColumn fx:id="customerNameCol" prefWidth="200.0" text="Customer Name" />
@@ -111,123 +114,7 @@
                                                 </TableView>
                                     <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1200.0">
                                        <children>
-                                                      <Button fx:id="modifyCustomerButton" mnemonicParsing="false" onAction="#onActionSelectCustomer" text="Select Customer">
-                                                          <HBox.margin>
-                                                              <Insets right="20.0" />
-                                                          </HBox.margin>
-                                                          <padding>
-                                                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                                                          </padding>
-                                                      </Button>
-                                                      <Button fx:id="deleteCustomerButton" mnemonicParsing="false" onAction="#onActionDeleteCustomer" text="Delete Customer">
-                                                          <padding>
-                                                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                                                          </padding>
-                                             <HBox.margin>
-                                                <Insets left="20.0" />
-                                             </HBox.margin>
-                                                      </Button>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </HBox>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
-                                       <children>
-                                          <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="1200.0">
-                                             <children>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="1200.0">
-                                                   <children>
-                                                      <Label text="Customer ID:">
-                                                         <HBox.margin>
-                                                            <Insets left="25.0" right="10.0" />
-                                                         </HBox.margin>
-                                                      </Label>
-                                                      <TextField fx:id="CustomerID" alignment="CENTER" editable="false" prefHeight="30.0" prefWidth="100.0" promptText="Auto Generated">
-                                                         <HBox.margin>
-                                                            <Insets />
-                                                         </HBox.margin>
-                                                      </TextField>
-                                                      <Label text="Name:">
-                                                         <HBox.margin>
-                                                            <Insets left="25.0" right="10.0" />
-                                                         </HBox.margin>
-                                                      </Label>
-                                                      <TextField fx:id="CustomerName" alignment="CENTER" prefHeight="30.0" prefWidth="300.0" promptText="Customer Name">
-                                                         <HBox.margin>
-                                                            <Insets />
-                                                         </HBox.margin>
-                                                      </TextField>
-                                                      <Label text="Address:">
-                                                         <HBox.margin>
-                                                            <Insets left="25.0" right="10.0" />
-                                                         </HBox.margin>
-                                                      </Label>
-                                                      <TextField fx:id="CustomerAddress" alignment="CENTER" prefHeight="30.0" prefWidth="400.0" promptText="123 Main Street">
-                                                         <HBox.margin>
-                                                            <Insets />
-                                                         </HBox.margin>
-                                                      </TextField>
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="1200.0">
-                                                   <children>
-                                                      <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1200.0">
-                                                         <children>
-                                                            <Label prefWidth="100.0" text="Phone Number:">
-                                                               <HBox.margin>
-                                                                  <Insets left="25.0" right="10.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <TextField fx:id="CustomerPhone" prefHeight="30.0" prefWidth="100.0" promptText="(XXX)XXX-XXXX">
-                                                               <HBox.margin>
-                                                                  <Insets />
-                                                               </HBox.margin>
-                                                            </TextField>
-                                                            <Label prefHeight="18.0" prefWidth="50.0" text="Country:">
-                                                               <HBox.margin>
-                                                                  <Insets left="25.0" right="10.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <ComboBox fx:id="customerCountry" onAction="#handleCountryComboBox" prefHeight="30.0" prefWidth="100.0" promptText="Select:">
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" />
-                                                               </HBox.margin>
-                                                            </ComboBox>
-                                                            <Label prefHeight="18.0" prefWidth="50.0" text="State:">
-                                                               <HBox.margin>
-                                                                  <Insets left="25.0" right="10.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <ComboBox fx:id="customerDivision" onAction="#handleDivisionComboBox" prefHeight="30.0" prefWidth="100.0" promptText="Select:">
-                                                               <HBox.margin>
-                                                                  <Insets />
-                                                               </HBox.margin>
-                                                            </ComboBox>
-                                                            <Label text="Postal Code:">
-                                                               <HBox.margin>
-                                                                  <Insets left="25.0" right="10.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <TextField fx:id="CustomerZip" alignment="CENTER" prefHeight="30.0" prefWidth="100.0" promptText="XXXXX-XXXX">
-                                                               <HBox.margin>
-                                                                  <Insets right="20.0" />
-                                                               </HBox.margin>
-                                                            </TextField>
-                                                         </children>
-                                                      </HBox>
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                             <HBox.margin>
-                                                <Insets top="10.0" />
-                                             </HBox.margin>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1200.0">
-                                       <children>
-                                                      <Button fx:id="addCustomerButton" mnemonicParsing="false" onAction="#onActionSaveCustomer" text="Add New Customer">
+                                                      <Button fx:id="addCustomerButton" mnemonicParsing="false" onAction="#onActionAddCustomer" text="Add New Customer" textFill="#15a937">
                                                           <padding>
                                                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                           </padding>
@@ -235,7 +122,15 @@
                                                 <Insets right="20.0" />
                                              </HBox.margin>
                                                       </Button>
-                                          <Button fx:id="modCustomerButton" mnemonicParsing="false" onAction="#onActionModifyCustomer" text="Modify Customer" />
+                                          <Button fx:id="modCustomerButton" mnemonicParsing="false" onAction="#onActionModifyCustomer" text="Modify Customer" textFill="#0385dc" />
+                                                      <Button fx:id="deleteCustomerButton" mnemonicParsing="false" onAction="#onActionDeleteCustomer" text="Delete Customer" textFill="#f20404">
+                                                          <padding>
+                                                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                          </padding>
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                                      </Button>
                                           <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onActionCancel" text="Cancel">
                                              <HBox.margin>
                                                 <Insets left="20.0" />
@@ -243,7 +138,7 @@
                                           </Button>
                                        </children>
                                        <VBox.margin>
-                                          <Insets top="30.0" />
+                                          <Insets />
                                        </VBox.margin>
                                     </HBox>
                                             </children>

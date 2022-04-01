@@ -155,6 +155,7 @@ public class ModCustomerController implements Initializable {
         return retrieveDivisionID;
     }
 
+
     //Retrieve the selected customer
     public void getSelectedCustomer(Customers customers){
 
@@ -188,8 +189,6 @@ public class ModCustomerController implements Initializable {
                 alert2.setTitle("SUCCESS!");
                 alert2.setContentText("The customer has been updated.");
                 alert2.showAndWait();
-                //clearItems(actionEvent);
-                //customersTableView.setItems(DaoCustomers.getAllCustomers());
             }
     }
 
@@ -200,12 +199,13 @@ public class ModCustomerController implements Initializable {
 
         customerCountry.getItems().addAll(getAllCountryNames());
 
-        System.out.println(modifyCustomer.getCustomerId());
-        CustomerID.setText(String.valueOf(modifyCustomer.getCustomerId()));
-        CustomerName.setText(String.valueOf(modifyCustomer.getCustomerName()));
-        customerCountry.getSelectionModel().select(modifyCustomer.getCustomerDivision());
-        CustomerAddress.setText(String.valueOf(modifyCustomer.getCustomerAddy()));
-        CustomerPhone.setText(String.valueOf(modifyCustomer.getCustomerPhone()));
-        CustomerZip.setText(String.valueOf(modifyCustomer.getCustomerZip()));
+
+        System.out.println(selectedCustomer.getCustomerId());
+     /*   CustomerID.setText(String.valueOf(selectedCustomer.getCustomerId()));
+        CustomerName.setText(String.valueOf(selectedCustomer.getCustomerName()));
+        customerCountry.getSelectionModel().select(selectedCustomer.getCustomerDivision());
+        CustomerAddress.setText(String.valueOf(selectedCustomer.getCustomerAddy()));
+        CustomerPhone.setText(String.valueOf(selectedCustomer.getCustomerPhone()));
+        CustomerZip.setText(String.valueOf(selectedCustomer.getCustomerZip()));*/
     }
 }

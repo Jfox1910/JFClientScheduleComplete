@@ -68,7 +68,7 @@ public class MainScreenController implements Initializable {
     @FXML private RadioButton monthSelect;
     @FXML private RadioButton weekSelect;
 
-    Customers modifyCustomers;
+    Customers modifyCustomer;
     int retrieveDivisionID = 0;
     int CustomerId;
     private int customerModID = 0;
@@ -133,7 +133,7 @@ public class MainScreenController implements Initializable {
         System.out.println("Test LOAD Reports Button.");
     }
 
-    public void onActionSelectCustomer(ActionEvent actionEvent) throws IOException {
+/*    public void onActionSelectCustomer(ActionEvent actionEvent) throws IOException {
         modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
 
         if (modifyCustomers != null) {
@@ -143,7 +143,7 @@ public class MainScreenController implements Initializable {
         }if (weekSelect.isSelected()){
             apptTableview.setItems(DaoAppointments.getAllAppointments());
         }
-    }
+    }*/
 
     public void onActionSelectMonth(ActionEvent actionEvent){
         System.out.println("Testing month");
@@ -216,7 +216,7 @@ public class MainScreenController implements Initializable {
 
 
 //Add a customer method (Contained within the customer tab)
-    public void onActionSaveCustomer
+    public void onActionAddCustomer
     (ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/addCustomerScreen.fxml"));
@@ -225,68 +225,16 @@ public class MainScreenController implements Initializable {
         stage.setScene(scene);
         stage.show();
 
-/*//Retrieves the customer's info from the fields.
-        String customerName = CustomerName.getText();
-        String customerAddress = CustomerAddress.getText();
-        String customerZip = CustomerZip.getText();
-        String customerPhone = CustomerPhone.getText();
-        int divisionID = customerDivision.getSelectionModel().getSelectedIndex() + 1;
-
-//Check that a name, address and phone has been entered and gives an alert if it isn't there.
-        if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Attention!");
-            alert.setContentText("All customer fields must be filled before saving.");
-            alert.showAndWait();
-            return;
-        }else
-            {
-
-//popup confirmation using a LAMBDA EXPRESSION confirming that a customer is about to be added.
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Adding a new customer.");
-                alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
-                alert.showAndWait().ifPresent((response -> {
-                    if (response == ButtonType.OK) {
-                    DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, divisionID);
-
-
-//Confirmation that the customer has been added.
-                    Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert2.setTitle("Success!");
-                    alert2.setContentText(CustomerName.getText() + " has been added.");
-                    alert2.showAndWait().ifPresent((response2 ->//Reloads the customer table view with the updated information
-                            customersTableView.setItems(DaoCustomers.getAllCustomers())));
-
-
-
-                }
-            }));
-    }*/
-    }
-
-    public void customerSelection(MouseEvent mouseEvent){
-
-        modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
-        if(modifyCustomers != null){
-            customerModID = modifyCustomers.getCustomerId();
-        }
-
     }
 
 //Modifies an existing customer.
     public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException {
 
-        //Customers customer;
-            modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
-            modifyCustomers.setCustomerId(customerModID);
+        //modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
+        //modifyCustomers.setCustomerId(customerModID);
 
-            //if (customersTableView.getSelectionModel().getSelectedItem() != null) {
-            /*String customerName = CustomerName.getText();
-            String customerAddress = CustomerAddress.getText();
-            String customerZip = CustomerZip.getText();
-            String customerPhone = CustomerPhone.getText();
-            int modCustomerDivision = customerDivision.getSelectionModel().getSelectedIndex() + 1;*/
+        if (customersTableView.getSelectionModel().getSelectedItem() != null) {
+
 
             Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/modifyCustomerScreen.fxml"));
             stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -294,7 +242,13 @@ public class MainScreenController implements Initializable {
             stage.setScene(scene);
             stage.show();
 
+        }else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
+            alert.showAndWait();
         }
+    }
 
 /*//Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -336,7 +290,7 @@ public class MainScreenController implements Initializable {
 //Hold and alert the user before deleting the selected customer. Holds first and deletes on OK then reloads the tableview.
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("ATTENTION!");
-                alert.setHeaderText("The selected customer will be deleted from the database!");
+                alert.setHeaderText("The selected customer and any accompanying appointments will be deleted from the database!");
                 alert.setContentText("This action cannot be undone. Are you sure you wish to continue?");
 
                 Optional<ButtonType> result = alert.showAndWait();
@@ -472,8 +426,6 @@ public class MainScreenController implements Initializable {
 
 
 //Initializes the customer/country combobox
-        customerCountry.getItems().addAll(allCountryNames());
-
 
 //Appointment table initialization. Loads the columns with the information from the DB appointments table
         appointments = DaoAppointments.getAllAppointments();
