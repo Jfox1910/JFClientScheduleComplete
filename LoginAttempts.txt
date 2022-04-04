@@ -1,0 +1,8 @@
+Mon Apr 04 16:20:25 EDT 2022Successful? FALSEUsername tesPassword test
+Mon Apr 04 16:20:32 EDT 2022Successful? FALSEUsername rrrPassword rrr
+Mon Apr 04 16:20:38 EDT 2022Successful? TRUEUsername adminPassword admin
+Mon Apr 04 16:22:15 EDT 2022 Login successful? FALSE Username againPassword again
+Mon Apr 04 16:22:23 EDT 2022 Login successful? TRUE Username testPassword test
+Mon Apr 04 16:23:02 EDT 2022 Login successful? TRUE Username test Password test
+Mon Apr 04 16:23:52 EDT 2022 Login successful? FALSE Username? tert Password? ters
+Mon Apr 04 16:23:58 EDT 2022 Login successful? TRUE Username? test Password? test

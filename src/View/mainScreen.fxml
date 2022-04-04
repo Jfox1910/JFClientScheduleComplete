@@ -32,7 +32,7 @@
                                                 </TableView>
                                                 <HBox alignment="CENTER">
                                                     <children>
-                                                        <Button fx:id="addApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionAddAppt" text="Add Appointment" textFill="#15a937">
+                                                        <Button fx:id="addApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionAddAppt" text="Add Appointment" textFill="#0009ff">
                                                             <HBox.margin>
                                                                 <Insets left="10.0" right="10.0" />
                                                             </HBox.margin>
@@ -40,7 +40,7 @@
                                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                             </padding>
                                                         </Button>
-                                                        <Button fx:id="modifyApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionModAppt" text="Modify Appointment" textFill="#0385dc">
+                                                        <Button fx:id="modifyApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionModAppt" text="Modify Appointment" textFill="#0009ff">
                                                             <HBox.margin>
                                                                 <Insets left="10.0" right="10.0" />
                                                             </HBox.margin>
@@ -48,7 +48,7 @@
                                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                             </padding>
                                                         </Button>
-                                                        <Button fx:id="cancelApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionCancelAppt" text="Cancel Appointment" textFill="#f20404">
+                                                        <Button fx:id="cancelApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionCancelAppt" text="Cancel Appointment" textFill="#0009ff">
                                                             <HBox.margin>
                                                                 <Insets left="10.0" right="10.0" />
                                                             </HBox.margin>
@@ -56,7 +56,7 @@
                                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                             </padding>
                                                         </Button>
-                                                        <Button fx:id="reportsButton" mnemonicParsing="false" onAction="#onActionLoadReports" text="Reports">
+                                                        <Button fx:id="reportsButton" mnemonicParsing="false" onAction="#onActionLoadReports" text="Reports" textFill="#0009ff">
                                                             <padding>
                                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                             </padding>
@@ -114,7 +114,7 @@
                                                 </TableView>
                                     <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1200.0">
                                        <children>
-                                                      <Button fx:id="addCustomerButton" mnemonicParsing="false" onAction="#onActionAddCustomer" text="Add New Customer" textFill="#15a937">
+                                                      <Button fx:id="addCustomerButton" mnemonicParsing="false" onAction="#onActionAddCustomer" text="Add New Customer" textFill="#0009ff">
                                                           <padding>
                                                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                           </padding>
@@ -122,8 +122,8 @@
                                                 <Insets right="20.0" />
                                              </HBox.margin>
                                                       </Button>
-                                          <Button fx:id="modCustomerButton" mnemonicParsing="false" onAction="#onActionModifyCustomer" text="Modify Customer" textFill="#0385dc" />
-                                                      <Button fx:id="deleteCustomerButton" mnemonicParsing="false" onAction="#onActionDeleteCustomer" text="Delete Customer" textFill="#f20404">
+                                          <Button fx:id="modCustomerButton" mnemonicParsing="false" onAction="#onActionModifyCustomer" text="Modify Customer" textFill="#0009ff" />
+                                                      <Button fx:id="deleteCustomerButton" mnemonicParsing="false" onAction="#onActionDeleteCustomer" text="Delete Customer" textFill="#0009ff">
                                                           <padding>
                                                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                           </padding>
@@ -131,11 +131,6 @@
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                                       </Button>
-                                          <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onActionCancel" text="Cancel">
-                                             <HBox.margin>
-                                                <Insets left="20.0" />
-                                             </HBox.margin>
-                                          </Button>
                                        </children>
                                        <VBox.margin>
                                           <Insets />

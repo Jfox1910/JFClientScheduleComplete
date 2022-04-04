@@ -40,4 +40,18 @@ public class DaoLogin {
         }
         return userList;
     }
+
+    public static boolean loggedInUser(String username, String password) {
+        try {
+            String sqlQuery = "select 1 from users where User_Name = ? and Password = ?;";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sqlQuery);
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet resultSet = ps.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e){
+            return false;
+        }
+    }
 }

@@ -1,10 +1,7 @@
 package Controller;
 
 import Dao.*;
-import Model.Appointments;
-import Model.Countries;
-import Model.Customers;
-import Model.Divisions;
+import Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,13 +30,16 @@ public class AddCustomerController implements Initializable {
     @FXML private TextField CustomerPhone;
     @FXML private ComboBox customerCountry;
     @FXML private ComboBox customerDivision;
+    @FXML private ComboBox userCombo;
 
     int retrieveDivisionID = 0;
+    int retrieveUserID = 0;
 
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
-    private ObservableList<Divisions> UKDivisionList = DaoDivisions.getUKTerritories();
+    public ObservableList<Divisions> UKDivisionList = DaoDivisions.getUKTerritories();
+    public ObservableList<loginUser> allTheUsers = DaoLogin.getAllUsers();
     public ObservableList<Appointments> allAppointments = DaoAppointments.getAllAppointments();
 
     private Stage stage;
@@ -55,6 +55,9 @@ public class AddCustomerController implements Initializable {
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
         int divisionID = retrieveDivisionID;
+        userCombo.getSelectionModel().getSelectedItem();
+        System.out.println(retrieveUserID);
+        int userID = retrieveUserID;
 
 //Check that a name, address and phone has been entered and gives an alert if it isn't there.
         if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
@@ -71,7 +74,7 @@ public class AddCustomerController implements Initializable {
             alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
-                    DaoCustomers.newCustomer(customerName, customerAddress, customerZip, customerPhone, divisionID);
+                    DaoCustomers.newCustomer(userID, customerName, customerAddress, customerZip, customerPhone, divisionID);
 
 
 //Confirmation that the customer has been added.
@@ -95,6 +98,7 @@ public class AddCustomerController implements Initializable {
         }
     }
 
+
 //Handles populating the country and division comboboxes
     public void handleCountryComboBox(ActionEvent actionEvent){
 
@@ -110,6 +114,26 @@ public class AddCustomerController implements Initializable {
                 customerDivision.setItems(getCanadaDivisionNames());
             }
         }
+    }
+
+
+//Handles populating the user combobox
+
+    public void handleUserCombobox(ActionEvent actionEvent){
+
+        Object selectedUser = userCombo.getSelectionModel().getSelectedItem();
+        String allUserNames = selectedUser.toString();
+
+        allUserNames.equalsIgnoreCase("User_Name");
+    }
+
+    public ObservableList<String> allUserNames(){
+        ObservableList<String> allUserNames = FXCollections.observableArrayList();
+        for (loginUser allUsers : allTheUsers){
+            String loginName;
+            loginName = allUsers.getUserName();
+            allUserNames.add(loginName);
+        }return allUserNames;
     }
 
 //Retrieves the country names from the database
@@ -194,6 +218,9 @@ public class AddCustomerController implements Initializable {
 
         //Initializes the customer/country combobox
         customerCountry.getItems().addAll(allCountryNames());
+        userCombo.getItems().addAll(allUserNames());
+
+
 
 
 

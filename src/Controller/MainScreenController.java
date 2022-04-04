@@ -84,10 +84,16 @@ public class MainScreenController implements Initializable {
 
 
     /*
-    TODO LIST
+    TODO LIST COMPLETE PROJECT
     Must haves----------
+    LAMBDAS
+    FRENCH LOGIN
     ADD APPOINTMENTS
+    MOD APPTS
+    DELETE APPTS
     ADD REPORTS
+    JAVADOCS
+    README
 
     Nice to haves-----------
     Add an alert controller
@@ -314,7 +320,7 @@ public class MainScreenController implements Initializable {
     }
 
 //Cancels either modifying or adding a customer then resets the textfields.
-    public void onActionCancel(ActionEvent actionEvent) throws IOException{
+/*    public void onActionCancel(ActionEvent actionEvent) throws IOException{
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("ATTENTION!");
@@ -328,9 +334,9 @@ public class MainScreenController implements Initializable {
         }
 
 
-    }
+    }*/
 
-    //Handles populating the country and division comboboxes
+   /* //Handles populating the country and division comboboxes
     public void handleCountryComboBox(ActionEvent actionEvent){
 
         if(customerCountry.getSelectionModel().getSelectedItem() != null) {
@@ -405,11 +411,11 @@ public class MainScreenController implements Initializable {
             UKDivisionNames.add(british);
         }
         return UKDivisionNames;
-    }
+    }*/
 
 
     //Handles the cancel button in the customer tab. Resets the comboboxes and textfields.
-    public void clearItems(ActionEvent actionEvent) throws IOException{
+/*    public void clearItems(ActionEvent actionEvent) throws IOException{
         CustomerID.clear();
         CustomerName.clear();
         CustomerAddress.clear();
@@ -418,7 +424,7 @@ public class MainScreenController implements Initializable {
         customerCountry.getItems().clear();
         customerDivision.getItems().clear();
         customerCountry.getItems().setAll(allCountryNames());
-    }
+    }*/
 
 
     @Override

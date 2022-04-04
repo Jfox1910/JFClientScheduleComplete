@@ -65,6 +65,7 @@ public class ModCustomerController implements Initializable {
     Customers selectedCustomer;
 
 
+
     //Exits back to the main screen
     public void onActionMainScreen(ActionEvent event) throws IOException {
 
@@ -197,15 +198,16 @@ public class ModCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
         customerCountry.getItems().addAll(getAllCountryNames());
 
 
-        System.out.println(selectedCustomer.getCustomerId());
-     /*   CustomerID.setText(String.valueOf(selectedCustomer.getCustomerId()));
+        //System.out.println(selectedCustomer.getCustomerId());
+        CustomerID.setText(String.valueOf(selectedCustomer.getCustomerId()));
         CustomerName.setText(String.valueOf(selectedCustomer.getCustomerName()));
         customerCountry.getSelectionModel().select(selectedCustomer.getCustomerDivision());
         CustomerAddress.setText(String.valueOf(selectedCustomer.getCustomerAddy()));
         CustomerPhone.setText(String.valueOf(selectedCustomer.getCustomerPhone()));
-        CustomerZip.setText(String.valueOf(selectedCustomer.getCustomerZip()));*/
+        CustomerZip.setText(String.valueOf(selectedCustomer.getCustomerZip()));
     }
 }

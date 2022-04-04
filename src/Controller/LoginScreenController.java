@@ -16,8 +16,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -30,6 +33,7 @@ public class LoginScreenController implements Initializable {
     public Button loginButton;
     public Button cancelButton;
     public Label userLocale;
+    private static final String reportsFile = "LoginAttempts.txt";
 
     boolean loginSuccess = false;
     private final String userLocation = ZoneId.systemDefault().getId();
@@ -42,25 +46,25 @@ public class LoginScreenController implements Initializable {
 //Login Method. Creates a list and populates it with all the users in the DB.
     public void onActionLogin(ActionEvent event) throws IOException {
         //Pulls the DBs user table from the DaoLogin class and creates an OL.
-        ObservableList<loginUser> verifyUser = DaoLogin.getAllUsers();
+        boolean verifyUser = DaoLogin.loggedInUser(usernameTextField.getText(), usernamePasswordField.getText());{
 
-        String userName = usernameTextField.getText();
-        String userPassword = usernamePasswordField.getText();
-
-//Verifys that the login creds are valid, then either opens the main application or denies entry and throws an error screen.
-        for (int i = 0; i < verifyUser.size(); i++) {
-            if (userName.equals(verifyUser.get(i).getUserName()) && userPassword.equals(verifyUser.get(i).getUserPassword())) {
+            String userName = usernameTextField.getText();
+            String password = usernamePasswordField.getText();
+            if (verifyUser) {
                 Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
                 loginSuccess = true;
-                break;
+                reports(userName, password, "TRUE");
             }else {
                 loginSuccess = false;
                 usernameTextField.clear();
                 usernamePasswordField.clear();
+
+                reports(userName, password, "FALSE");
+
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Username and/or password is incorrect. Verify your information and try again.");
                 alert.showAndWait();
@@ -69,6 +73,15 @@ public class LoginScreenController implements Initializable {
         }
     }
 
+
+//Writes a log of login attempts to a textfile LoginAttempts.txt.
+    private void reports (String userName, String password, String successfulLogin){
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileWriter(reportsFile, true));
+            printWriter.append((new Date()) + " Login successful? " + successfulLogin + " Username? " + userName + " Password? " + password + "\n");
+            printWriter.close();
+        }catch (IOException e){}
+    }
 
 //Exit Method with a confirmation
     @FXML

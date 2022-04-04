@@ -45,7 +45,7 @@ public class DaoCustomers {
     }
 
 //Adds a new customer to the database.
-    public static void newCustomer(String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
+    public static void newCustomer(int userID, String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
 
 //Selects the highest existing customer ID then adds 1 to it to increment sequentially.
         try {
@@ -69,7 +69,7 @@ public class DaoCustomers {
             psnewCustomer.setString(3,customerAddy);
             psnewCustomer.setString(4,customerZipCode);
             psnewCustomer.setString(5,customerPhone);
-            psnewCustomer.setString(6, JDBC.getLoginUser());
+            psnewCustomer.setInt(6, userID);
             psnewCustomer.setString(7, JDBC.getLoginUser());
             psnewCustomer.setInt(8, customerDivision);
 
