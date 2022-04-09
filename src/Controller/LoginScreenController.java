@@ -1,10 +1,9 @@
 package Controller;
 
 import Dao.DaoLogin;
-import Model.loginUser;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.time.ZoneId;
@@ -33,8 +31,8 @@ public class LoginScreenController implements Initializable {
     public Button loginButton;
     public Button cancelButton;
     public Label userLocale;
-    private static final String reportsFile = "LoginAttempts.txt";
 
+    private static final String reportsFile = "LoginAttempts.txt";
     boolean loginSuccess = false;
     private final String userLocation = ZoneId.systemDefault().getId();
 
@@ -43,11 +41,14 @@ public class LoginScreenController implements Initializable {
     private Parent root;
 
 
+
 //Login Method. Creates a list and populates it with all the users in the DB.
     public void onActionLogin(ActionEvent event) throws IOException {
-        //Pulls the DBs user table from the DaoLogin class and creates an OL.
         boolean verifyUser = DaoLogin.loggedInUser(usernameTextField.getText(), usernamePasswordField.getText());{
 
+            ObservableList<String> loggedInUser = FXCollections.observableArrayList();
+
+            String user = usernameTextField.getText();
             String userName = usernameTextField.getText();
             String password = usernamePasswordField.getText();
             if (verifyUser) {
@@ -58,6 +59,7 @@ public class LoginScreenController implements Initializable {
                 stage.show();
                 loginSuccess = true;
                 reports(userName, password, "TRUE");
+
             }else {
                 loginSuccess = false;
                 usernameTextField.clear();
@@ -72,6 +74,12 @@ public class LoginScreenController implements Initializable {
             }
         }
     }
+
+    public String getLoginUser() {
+        return usernameTextField.getText();
+    }
+
+
 
 
 //Writes a log of login attempts to a textfile LoginAttempts.txt.

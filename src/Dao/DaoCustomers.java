@@ -1,9 +1,7 @@
 package Dao;
 
-import Controller.LoginScreenController;
 import Model.Customers;
-import Model.loginUser;
-//import Controller.CustomerController;
+import Controller.LoginScreenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
@@ -42,6 +40,28 @@ public class DaoCustomers {
             throwables.printStackTrace();
         }
         return customerList;
+    }
+
+    //TODO FIX DIVISION TO NAME
+
+    public static Integer getCustomerDivision(Customers customers){
+        int customerID = customers.getCustomerId();
+        int divisionID = 0;
+
+        try {
+            String sql = "SELECT Division_ID from customers WHERE Customer_ID = ?";
+            PreparedStatement psgetCustomerDiv = JDBC.getConnection().prepareStatement(sql);
+            psgetCustomerDiv.setInt(1, customerID);
+            ResultSet rs = psgetCustomerDiv.executeQuery();
+            if (rs.next()) {
+                divisionID = rs.getInt("Division_ID");
+            }
+
+
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return divisionID;
     }
 
 //Adds a new customer to the database.
@@ -116,5 +136,9 @@ public class DaoCustomers {
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
+    }
+
+    public static String getCountry(Customers customers){
+        return DaoCountries.getCountryID(DaoDivisions.getCountryDivision(DaoCustomers.getCustomerDivision(customers)));
     }
 }

@@ -1,20 +1,26 @@
 package Model;
 
+import Dao.DaoDivisions;
+import javafx.collections.ObservableList;
+
 import java.sql.Timestamp;
+import java.util.Optional;
+
 
 //Customer Class
-public class Customers {
-
-    private int customerId;
-    private String customerName;
-    private String customerAddy;
-    private String customerZip;
-    private String customerPhone;
-    private String customerCreatedDate;
-    private String customerCreated;
-    private Timestamp customerUpdatedOn;
-    private String customerUpdatedBy;
-    private int customerDivision;
+    public class Customers {
+        private int customerId;
+        private String customerName;
+        private String customerAddy;
+        private String customerZip;
+        private String customerPhone;
+        private String customerCreatedDate;
+        private String customerCreated;
+        private Timestamp customerUpdatedOn;
+        private String customerUpdatedBy;
+        private int customerCountry;
+        private int customerDivision;
+        private String divisionName;
 
 
 //Constructors
@@ -29,15 +35,21 @@ public class Customers {
             this.customerUpdatedOn = customerUpdatedOn;
             this.customerUpdatedBy = customerUpdatedBy;
             this.customerDivision = customerDivision;
+
         }
 
-        public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone){
+
+        public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, int customerCountry, int customerDivision, String divisionName){
             this.customerId = customerId;
             this.customerName = customerName;
             this.customerAddy = customerAddy;
             this.customerZip = customerZip;
             this.customerPhone = customerPhone;
+            this.customerCountry = customerCountry;
+            this.customerDivision = customerDivision;
+            this.divisionName = divisionName;
         }
+
 
 
 //Getters
@@ -77,12 +89,16 @@ public class Customers {
             return customerUpdatedBy;
         }
 
+        public int getCustomerCountry() {return customerCountry;}
+
         public int getCustomerDivision() {
             return customerDivision;
         }
 
+        public String getDivisionName() {return divisionName;}
 
- //Setters
+
+    //Setters
         public void setCustomerId(int customerId) {this.customerId = customerId;}
 
         public void setCustomerName(String customerName) {
@@ -93,9 +109,7 @@ public class Customers {
             this.customerAddy = customerAddy;
         }
 
-        public void setCustomerZip(String customerZip) {
-            this.customerZip = customerZip;
-        }
+        public void setCustomerZip(String customerZip) {this.customerZip = customerZip;}
 
         public void setCustomerPhone(String customerPhone) {
             this.customerPhone = customerPhone;
@@ -115,8 +129,11 @@ public class Customers {
             this.customerUpdatedBy = customerUpdatedBy;
         }
 
+        public void setCustomerCountry(int customerCountry) {this.customerCountry = customerCountry;}
+
         public void setCustomerDivision(int customerDivision) {
             this.customerDivision = customerDivision;
         }
 
-    }
+        public void setDivisionName(String customerDivisionName) {this.divisionName = customerDivisionName;}
+}

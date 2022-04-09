@@ -5,6 +5,7 @@ import Model.Appointments;
 import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
+import Controller.ModCustomerController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,10 +69,10 @@ public class MainScreenController implements Initializable {
     @FXML private RadioButton monthSelect;
     @FXML private RadioButton weekSelect;
 
-    Customers modifyCustomer;
-    int retrieveDivisionID = 0;
-    int CustomerId;
     private int customerModID = 0;
+    private static Customers modifyCustomers;
+    private static Divisions modifyCustomerDivision;
+    private static Countries modifyCustomerCountry;
 
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
@@ -236,10 +237,36 @@ public class MainScreenController implements Initializable {
 //Modifies an existing customer.
     public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException {
 
-        //modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
-        //modifyCustomers.setCustomerId(customerModID);
+            modifyCustomers = customersTableView.getSelectionModel().getSelectedItem();
+            if (modifyCustomers != null) {
+                Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/modifyCustomerScreen.fxml"));
+                stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            }else {
 
-        if (customersTableView.getSelectionModel().getSelectedItem() != null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
+            alert.showAndWait();
+        }
+
+
+
+
+  /*      public void getSelectedCustomer(Customers customers){
+
+            selectedCustomer = customers;
+            CustomerID.setText(String.valueOf(customers.getCustomerId()));
+            CustomerName.setText(String.valueOf(customers.getCustomerName()));
+            customerCountry.getSelectionModel().select(customers.getCustomerDivision());
+            CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
+            CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
+            CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
+        }*/
+
+        /*if (customersTableView.getSelectionModel().getSelectedItem() != null) {
 
 
             Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/modifyCustomerScreen.fxml"));
@@ -253,7 +280,7 @@ public class MainScreenController implements Initializable {
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
             alert.showAndWait();
-        }
+        }*/
     }
 
 /*//Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer.
@@ -336,7 +363,7 @@ public class MainScreenController implements Initializable {
 
     }*/
 
-   /* //Handles populating the country and division comboboxes
+/*    //Handles populating the country and division comboboxes
     public void handleCountryComboBox(ActionEvent actionEvent){
 
         if(customerCountry.getSelectionModel().getSelectedItem() != null) {
@@ -426,6 +453,9 @@ public class MainScreenController implements Initializable {
         customerCountry.getItems().setAll(allCountryNames());
     }*/
 
+    public static Customers getSelectedCustomer() {return modifyCustomers;}
+    public static Countries getSelectedCountry() {return modifyCustomerCountry;}
+    public static Divisions getCustomerDivision() {return  modifyCustomerDivision;}
 
     @Override
     public void initialize (URL location, ResourceBundle resources){

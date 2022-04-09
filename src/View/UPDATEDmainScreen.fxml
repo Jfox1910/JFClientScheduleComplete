@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" prefHeight="520.0" prefWidth="1103.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainScreenController">
+    <children>
+        <VBox>
+            <children>
+                <TabPane tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="Appointments">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0">
+                                    <children>
+                                        <VBox layoutY="8.0">
+                                            <children>
+                                                <TableView fx:id="apptTableview" minHeight="-Infinity" minWidth="-Infinity">
+                                                    <columns>
+                                                        <TableColumn fx:id="apptIDCol" prefWidth="50.0" text="ApptID" />
+                                                        <TableColumn fx:id="apptTitleCol" prefWidth="100.0" text="Title" />
+                                                        <TableColumn fx:id="apptDescriptionCol" prefWidth="175.0" text="Description" />
+                                                        <TableColumn fx:id="apptLocationCol" minWidth="6.0" prefWidth="100.0" text="Location" />
+                                                        <TableColumn fx:id="apptContactCol" prefWidth="150.0" text="Contact" />
+                                                        <TableColumn fx:id="apptTypeCol" prefWidth="125.0" text="Type" />
+                                                        <TableColumn fx:id="apptStartTimeCol" minWidth="44.0" prefWidth="125.0" text="Start Date/Time" />
+                                                        <TableColumn fx:id="apptEndTimeCol" minWidth="26.4000244140625" prefWidth="125.0" text="End Date/Time" />
+                                                        <TableColumn fx:id="apptCustomerIDCol" editable="false" prefWidth="100.0" text="Customer_ID" />
+                                                        <TableColumn fx:id="apptUserIDCol" prefWidth="50.0" text="User_ID" />
+                                                    </columns>
+                                                </TableView>
+                                                <HBox alignment="CENTER">
+                                                    <children>
+                                                        <Button fx:id="addApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionAddAppt" text="Add Appointment" textFill="#0009ff">
+                                                            <HBox.margin>
+                                                                <Insets left="10.0" right="10.0" />
+                                                            </HBox.margin>
+                                                            <padding>
+                                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                            </padding>
+                                                        </Button>
+                                                        <Button fx:id="modifyApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionModAppt" text="Modify Appointment" textFill="#0009ff">
+                                                            <HBox.margin>
+                                                                <Insets left="10.0" right="10.0" />
+                                                            </HBox.margin>
+                                                            <padding>
+                                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                            </padding>
+                                                        </Button>
+                                                        <Button fx:id="cancelApptButton" alignment="CENTER" mnemonicParsing="false" onAction="#onActionCancelAppt" text="Cancel Appointment" textFill="#0009ff">
+                                                            <HBox.margin>
+                                                                <Insets left="10.0" right="10.0" />
+                                                            </HBox.margin>
+                                                            <padding>
+                                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                            </padding>
+                                                        </Button>
+                                                        <Button fx:id="reportsButton" mnemonicParsing="false" onAction="#onActionLoadReports" text="Reports" textFill="#0009ff">
+                                                            <padding>
+                                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                            </padding>
+                                                            <HBox.margin>
+                                                                <Insets left="10.0" right="10.0" />
+                                                            </HBox.margin>
+                                                        </Button>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER">
+                                                    <children>
+                                                        <RadioButton fx:id="weekSelect" mnemonicParsing="false" onAction="#onActionSelectWeek" text="Sort By Week">
+                                                            <HBox.margin>
+                                                                <Insets right="50.0" />
+                                                            </HBox.margin></RadioButton>
+                                                        <RadioButton fx:id="monthSelect" mnemonicParsing="false" onAction="#onActionSelectMonth" text="Sort By Month">
+                                                            <padding>
+                                                                <Insets left="10.0" right="10.0" />
+                                                            </padding>
+                                                        </RadioButton>
+                                                        <RadioButton fx:id="allButton" mnemonicParsing="false" text="Show All">
+                                                            <padding>
+                                                                <Insets left="10.0" right="10.0" />
+                                                            </padding>
+                                                        </RadioButton>
+                                                    </children>
+                                       <padding>
+                                          <Insets top="20.0" />
+                                       </padding>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Customers">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <VBox alignment="TOP_CENTER" prefHeight="462.0" prefWidth="1102.0">
+                                            <children>
+                                                <TableView fx:id="customersTableView" prefHeight="407.0" prefWidth="1093.0">
+                                                    <columns>
+                                                        <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="Customer ID" />
+                                                        <TableColumn fx:id="customerNameCol" prefWidth="200.0" text="Customer Name" />
+                                                        <TableColumn fx:id="customerAddyCol" prefWidth="250.0" text="Customer Address" />
+                                                        <TableColumn fx:id="customerZipCol" prefWidth="100.0" text="ZIP Code" />
+                                                        <TableColumn fx:id="customerPhoneCol" prefWidth="150.0" text="Customer Phone" />
+                                          <TableColumn fx:id="customerDivisionCol" prefWidth="75.0" text="Division" />
+                                                    </columns>
+                                                    <VBox.margin>
+                                                        <Insets top="10.0" />
+                                                    </VBox.margin>
+                                                </TableView>
+                                    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1200.0">
+                                       <children>
+                                                      <Button fx:id="addCustomerButton" mnemonicParsing="false" onAction="#onActionAddCustomer" text="Add New Customer" textFill="#0009ff">
+                                                          <padding>
+                                                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                          </padding>
+                                             <HBox.margin>
+                                                <Insets right="20.0" />
+                                             </HBox.margin>
+                                                      </Button>
+                                          <Button fx:id="modCustomerButton" mnemonicParsing="false" onAction="#onActionModifyCustomer" text="Modify Customer" textFill="#0009ff" />
+                                                      <Button fx:id="deleteCustomerButton" mnemonicParsing="false" onAction="#onActionDeleteCustomer" text="Delete Customer" textFill="#0009ff">
+                                                          <padding>
+                                                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                          </padding>
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                                      </Button>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children></AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

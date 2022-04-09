@@ -8,6 +8,7 @@ public class Divisions {
     public Divisions(int divisionID, String divisionName) {
         this.divisionID = divisionID;
         this.divisionName = divisionName;
+
     }
 
     public int getDivisionID() {

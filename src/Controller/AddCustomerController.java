@@ -102,7 +102,10 @@ public class AddCustomerController implements Initializable {
 //Handles populating the country and division comboboxes
     public void handleCountryComboBox(ActionEvent actionEvent){
 
-        if(customerCountry.getSelectionModel().getSelectedItem() != null) {
+        String selectedCustomerCountry = customerCountry.getValue().toString();
+        customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
+
+/*        if(customerCountry.getSelectionModel().getSelectedItem() != null) {
             Object selectedCountry = customerCountry.getSelectionModel().getSelectedItem();
             String countryDivision = selectedCountry.toString();
 
@@ -113,7 +116,7 @@ public class AddCustomerController implements Initializable {
             } else if (countryDivision.equalsIgnoreCase("Canada")) {
                 customerDivision.setItems(getCanadaDivisionNames());
             }
-        }
+        }*/
     }
 
 
@@ -137,7 +140,7 @@ public class AddCustomerController implements Initializable {
     }
 
 //Retrieves the country names from the database
-    public ObservableList<String> allCountryNames(){
+/*    public ObservableList<String> allCountryNames(){
         ObservableList<String> allCountryNames = FXCollections.observableArrayList();
         for (Countries allCountry : allCountries) {
             String countryName;
@@ -145,7 +148,7 @@ public class AddCustomerController implements Initializable {
             allCountryNames.add(countryName);
         }
         return allCountryNames;
-    }
+    }*/
 
 //Handler for the division combobox.
     public int handleDivisionComboBox(ActionEvent actionEvent){
@@ -162,7 +165,7 @@ public class AddCustomerController implements Initializable {
         return retrieveDivisionID;
     }
 
-//US division selections
+/*//US division selections
     public ObservableList<String> getUSDivisionNames(){
         ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
         for (Divisions divisions : usDivisionsList) {
@@ -193,7 +196,7 @@ public class AddCustomerController implements Initializable {
             UKDivisionNames.add(british);
         }
         return UKDivisionNames;
-    }
+    }*/
 
 
 //Exit to the main screen
@@ -212,12 +215,41 @@ public class AddCustomerController implements Initializable {
         }
     }
 
+    public ObservableList countryList(){
+        ObservableList<String> countries = FXCollections.observableArrayList();
+
+        for(Countries country : DaoCountries.getAllCountries()){
+            countries.add(country.getName());
+        }
+        return countries;
+    }
+
+    public ObservableList divisionList(){
+        ObservableList<String> divisions = FXCollections.observableArrayList();
+
+        for(Divisions division : DaoDivisions.getAllDivisions()){
+            divisions.add(division.getDivisionName());
+        }
+        return divisions;
+    }
+
+    public ObservableList divisionsByCountry(String modCustomerCountry){
+        ObservableList<String> divisions = FXCollections.observableArrayList();
+
+        for(String divisionName : DaoDivisions.getAllByCountry(modCustomerCountry)){
+            divisions.add(divisionName);
+        }
+        return divisions;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        customerCountry.setItems(countryList());
+        customerDivision.setItems(divisionList());
+
         //Initializes the customer/country combobox
-        customerCountry.getItems().addAll(allCountryNames());
+       // customerCountry.getItems().addAll(allCountryNames());
         userCombo.getItems().addAll(allUserNames());
 
 
