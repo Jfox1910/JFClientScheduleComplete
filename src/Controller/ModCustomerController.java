@@ -266,7 +266,6 @@ public class ModCustomerController implements Initializable{
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
-        //int modCustomerDivision = customerDivision.getSelectionModel().getSelectedIndex();
         int modCustomerDivision = DaoDivisions.getAllDivisionsByName(customerDivision.getValue().toString());
 
 
@@ -295,7 +294,7 @@ public class ModCustomerController implements Initializable{
             }
     }
 
-
+//Loads the modify customer screen fields with the information of the selected customer.
     public void getCustomer(Customers customers){
         CustomerID.setText(String.valueOf(customers.getCustomerId()));
         CustomerName.setText(String.valueOf(customers.getCustomerName()));
@@ -303,8 +302,7 @@ public class ModCustomerController implements Initializable{
         CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
         CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
         customerCountry.setValue(DaoCustomers.getCountry(customers));
-        //customerDivision.setValue(customers.getDivisionName());
-        customerDivision.setValue(customers.getCustomerDivision());
+        customerDivision.setValue(customers.getDivisionName());
 
     }
 

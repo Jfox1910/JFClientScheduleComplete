@@ -2,6 +2,7 @@ package Controller;
 
 import Dao.*;
 import Model.*;
+import Model.loginUser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +32,7 @@ public class AddCustomerController implements Initializable {
     @FXML private ComboBox customerCountry;
     @FXML private ComboBox customerDivision;
     @FXML private ComboBox userCombo;
+    loginUser loginuser;
 
     int retrieveDivisionID = 0;
     int retrieveUserID = 0;
@@ -55,7 +57,7 @@ public class AddCustomerController implements Initializable {
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
         int divisionID = retrieveDivisionID;
-        userCombo.getSelectionModel().getSelectedItem();
+        loginUser loginUser = DaoLogin.getLoggedInUser();
         System.out.println(retrieveUserID);
         int userID = retrieveUserID;
 
@@ -122,7 +124,7 @@ public class AddCustomerController implements Initializable {
 
 //Handles populating the user combobox
 
-    public void handleUserCombobox(ActionEvent actionEvent){
+/*    public void handleUserCombobox(ActionEvent actionEvent){
 
         Object selectedUser = userCombo.getSelectionModel().getSelectedItem();
         String allUserNames = selectedUser.toString();
@@ -137,7 +139,7 @@ public class AddCustomerController implements Initializable {
             loginName = allUsers.getUserName();
             allUserNames.add(loginName);
         }return allUserNames;
-    }
+    }*/
 
 //Retrieves the country names from the database
 /*    public ObservableList<String> allCountryNames(){
@@ -250,7 +252,7 @@ public class AddCustomerController implements Initializable {
 
         //Initializes the customer/country combobox
        // customerCountry.getItems().addAll(allCountryNames());
-        userCombo.getItems().addAll(allUserNames());
+       // userCombo.getItems().addAll(allUserNames());
 
 
 

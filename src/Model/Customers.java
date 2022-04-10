@@ -1,10 +1,6 @@
 package Model;
 
-import Dao.DaoDivisions;
-import javafx.collections.ObservableList;
-
 import java.sql.Timestamp;
-import java.util.Optional;
 
 
 //Customer Class
@@ -24,7 +20,7 @@ import java.util.Optional;
 
 
 //Constructors
-        public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, String customerCreatedDate, String customerCreated, Timestamp customerUpdatedOn, String customerUpdatedBy, int customerDivision) {
+        public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, String customerCreatedDate, String customerCreated, Timestamp customerUpdatedOn, String customerUpdatedBy, int customerDivision, String divisionName) {
             this.customerId = customerId;
             this.customerName = customerName;
             this.customerAddy = customerAddy;
@@ -35,6 +31,8 @@ import java.util.Optional;
             this.customerUpdatedOn = customerUpdatedOn;
             this.customerUpdatedBy = customerUpdatedBy;
             this.customerDivision = customerDivision;
+            this.divisionName = divisionName;
+
 
         }
 
@@ -91,9 +89,7 @@ import java.util.Optional;
 
         public int getCustomerCountry() {return customerCountry;}
 
-        public int getCustomerDivision() {
-            return customerDivision;
-        }
+        public String getCustomerDivision() {return divisionName;}
 
         public String getDivisionName() {return divisionName;}
 

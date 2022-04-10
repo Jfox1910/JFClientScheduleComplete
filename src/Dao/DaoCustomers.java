@@ -33,7 +33,8 @@ public class DaoCustomers {
                 String customerLastUpdatedBy = rs.getString("Last_Updated_By");
                 int customerDivision = rs.getInt("Division_ID");
 
-                Customers customers = new Customers(customerId,customerName,customerAddress,customerPostalCode,customerPhone,customerCreateDate,customerCreatedBy,customerLastUpdate,customerLastUpdatedBy,customerDivision);
+                String divisionName = DaoDivisions.getDivisionName(customerDivision);
+                Customers customers = new Customers(customerId,customerName,customerAddress,customerPostalCode,customerPhone,customerCreateDate,customerCreatedBy,customerLastUpdate,customerLastUpdatedBy,customerDivision,divisionName);
                 customerList.add(customers);
             }
         } catch (SQLException throwables) {
@@ -42,7 +43,6 @@ public class DaoCustomers {
         return customerList;
     }
 
-    //TODO FIX DIVISION TO NAME
 
     public static Integer getCustomerDivision(Customers customers){
         int customerID = customers.getCustomerId();

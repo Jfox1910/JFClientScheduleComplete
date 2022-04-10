@@ -111,6 +111,22 @@ public class DaoDivisions {
         return countryID;
     }
 
+    public static String getDivisionName(int divisionID){
+        String divisionName = null;
+        try {
+            String sql = "SELECT Division FROM client_schedule.first_level_divisions WHERE Division_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, divisionID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                divisionName = rs.getString("Division");
+            }
+
+        } catch (SQLException throwables){
+            throwables.printStackTrace();;
+        }
+        return divisionName;
+    }
 
     public static ObservableList<String> getAllByCountry(String modCustomerCountry){
         ObservableList<String>division = FXCollections.observableArrayList();

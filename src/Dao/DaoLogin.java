@@ -1,7 +1,6 @@
 package Dao;
 
 import Model.loginUser;
-//import utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
@@ -10,12 +9,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-//This is the DAO class that checks the user table for the correct login credentials and stores it in an OL.
+/**This is the DAO class that checks the user table for the correct login credentials and stores it in an OL.
+ *
+ */
 public class DaoLogin {
 
     private static loginUser loggedInUser;
     public static loginUser getLoggedInUser(){return loggedInUser;}
 
+    /** Get all users from the user table in the DB
+     *
+     * @return list of all customers from the DB
+     */
     public static ObservableList<loginUser> getAllUsers(){
         ObservableList<loginUser> userList = FXCollections.observableArrayList();
 
@@ -41,6 +46,12 @@ public class DaoLogin {
         return userList;
     }
 
+    /** Gets the currently logged in user for use in logging who added and edited information.
+     *
+     * @param username
+     * @param password
+     * @return the currently logged in user Ie; test or admin
+     */
     public static boolean loggedInUser(String username, String password) {
         try {
             String sqlQuery = "select 1 from users where User_Name = ? and Password = ?;";
@@ -53,5 +64,9 @@ public class DaoLogin {
         } catch (SQLException e){
             return false;
         }
+    }
+    public static loginUser getCurrentUser()
+    {
+        return loggedInUser;
     }
 }
