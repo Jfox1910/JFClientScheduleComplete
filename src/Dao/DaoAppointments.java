@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import Dao.DaoCustomers;
 
@@ -17,6 +14,7 @@ import Dao.DaoCustomers;
  */
 public final class DaoAppointments {
 
+    private static final Connection connection = JDBC.getConnection();
     public static DaoCustomers customer;
 
     public static ObservableList<Appointments> getAllAppointments(){
@@ -53,15 +51,50 @@ public final class DaoAppointments {
         return appointments;
     }
 
+    public static void newAppointment(String title, String description, String location, String type, int customerDivision){
+
+//Selects the highest existing appointment ID then adds 1 to it to increment sequentially.
+        try {
+            int appointmentID = 1;
+            try {
+                Statement id = connection.createStatement();
+                ResultSet rs = id.executeQuery("select max(Appointment_ID) as Last_Appointment from appointments");
+                if (rs.next()) {
+                    appointmentID = rs.getInt("Last_Appointment") + 1;
+                }
+                id.close();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+
+            String sql = "INSERT INTO appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Create_Date = now(), Created_By = ?, last_update = now(), last_updated_by = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ?;";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+            ps.setInt(1, appointmentID);
+            ps.setString(2,title);
+            ps.setString(3,description);
+            ps.setString(4,location);
+            ps.setString(5,type);
+            //ps.setInt(6, userID);
+            ps.setString(7, JDBC.getLoginUser());
+            ps.setInt(8, customerDivision);
+
+            ps.execute();
+            ps.close();
+            getAllAppointments();
+
+        } catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
+
     public static void deleteAppointment(int appointmentID) {
         try {
 
-            //SQL statement
-            String sqldc = "DELETE from appointments where Appointment_ID = ?";
+            String sql = "DELETE from appointments where Appointment_ID = ?";
 
-            //Create a PreparedStatement
-            PreparedStatement psdc = JDBC.getConnection().prepareStatement(sqldc);
-            //add question mark
+            PreparedStatement psdc = JDBC.getConnection().prepareStatement(sql);
             psdc.setInt(1, appointmentID);
 
             psdc.execute();
