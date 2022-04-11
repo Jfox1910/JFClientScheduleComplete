@@ -19,13 +19,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.Date;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.time.ZoneId;
+
+/**
+ * Login screen controller class. Accepts the users name and password, connects to the DB and verifies if they exist. If they do then it opens the application.
+ * If not an error message alerts the user to the problem. Displays in French if needed.
+ * Logs the username, password and time to a textfile called LoginAttempts.txt stored in the SRC folder
+ */
 
 public class LoginScreenController implements Initializable {
 
+    public Label mainLabel;
+    public Label locationLabel;
     public TextField usernameTextField;
     public PasswordField usernamePasswordField;
     public Button loginButton;
@@ -35,6 +41,7 @@ public class LoginScreenController implements Initializable {
     private static final String reportsFile = "LoginAttempts.txt";
     boolean loginSuccess = false;
     private final String userLocation = ZoneId.systemDefault().getId();
+    private ResourceBundle rb;
 
     private Stage stage;
     private Scene scene;
@@ -107,9 +114,23 @@ public class LoginScreenController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
+    public void initialize(URL location, ResourceBundle resources) {
         userLocale.setText(userLocation);
 
+/**
+ * Initializes the language selection when the default language is French
+ */
+        try {
+            rb = ResourceBundle.getBundle("utils/MessagesBundle",Locale.getDefault());
+            System.out.println(rb.getString("username"));
+            mainLabel.setText(rb.getString("mainlabel"));
+            usernameTextField.setPromptText(rb.getString("username"));
+            usernamePasswordField.setPromptText(rb.getString("password"));
+            loginButton.setText(rb.getString("loginbutton"));
+            cancelButton.setText(rb.getString("cancelbutton"));
+            locationLabel.setText(rb.getString("Location"));
+        }catch (MissingResourceException e){
+
+        }
     }
 }

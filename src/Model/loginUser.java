@@ -9,27 +9,14 @@ public class loginUser {
     private String lastUpdatedBy;
     private String lastUpdatedOn;
 
-    public String getLoggedInUser = userName;
-    public String getSystemAdmin = userName;
-
     //Constructor
     public loginUser(int userId, String userName, String password){
         this.userId = userId;
         this.userName = userName;
         this.userPassword = password;
-        this.createdBy = userName;
     }
-
-    public loginUser(String systemAdmin) {
-        this.userName = systemAdmin;
-    }
-
 
     //Getters
-    public String getSystemAdmin() {return getSystemAdmin;}
-
-    public String getLoggedInUser() {return getLoggedInUser;}
-
     public int getUserId() {return userId;}
 
     public String getUserName() {return userName;}
@@ -44,14 +31,10 @@ public class loginUser {
 
     public String getLastUpdatedOn() {return lastUpdatedOn;}
 
+    public String userNameString() {return this.userName;}
+
 
     //Setters
-
-
-    public void setGetSystemAdmin(String getSystemAdmin) {this.getSystemAdmin = getSystemAdmin;}
-
-    public void setGetLoggedInUser(String getLoggedInUser) {this.getLoggedInUser = getLoggedInUser;}
-
     public void setUserId(int userId) {this.userId = userId;}
 
     public void setUserName(String userName) {this.userName = userName;}

@@ -460,7 +460,6 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize (URL location, ResourceBundle resources){
 
-
 //Initializes the customer/country combobox
 
 //Appointment table initialization. Loads the columns with the information from the DB appointments table

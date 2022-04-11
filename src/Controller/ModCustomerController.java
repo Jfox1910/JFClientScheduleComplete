@@ -41,23 +41,24 @@ public class ModCustomerController implements Initializable{
     private Scene scene;
     private Parent root;
 
-    private final Customers customerAppt = Appointments.customers;
     private Customers customers = MainScreenController.getSelectedCustomer();
-    int retrieveDivisionID = 0;
 
+    int retrieveDivisionID = 0;
     public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
     public ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
     public ObservableList<Appointments> allAppointments = DaoAppointments.getAllAppointments();
-
-    //private ObservableList<Customers> customers;
-
-    private ObservableList<Appointments> appointments;
-
     private final ObservableList<Countries> countries = FXCollections.observableArrayList();
     private final ObservableList<String> divID = FXCollections.observableArrayList();
+
+
     private final Customers modifyCustomer = AddApptController.customers;
+    private ObservableList<Appointments> appointments;
+
+    private final Customers customerAppt = Appointments.customers;
+
+
 
 
 //Exits back to the main screen
@@ -258,7 +259,7 @@ public class ModCustomerController implements Initializable{
     }*/
 
 
-//Collects the information from the fields and updates the customer in the database
+//Collects the information from the fields and updates the customer in the database. Alerts the user if the fields aren't filled and when a customer is being updated.
     public void onActionUpdateCustomer(ActionEvent actionEvent) throws IOException {
 
         int customerId = Integer.parseInt(CustomerID.getText());
@@ -268,7 +269,13 @@ public class ModCustomerController implements Initializable{
         String customerPhone = CustomerPhone.getText();
         int modCustomerDivision = DaoDivisions.getAllDivisionsByName(customerDivision.getValue().toString());
 
-
+if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty() || customerPhone.isEmpty() || customerDivision.getItems().isEmpty()){
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("Attention!");
+    alert.setContentText("All customer fields must be filled before saving.");
+    alert.showAndWait();
+}else
+{
 //Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer then reloads the main table.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Updating an existing customer.");
@@ -292,7 +299,9 @@ public class ModCustomerController implements Initializable{
                 stage.setScene(scene);
                 stage.show();
             }
+        }
     }
+
 
 //Loads the modify customer screen fields with the information of the selected customer.
     public void getCustomer(Customers customers){
@@ -305,8 +314,6 @@ public class ModCustomerController implements Initializable{
         customerDivision.setValue(customers.getDivisionName());
 
     }
-
-
 
 
     @Override

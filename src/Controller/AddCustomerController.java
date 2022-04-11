@@ -62,7 +62,7 @@ public class AddCustomerController implements Initializable {
         int userID = retrieveUserID;
 
 //Check that a name, address and phone has been entered and gives an alert if it isn't there.
-        if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty()){
+        if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty() || customerDivision.getItems().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
             alert.setContentText("All customer fields must be filled before saving.");
@@ -70,7 +70,9 @@ public class AddCustomerController implements Initializable {
         }else
         {
 
-//popup confirmation using a LAMBDA EXPRESSION confirming that a customer is about to be added.
+/**popup confirmation using a LAMBDA EXPRESSION confirming that a customer is about to be added.
+ *
+ */
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
             alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
@@ -217,6 +219,7 @@ public class AddCustomerController implements Initializable {
         }
     }
 
+
     public ObservableList countryList(){
         ObservableList<String> countries = FXCollections.observableArrayList();
 
@@ -226,14 +229,14 @@ public class AddCustomerController implements Initializable {
         return countries;
     }
 
-    public ObservableList divisionList(){
+/*    public ObservableList divisionList(){
         ObservableList<String> divisions = FXCollections.observableArrayList();
 
-        for(Divisions division : DaoDivisions.getAllDivisions()){
+        for(Divisions division : DaoDivisions.getUsStates()){
             divisions.add(division.getDivisionName());
         }
         return divisions;
-    }
+    }*/
 
     public ObservableList divisionsByCountry(String modCustomerCountry){
         ObservableList<String> divisions = FXCollections.observableArrayList();
@@ -247,15 +250,10 @@ public class AddCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        /**
+         * Initializes the country combobox which then sets the division combobox
+         */
         customerCountry.setItems(countryList());
-        customerDivision.setItems(divisionList());
-
-        //Initializes the customer/country combobox
-       // customerCountry.getItems().addAll(allCountryNames());
-       // userCombo.getItems().addAll(allUserNames());
-
-
-
 
 
     }

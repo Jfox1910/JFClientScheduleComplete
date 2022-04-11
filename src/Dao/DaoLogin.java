@@ -31,7 +31,6 @@ public class DaoLogin {
 
             while (rs.next()) {
 
-
                 int loginId = rs.getInt("User_ID");
                 String loginName = rs.getString("User_Name");
                 String loginPassword = rs.getString("Password");
@@ -46,12 +45,6 @@ public class DaoLogin {
         return userList;
     }
 
-    /** Gets the currently logged in user for use in logging who added and edited information.
-     *
-     * @param username
-     * @param password
-     * @return the currently logged in user Ie; test or admin
-     */
     public static boolean loggedInUser(String username, String password) {
         try {
             String sqlQuery = "select 1 from users where User_Name = ? and Password = ?;";
@@ -64,9 +57,5 @@ public class DaoLogin {
         } catch (SQLException e){
             return false;
         }
-    }
-    public static loginUser getCurrentUser()
-    {
-        return loggedInUser;
     }
 }

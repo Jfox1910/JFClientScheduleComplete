@@ -10,7 +10,7 @@
         <Insets bottom="10.0" top="50.0" />
     </padding>
     <children>
-        <Label alignment="CENTER" text="ONLINE SCHEDULING SYSTEM" textFill="#2600ff">
+        <Label fx:id="mainLabel" alignment="CENTER" text="ONLINE SCHEDULING SYSTEM" textFill="#2600ff">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
@@ -32,7 +32,7 @@
             </children></VBox>
         <HBox alignment="TOP_CENTER" prefHeight="30.0">
             <children>
-                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onActionLogin" prefWidth="70.0" text="LOGIN" textAlignment="CENTER">
+                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onActionLogin" text="LOGIN" textAlignment="CENTER">
                     <HBox.margin>
                         <Insets right="10.0" />
                     </HBox.margin></Button>
@@ -43,7 +43,7 @@
             </children></HBox>
         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
             <children>
-                <Label text="User Location:" />
+                <Label fx:id="locationLabel" text="User Location:" />
             <Label fx:id="userLocale" />
             </children>
         </VBox>
