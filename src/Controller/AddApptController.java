@@ -50,7 +50,11 @@ public class AddApptController implements Initializable {
     String user = null;
 
 
-    //Exit to the main screen
+    /**
+     * Exits back to the main screen
+     * @param event
+     * @throws IOException
+     */
     public void onActionMainScreen(javafx.event.ActionEvent event) throws IOException{
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -78,12 +82,14 @@ public class AddApptController implements Initializable {
         String location = locationField.getText();
         String description = descriptionField.getText();
         String type = typeField.getText();
-        String user = userComboBox.getSelectionModel().toString();
+        String user = userComboBox.getValue().toString();
+        String customer = customerCombobox.getValue().toString();
+
 
         /**
          * Check that a name, address and phone has been entered and gives an alert if it isn't there.
          */
-        if (title.isEmpty() || location.isEmpty() || description.isEmpty() || type.isEmpty() || user.isEmpty()){
+        if (title.isEmpty() || location.isEmpty() || description.isEmpty() || type.isEmpty() || user.isEmpty() || customer.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
             alert.setContentText("All fields must be filled before saving.");
