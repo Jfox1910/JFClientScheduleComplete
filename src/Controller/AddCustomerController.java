@@ -31,7 +31,6 @@ public class AddCustomerController implements Initializable {
     @FXML private TextField CustomerPhone;
     @FXML private ComboBox customerCountry;
     @FXML private ComboBox customerDivision;
-    @FXML private ComboBox userCombo;
     loginUser loginuser;
 
     int retrieveDivisionID = 0;
@@ -48,10 +47,17 @@ public class AddCustomerController implements Initializable {
     private Scene scene;
     private Parent root;
 
-//Add a customer method (Contained within the customer tab)
+
+    /**
+     * Add a customer method (Contained within the customer tab)
+     * @param event
+     * @throws IOException
+     */
     public void onActionSaveCustomer(ActionEvent event) throws IOException {
 
-//Retrieves the customer's info from the fields.
+    /**
+    * Retrieves the customer's info from the fields.
+    */
         String customerName = CustomerName.getText();
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
@@ -61,7 +67,9 @@ public class AddCustomerController implements Initializable {
         System.out.println(retrieveUserID);
         int userID = retrieveUserID;
 
-//Check that a name, address and phone has been entered and gives an alert if it isn't there.
+    /**
+    * Check that a name, address and phone has been entered and gives an alert if it isn't there.
+    */
         if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty() || customerDivision.getItems().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
@@ -70,9 +78,9 @@ public class AddCustomerController implements Initializable {
         }else
         {
 
-/**popup confirmation using a LAMBDA EXPRESSION confirming that a customer is about to be added.
- *
- */
+    /**
+    *Popup confirmation using a LAMBDA EXPRESSION confirming that a customer is about to be added.
+    */
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
             alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
@@ -81,7 +89,9 @@ public class AddCustomerController implements Initializable {
                     DaoCustomers.newCustomer(userID, customerName, customerAddress, customerZip, customerPhone, divisionID);
 
 
-//Confirmation that the customer has been added.
+    /**
+    * Confirmation that the customer has been added.
+    */
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("Success!");
                     alert2.setContentText(CustomerName.getText() + " has been added.");
@@ -103,58 +113,22 @@ public class AddCustomerController implements Initializable {
     }
 
 
-//Handles populating the country and division comboboxes
+    /**
+     * Handles populating the country and division comboboxes
+     * @param actionEvent
+     */
     public void handleCountryComboBox(ActionEvent actionEvent){
-
         String selectedCustomerCountry = customerCountry.getValue().toString();
         customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
 
-/*        if(customerCountry.getSelectionModel().getSelectedItem() != null) {
-            Object selectedCountry = customerCountry.getSelectionModel().getSelectedItem();
-            String countryDivision = selectedCountry.toString();
-
-            if (countryDivision.equalsIgnoreCase("U.S")) {
-                customerDivision.setItems(getUSDivisionNames());
-            } else if (countryDivision.equalsIgnoreCase("UK")) {
-                customerDivision.setItems(getUKDivisionNames());
-            } else if (countryDivision.equalsIgnoreCase("Canada")) {
-                customerDivision.setItems(getCanadaDivisionNames());
-            }
-        }*/
     }
 
 
-//Handles populating the user combobox
-
-/*    public void handleUserCombobox(ActionEvent actionEvent){
-
-        Object selectedUser = userCombo.getSelectionModel().getSelectedItem();
-        String allUserNames = selectedUser.toString();
-
-        allUserNames.equalsIgnoreCase("User_Name");
-    }
-
-    public ObservableList<String> allUserNames(){
-        ObservableList<String> allUserNames = FXCollections.observableArrayList();
-        for (loginUser allUsers : allTheUsers){
-            String loginName;
-            loginName = allUsers.getUserName();
-            allUserNames.add(loginName);
-        }return allUserNames;
-    }*/
-
-//Retrieves the country names from the database
-/*    public ObservableList<String> allCountryNames(){
-        ObservableList<String> allCountryNames = FXCollections.observableArrayList();
-        for (Countries allCountry : allCountries) {
-            String countryName;
-            countryName = allCountry.getName();
-            allCountryNames.add(countryName);
-        }
-        return allCountryNames;
-    }*/
-
-//Handler for the division combobox.
+    /**
+     * Handler for the division combobox.
+     * @param actionEvent
+     * @return retrieveDivisionID
+     */
     public int handleDivisionComboBox(ActionEvent actionEvent){
         if(customerDivision.getSelectionModel().getSelectedItem() != null) {
             Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
@@ -169,41 +143,12 @@ public class AddCustomerController implements Initializable {
         return retrieveDivisionID;
     }
 
-/*//US division selections
-    public ObservableList<String> getUSDivisionNames(){
-        ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
-        for (Divisions divisions : usDivisionsList) {
-            String americans;
-            americans = divisions.getDivisionName();
-            USDivisionNames.add(americans);
-        }
-        return USDivisionNames;
-    }
 
-//Canadian division selections
-    public ObservableList<String> getCanadaDivisionNames(){
-        ObservableList<String> CanadaDivisionNames = FXCollections.observableArrayList();
-        for (Divisions divisions : canadianDivisionList) {
-            String canadians;
-            canadians = divisions.getDivisionName();
-            CanadaDivisionNames.add(canadians);
-        }
-        return CanadaDivisionNames;
-    }
-
-//UK division selections
-    public ObservableList<String> getUKDivisionNames(){
-        ObservableList<String> UKDivisionNames = FXCollections.observableArrayList();
-        for (Divisions divisions : UKDivisionList) {
-            String british;
-            british = divisions.getDivisionName();
-            UKDivisionNames.add(british);
-        }
-        return UKDivisionNames;
-    }*/
-
-
-//Exit to the main screen
+    /**
+     * Exits to the main screen
+     * @param event
+     * @throws IOException
+     */
     public void onActionMainScreen(ActionEvent event) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -220,6 +165,10 @@ public class AddCustomerController implements Initializable {
     }
 
 
+    /**
+     * An observable list holding the countries from the database. Used to initialize the "Country" combobox.
+     * @return countries
+     */
     public ObservableList countryList(){
         ObservableList<String> countries = FXCollections.observableArrayList();
 
@@ -229,15 +178,11 @@ public class AddCustomerController implements Initializable {
         return countries;
     }
 
-/*    public ObservableList divisionList(){
-        ObservableList<String> divisions = FXCollections.observableArrayList();
 
-        for(Divisions division : DaoDivisions.getUsStates()){
-            divisions.add(division.getDivisionName());
-        }
-        return divisions;
-    }*/
-
+    /**
+     * An observable list holding the divisions from the database. Used to initialize the "Division" combobox.
+     * @return divisions
+     */
     public ObservableList divisionsByCountry(String modCustomerCountry){
         ObservableList<String> divisions = FXCollections.observableArrayList();
 
@@ -247,12 +192,15 @@ public class AddCustomerController implements Initializable {
         return divisions;
     }
 
+
+    /**
+     * Initializes the country combobox which then sets the division combobox
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        /**
-         * Initializes the country combobox which then sets the division combobox
-         */
         customerCountry.setItems(countryList());
 
 

@@ -26,6 +26,10 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+
+/**
+ * The Modify Customer Controller Class
+ */
 public class ModCustomerController implements Initializable{
 
 
@@ -43,8 +47,7 @@ public class ModCustomerController implements Initializable{
 
     private Customers customers = MainScreenController.getSelectedCustomer();
 
-    int retrieveDivisionID = 0;
-    public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
+    /*public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
     public ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
@@ -52,16 +55,17 @@ public class ModCustomerController implements Initializable{
     private final ObservableList<Countries> countries = FXCollections.observableArrayList();
     private final ObservableList<String> divID = FXCollections.observableArrayList();
 
-
     private final Customers modifyCustomer = AddApptController.customers;
     private ObservableList<Appointments> appointments;
 
-    private final Customers customerAppt = Appointments.customers;
+    private final Customers customerAppt = Appointments.customers;*/
 
 
-
-
-//Exits back to the main screen
+    /**
+     * Exits back to the main screen
+     * @param event
+     * @throws IOException
+     */
     public void onActionMainScreen(ActionEvent event) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -78,143 +82,20 @@ public class ModCustomerController implements Initializable{
     }
 
 
-//ALL country names
-/*    public ObservableList<String> getAllCountryNames(){
-        ObservableList<String> allCountryNames = FXCollections.observableArrayList();
-        for(int i = 0; i < allCountries.size(); i++)
-        {
-            String countryName;
-            countryName = allCountries.get(i).getName();
-            allCountryNames.add(countryName);
-        }return allCountryNames;
-    }
-//US States
-    public ObservableList<String> getUSDivisionNames(){
-        ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
-        for(int i = 0; i < usDivisionsList.size(); i++)
-        {String americans;
-            americans = usDivisionsList.get(i).getDivisionName();
-            USDivisionNames.add(americans);
-        }return USDivisionNames;
-    }
-//CANADIAN Territories
-    public ObservableList<String> getCanadaDivisionNames(){
-        ObservableList<String> CanadaDivisionNames = FXCollections.observableArrayList();
-        for(int i = 0; i < canadianDivisionList.size(); i++)
-        {String canadians;
-            canadians = canadianDivisionList.get(i).getDivisionName();
-            CanadaDivisionNames.add(canadians);
-        }return CanadaDivisionNames;
-    }
-//UK Territories
-    public ObservableList<String> getUKDivisionNames(){
-        ObservableList<String> UKDivisionNames = FXCollections.observableArrayList();
-        for(int i = 0; i < UKDivisionList.size(); i++)
-        {String british;
-            british = UKDivisionList.get(i).getDivisionName();
-            UKDivisionNames.add(british);
-        }return UKDivisionNames;
-    }*/
-
-
-//Handles populating the COUNTRY combobox customer tableview
+    /**
+     * Handles populating the COUNTRY combobox customer tableview
+     */
     public void handleCountryComboBox(){
 
         String selectedCustomerCountry = customerCountry.getValue().toString();
         customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
-
-/*        String getCountry;
-        String getDivision = null;
-        ObservableList<Divisions> selectedCustomerDiv;
-        int customerDiv = customers.getCustomerDivision();
-        if (customerDiv <= 54) {
-            selectedCustomerDiv = DaoDivisions.getUsStates();
-            for (Divisions divisions : selectedCustomerDiv) {
-                if (divisions.getDivisionID() == customerDiv) {
-                    getDivision = divisions.getDivisionName();
-                }
-            }
-            getCountry = "U.S";
-        } else if (customerDiv > 55 && customerDiv < 99) {
-            getCountry = "Canada";
-            selectedCustomerDiv = DaoDivisions.getCanadianTerritories();
-            for (Divisions divisions : selectedCustomerDiv) {
-                if (divisions.getDivisionID() == customerDiv) {
-                    getDivision = divisions.getDivisionName();
-                }
-            }
-        } else {
-            getCountry = "UK";
-            selectedCustomerDiv = DaoDivisions.getUKTerritories();
-            for (Divisions divisions : selectedCustomerDiv) {
-                if (divisions.getDivisionID() == customerDiv) {
-                    getDivision = divisions.getDivisionName();
-                }
-
-            }
-        }*/
-
-
     }
 
-        /*String selectedCountry = customerCountry.getValue().toString();
-        customerDivision.setItems(divisionsByCountry(selectedCountry));
 
-        if(customerDivision.getItems().isEmpty()){
-            customerDivision.setDisable(true);
-        }
-        else{
-            customerDivision.setDisable(false);
-        }*/
-        //if(customerCountry.getSelectionModel().getSelectedItem() != null) {
-
-
-/*            Object selectedCountry = customerCountry.getSelectionModel().getSelectedItem();
-            String countryDivision = selectedCountry.toString();
-
-            if (countryDivision.equalsIgnoreCase("U.S")) {
-                customerDivision.setItems(getUSDivisionNames());
-            } else if (countryDivision.equalsIgnoreCase("UK")) {
-                customerDivision.setItems(getUKDivisionNames());
-            } else if (countryDivision.equalsIgnoreCase("Canada")) {
-                customerDivision.setItems(getCanadaDivisionNames());
-            }
-        //}
-    }
-    //US division selections
-    public ObservableList<String> getUSDivisionNames(){
-        ObservableList<String> USDivisionNames = FXCollections.observableArrayList();
-        for (Divisions divisions : usDivisionsList) {
-            String americans;
-            americans = divisions.getDivisionName();
-            USDivisionNames.add(americans);
-        }
-        return USDivisionNames;
-    }
-
-    //Canadian division selections
-    public ObservableList<String> getCanadaDivisionNames(){
-        ObservableList<String> CanadaDivisionNames = FXCollections.observableArrayList();
-        for (Divisions divisions : canadianDivisionList) {
-            String canadians;
-            canadians = divisions.getDivisionName();
-            CanadaDivisionNames.add(canadians);
-        }
-        return CanadaDivisionNames;
-    }
-
-    //UK division selections
-    public ObservableList<String> getUKDivisionNames(){
-        ObservableList<String> UKDivisionNames = FXCollections.observableArrayList();
-        for (Divisions divisions : UKDivisionList) {
-            String british;
-            british = divisions.getDivisionName();
-            UKDivisionNames.add(british);
-        }
-        return UKDivisionNames;
-    }*/
-
-
+    /**
+     * An observable list holding the countries from the database. Used to initialize the "Country" combobox.
+     * @return countries
+     */
   public ObservableList countryList(){
         ObservableList<String> countries = FXCollections.observableArrayList();
 
@@ -224,6 +105,11 @@ public class ModCustomerController implements Initializable{
         return countries;
     }
 
+
+    /**
+     * An observable list holding the divisions from the database.
+     * @return divisions
+     */
     public ObservableList divisionList(){
         ObservableList<String> divisions = FXCollections.observableArrayList();
 
@@ -233,6 +119,11 @@ public class ModCustomerController implements Initializable{
         return divisions;
     }
 
+
+    /**
+     * An observable list holding the divisions by country from the database..
+     * @return divisions
+     */
     public ObservableList divisionsByCountry(String modCustomerCountry){
         ObservableList<String> divisions = FXCollections.observableArrayList();
 
@@ -242,24 +133,12 @@ public class ModCustomerController implements Initializable{
         return divisions;
     }
 
-//Handles populating the DIVISION combobox customer tableview
-/*    public int handleDivisionComboBox(ActionEvent actionEvent){
-        if(customerDivision.getSelectionModel().getSelectedItem() != null) {
-            Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
 
-            String division = selectedDivision.toString();
-            for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
-                if (division.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
-                    retrieveDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
-                    break;
-                }
-            }
-        }
-        return retrieveDivisionID;
-    }*/
-
-
-//Collects the information from the fields and updates the customer in the database. Alerts the user if the fields aren't filled and when a customer is being updated.
+    /**
+     * Collects the information from the fields and updates the customer in the database. Alerts the user if the fields aren't filled and when a customer is being updated.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onActionUpdateCustomer(ActionEvent actionEvent) throws IOException {
 
         int customerId = Integer.parseInt(CustomerID.getText());
@@ -276,7 +155,9 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
     alert.showAndWait();
 }else
 {
-//Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer then reloads the main table.
+    /**
+    * Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer then reloads the main table.
+    */
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Updating an existing customer.");
             alert.setContentText("By clicking OK, you will be updating " + CustomerName.getText() + "'s information. Are you sure you wish to continue?");
@@ -303,7 +184,10 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
     }
 
 
-//Loads the modify customer screen fields with the information of the selected customer.
+    /**
+     * Loads the modify customer screen fields with the information of the selected customer.
+     * @param customers
+     */
     public void getCustomer(Customers customers){
         CustomerID.setText(String.valueOf(customers.getCustomerId()));
         CustomerName.setText(String.valueOf(customers.getCustomerName()));
@@ -320,31 +204,8 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         getCustomer(customers);
-
         customerCountry.setItems(countryList());
         customerDivision.setItems(divisionList());
-
-
-    /*    if(customerDivision.getItems() == null) {
-            customerDivision.setDisable(true);
-        }
-        else {
-            customerDivision.setDisable(false);
-        }*/
-
-        //Divisions divisionToModify = MainScreenController.getCustomerDivision();
-        //customerCountry.getItems().addAll(getAllCountryNames());
-        //int customerDivisionId = modifyCustomer.getCustomerDivision();
-        //setInitialDivision(customerDivisionId);
-
-        /*CustomerID.setText(String.valueOf(customerToModify.getCustomerId()));
-        CustomerName.setText(String.valueOf(customerToModify.getCustomerName()));
-        CustomerAddress.setText(String.valueOf(customerToModify.getCustomerAddy()));
-        CustomerPhone.setText(String.valueOf(customerToModify.getCustomerPhone()));
-        CustomerZip.setText(String.valueOf(customerToModify.getCustomerZip()));
-        customerCountry.setValue(DaoCustomers.getCountry(customerToModify));
-        customerDivision.setValue(customerToModify.getDivisionName());
-        //customerDivision.setValue(customerToModify.getCustomerDivision());*/
 
     }
 }

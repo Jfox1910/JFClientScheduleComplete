@@ -67,11 +67,7 @@
       </HBox>
       <HBox alignment="CENTER" layoutX="-2.0" layoutY="114.0" prefHeight="56.0" prefWidth="640.0">
          <children>
-            <ComboBox fx:id="userCombo" prefWidth="100.0" promptText="User:">
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-            </ComboBox>
+            <TextField fx:id="CustomerID" alignment="CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="100.0" promptText="Customer ID" />
             <TextField fx:id="CustomerName" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" promptText="CUSTOMER NAME">
                <HBox.margin>
                   <Insets left="10.0" />
@@ -81,7 +77,6 @@
       </HBox>
       <VBox alignment="CENTER" layoutX="1.0" layoutY="45.0" prefHeight="56.0" prefWidth="640.0">
          <children>
-            <TextField fx:id="CustomerID" alignment="CENTER" maxWidth="-Infinity" prefHeight="26.0" prefWidth="100.0" promptText="Customer ID" />
             <Label />
          </children>
       </VBox>
