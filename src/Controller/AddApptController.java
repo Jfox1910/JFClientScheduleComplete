@@ -22,6 +22,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -41,12 +42,11 @@ public class AddApptController implements Initializable {
     @FXML private TextField typeField;
     @FXML private ComboBox contactCombobox;
     @FXML private DatePicker datePicker;
-    @FXML private ComboBox startHour;
-    @FXML private ComboBox startMinute;
-    @FXML private ComboBox endHour;
-    @FXML private ComboBox endMinute;
+    @FXML private ComboBox startTimeCombo;
+    @FXML private ComboBox endTimeCombo;
 
 
+    String loggedInUser;
     String user = null;
 
 
@@ -72,24 +72,26 @@ public class AddApptController implements Initializable {
 
 
     public void onActionAdd(javafx.event.ActionEvent event) throws IOException{
-        System.out.println("Testing ADD");
-
-
         /**
-         * Retrieves the customer's info from the fields.
+         * Retrieves the appointment info from the fields.
          */
         String title = titleField.getText();
         String location = locationField.getText();
         String description = descriptionField.getText();
         String type = typeField.getText();
         String user = userComboBox.getValue().toString();
-        String customer = customerCombobox.getValue().toString();
+        int customerID = Integer.parseInt(customerCombobox.getId());
+        Timestamp startTime = null;
+        Timestamp endTime = null;
+        int contactID = Integer.parseInt(contactCombobox.getId());
+        String updatedBy = userComboBox.getValue().toString();
+        String createdBy = loggedInUser;
 
 
         /**
          * Check that a name, address and phone has been entered and gives an alert if it isn't there.
          */
-        if (title.isEmpty() || location.isEmpty() || description.isEmpty() || type.isEmpty() || user.isEmpty() || customer.isEmpty()){
+        if (title.isEmpty() || location.isEmpty() || description.isEmpty() || type.isEmpty() || user.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
             alert.setContentText("All fields must be filled before saving.");
@@ -105,7 +107,9 @@ public class AddApptController implements Initializable {
             alert.setContentText("By clicking OK, you will be adding an appointment to the system. Are you sure you wish to continue?");
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
-                    DaoAppointments.newAppointment(title,location,description,type);
+                    System.out.println(title + description + location + type + customerID + user + contactID);
+
+                    DaoAppointments.newAppointment(title, description, location, type, startTime, endTime, createdBy, updatedBy, customerID, user, contactID);
 
 
                     /**

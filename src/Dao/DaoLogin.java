@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class DaoLogin {
 
     private static loginUser loggedInUser;
-    public static loginUser getLoggedInUser(){return loggedInUser;}
+    //public static loginUser getLoggedInUser(){return loggedInUser;}
 
     /** Get all users from the user table in the DB
      *
@@ -45,6 +45,35 @@ public class DaoLogin {
         return userList;
     }
 
+    public static ObservableList<loginUser> getLoggedInUser(){
+        ObservableList<loginUser> loggedInUser = FXCollections.observableArrayList();
+        try {
+            String sqlQuery = ("SELECT User_ID, User_Name, Password FROM client_schedule.users");
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sqlQuery);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                int loginId = rs.getInt("User_ID");
+                String loginName = rs.getString("User_Name");
+                String loginPassword = rs.getString("Password");
+
+                loginUser loginuser = new loginUser(loginId, loginName, loginPassword);
+                loggedInUser.add(loginuser);
+
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return loggedInUser;
+    }
+
+    /**
+     * boolean used in the login method to pull users and passwords from the DB for comparison.
+     * @param username
+     * @param password
+     * @return
+     */
     public static boolean loggedInUser(String username, String password) {
         try {
             String sqlQuery = "select 1 from users where User_Name = ? and Password = ?;";
@@ -58,4 +87,6 @@ public class DaoLogin {
             return false;
         }
     }
+
+
 }

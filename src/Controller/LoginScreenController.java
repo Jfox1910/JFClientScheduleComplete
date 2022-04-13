@@ -1,6 +1,7 @@
 package Controller;
 
 import Dao.DaoLogin;
+import Model.loginUser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,13 +48,12 @@ public class LoginScreenController implements Initializable {
     private Scene scene;
     private Parent root;
 
+    public String getUserName() {return usernameTextField.getText();}
 
 
 //Login Method. Creates a list and populates it with all the users in the DB.
     public void onActionLogin(ActionEvent event) throws IOException {
         boolean verifyUser = DaoLogin.loggedInUser(usernameTextField.getText(), usernamePasswordField.getText());{
-
-            ObservableList<String> loggedInUser = FXCollections.observableArrayList();
 
             String user = usernameTextField.getText();
             String userName = usernameTextField.getText();

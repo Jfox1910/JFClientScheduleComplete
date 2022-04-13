@@ -51,7 +51,7 @@ public final class DaoAppointments {
         return appointments;
     }
 
-    public static void newAppointment(String title, String description, String location, String type, int customerDivision){
+    public static void newAppointment(String title, String description, String location, String type, Timestamp startTime, Timestamp endTime, String createdBy, String updatedBy, int customerID, String user, int contactID){
 
 //Selects the highest existing appointment ID then adds 1 to it to increment sequentially.
         try {
@@ -71,13 +71,19 @@ public final class DaoAppointments {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setInt(1, appointmentID);
-            ps.setString(2,title);
-            ps.setString(3,description);
-            ps.setString(4,location);
-            ps.setString(5,type);
+            ps.setString(2, title);
+            ps.setString(3, description);
+            ps.setString(4, location);
+            ps.setString(5, type);
+            ps.setTimestamp(6, startTime);
+            ps.setTimestamp(7, endTime);
+            ps.setString(8, createdBy);
+            ps.setString(9, updatedBy);
+            ps.setInt(10, customerID);
+            ps.setString(11, user);
+            ps.setInt(12, contactID);
             //ps.setInt(6, userID);
-            ps.setString(7, JDBC.getLoginUser());
-            ps.setInt(8, customerDivision);
+            //ps.setString(7, JDBC.getLoginUser());
 
             ps.execute();
             ps.close();

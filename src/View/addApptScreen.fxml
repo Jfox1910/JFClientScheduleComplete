@@ -101,8 +101,8 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="85.0">
                      <children>
-                        <ComboBox fx:id="startHour" prefWidth="75.0" promptText="Hour" />
-                        <ComboBox fx:id="endHour" prefWidth="75.0" promptText="Hour">
+                        <ComboBox fx:id="startTimeCombo" prefWidth="100.0" promptText="Select:" />
+                        <ComboBox fx:id="endTimeCombo" prefWidth="100.0" promptText="Select:">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
@@ -110,14 +110,6 @@
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="85.0">
-                     <children>
-                        <ComboBox fx:id="startMinute" prefHeight="26.0" prefWidth="85.0" promptText="Minute" />
-                        <ComboBox fx:id="endMinute" prefHeight="26.0" prefWidth="85.0" promptText="Minute">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </ComboBox>
-                     </children>
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

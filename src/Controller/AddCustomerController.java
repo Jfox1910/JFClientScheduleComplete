@@ -36,13 +36,6 @@ public class AddCustomerController implements Initializable {
     int retrieveDivisionID = 0;
     int retrieveUserID = 0;
 
-    public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
-    public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
-    public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
-    public ObservableList<Divisions> UKDivisionList = DaoDivisions.getUKTerritories();
-    public ObservableList<loginUser> allTheUsers = DaoLogin.getAllUsers();
-    public ObservableList<Appointments> allAppointments = DaoAppointments.getAllAppointments();
-
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -63,8 +56,7 @@ public class AddCustomerController implements Initializable {
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
         int divisionID = retrieveDivisionID;
-        loginUser loginUser = DaoLogin.getLoggedInUser();
-        System.out.println(retrieveUserID);
+        //loginUser loginUser = DaoLogin.getLoggedInUser();
         int userID = retrieveUserID;
 
     /**
@@ -200,6 +192,8 @@ public class AddCustomerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        System.out.println(DaoLogin.getLoggedInUser());
 
         customerCountry.setItems(countryList());
 
