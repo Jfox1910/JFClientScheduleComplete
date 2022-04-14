@@ -17,12 +17,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import utils.Utils;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -48,7 +50,7 @@ public class AddApptController implements Initializable {
 
     String loggedInUser;
     String user = null;
-
+    Appointments appt;
 
     /**
      * Exits back to the main screen
@@ -79,19 +81,21 @@ public class AddApptController implements Initializable {
         String location = locationField.getText();
         String description = descriptionField.getText();
         String type = typeField.getText();
-        String user = userComboBox.getValue().toString();
-        int customerID = Integer.parseInt(customerCombobox.getId());
         Timestamp startTime = null;
         Timestamp endTime = null;
-        int contactID = Integer.parseInt(contactCombobox.getId());
-        String updatedBy = userComboBox.getValue().toString();
+
+
+        int user = getIdFromComboBox(userComboBox);
+        int customerID = getIdFromComboBox(customerCombobox);
+        int contactID = getIdFromComboBox(contactCombobox);
+        //int updatedBy = userComboBox.getSelectionModel().getSelectedIndex();
         String createdBy = loggedInUser;
 
 
         /**
          * Check that a name, address and phone has been entered and gives an alert if it isn't there.
          */
-        if (title.isEmpty() || location.isEmpty() || description.isEmpty() || type.isEmpty() || user.isEmpty()){
+        if (title.isEmpty() || location.isEmpty() || description.isEmpty() || type.isEmpty() || /*user.isEmpty() || */userComboBox.getItems().isEmpty() || contactCombobox.getItems().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
             alert.setContentText("All fields must be filled before saving.");
@@ -109,7 +113,7 @@ public class AddApptController implements Initializable {
                 if (response == ButtonType.OK) {
                     System.out.println(title + description + location + type + customerID + user + contactID);
 
-                    DaoAppointments.newAppointment(title, description, location, type, startTime, endTime, createdBy, updatedBy, customerID, user, contactID);
+                    DaoAppointments.newAppointment(title, description, location, type, startTime, endTime, createdBy, customerID, user, contactID);
 
 
                     /**
@@ -134,6 +138,10 @@ public class AddApptController implements Initializable {
             }));
         }
 
+    }
+
+    private int getIdFromComboBox(ComboBox comboBox) {
+        return Utils.getIdFromComboString((String) comboBox.getSelectionModel().getSelectedItem());
     }
 
     public void handleUserCombobox(javafx.event.ActionEvent event){

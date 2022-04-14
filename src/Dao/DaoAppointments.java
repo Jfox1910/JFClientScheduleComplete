@@ -8,6 +8,7 @@ import utils.JDBC;
 import java.sql.*;
 import java.time.LocalDateTime;
 import Dao.DaoCustomers;
+import utils.Utils;
 
 /**
  Appointment table database access
@@ -51,7 +52,7 @@ public final class DaoAppointments {
         return appointments;
     }
 
-    public static void newAppointment(String title, String description, String location, String type, Timestamp startTime, Timestamp endTime, String createdBy, String updatedBy, int customerID, String user, int contactID){
+    public static void newAppointment(String title, String description, String location, String type, Timestamp startTime, Timestamp endTime, String createdBy, int customerID, int user, int contactID){
 
 //Selects the highest existing appointment ID then adds 1 to it to increment sequentially.
         try {
@@ -67,7 +68,7 @@ public final class DaoAppointments {
                 throwable.printStackTrace();
             }
 
-            String sql = "INSERT INTO appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Create_Date = now(), Created_By = ?, last_update = now(), last_updated_by = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ?;";
+            String sql = "INSERT INTO appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Create_Date = now(), Created_By = ?, last_update = now(), Customer_ID = ?, User_ID = ?, Contact_ID = ?;";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setInt(1, appointmentID);
@@ -78,10 +79,10 @@ public final class DaoAppointments {
             ps.setTimestamp(6, startTime);
             ps.setTimestamp(7, endTime);
             ps.setString(8, createdBy);
-            ps.setString(9, updatedBy);
-            ps.setInt(10, customerID);
-            ps.setString(11, user);
-            ps.setInt(12, contactID);
+            //ps.setString(9, updatedBy);
+            ps.setInt(9, customerID);
+            ps.setInt(10, Utils.getLogin);
+            ps.setInt(11, contactID);
             //ps.setInt(6, userID);
             //ps.setString(7, JDBC.getLoginUser());
 
