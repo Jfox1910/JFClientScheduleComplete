@@ -1,9 +1,6 @@
 package Controller;
 
-import Dao.DaoLogin;
-import Model.loginUser;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import Dao.DaoUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 import java.time.ZoneId;
 
@@ -52,8 +50,8 @@ public class LoginScreenController implements Initializable {
 
 
 //Login Method. Creates a list and populates it with all the users in the DB.
-    public void onActionLogin(ActionEvent event) throws IOException {
-        boolean verifyUser = DaoLogin.loggedInUser(usernameTextField.getText(), usernamePasswordField.getText());{
+    public void onActionLogin(ActionEvent event) throws IOException, SQLException {
+        boolean verifyUser = DaoUser.loggedInUser(usernameTextField.getText(), usernamePasswordField.getText());{
 
             String user = usernameTextField.getText();
             String userName = usernameTextField.getText();

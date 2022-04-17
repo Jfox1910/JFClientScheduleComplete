@@ -1,7 +1,6 @@
 package Dao;
 
 import Model.Customers;
-import Controller.LoginScreenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
@@ -89,8 +88,8 @@ public class DaoCustomers {
             psnewCustomer.setString(3,customerAddy);
             psnewCustomer.setString(4,customerZipCode);
             psnewCustomer.setString(5,customerPhone);
-            psnewCustomer.setInt(6, userID);
-            psnewCustomer.setString(7, JDBC.getLoginUser());
+            psnewCustomer.setString(6, DaoUser.getLoggedinUser().getUserName());
+            psnewCustomer.setString(7, DaoUser.getLoggedinUser().getUserName());
             psnewCustomer.setInt(8, customerDivision);
 
             psnewCustomer.execute();
@@ -113,7 +112,8 @@ public class DaoCustomers {
             psmodifyCustomer.setString(2,customerAddy);
             psmodifyCustomer.setString(3,customerZipCode);
             psmodifyCustomer.setString(4,customerPhone);
-            psmodifyCustomer.setString(5, JDBC.getLoginUser());
+            psmodifyCustomer.setString(5, DaoUser.getLoggedinUser().getUserName());
+            psmodifyCustomer.setString(5, DaoUser.getLoggedinUser().getUserName());
             psmodifyCustomer.setInt(6,customerDivision);
             psmodifyCustomer.setInt(7,customerId);
 

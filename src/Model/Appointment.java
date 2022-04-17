@@ -1,16 +1,16 @@
 package Model;
 
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-public class Appointments implements Initializable {
+public class Appointment implements Initializable {
 
     public static Customers customers;
-    public static Appointments appointments;
+    public static Appointment appointment;
 
     private int apptIDCol;
     private String apptTitleCol;
@@ -18,12 +18,15 @@ public class Appointments implements Initializable {
     private String apptLocationCol;
     private int apptContactCol;
     private String apptTypeCol;
-    private LocalDateTime apptStartTimeCol;
-    private LocalDateTime apptEndTimeCol;
+    private Timestamp apptStartTimeCol;
+    private Timestamp apptEndTimeCol;
     private int apptCustomerIDCol;
     private int apptUserIDCol;
+    private Timestamp apptStart;
+    private Timestamp apptEnd;
 
-    public Appointments(int apptIDCol, String apptTitleCol, String apptDescriptionCol, String apptLocationCol, int apptContactCol, String apptTypeCol, LocalDateTime apptStartTimeCol, LocalDateTime apptEndTimeCol, int apptCustomerIDCol, int apptUserIDCol) {
+
+    public Appointment(int apptIDCol, String apptTitleCol, String apptDescriptionCol, String apptLocationCol, int apptContactCol, String apptTypeCol, Timestamp apptStartTimeCol, Timestamp apptEndTimeCol, int apptCustomerIDCol, int apptUserIDCol) {
         this.apptIDCol = apptIDCol;
         this.apptTitleCol = apptTitleCol;
         this.apptDescriptionCol = apptDescriptionCol;
@@ -36,7 +39,44 @@ public class Appointments implements Initializable {
         this.apptUserIDCol = apptUserIDCol;
     }
 
+    public Appointment(int customerID) {
+        this.apptCustomerIDCol = customerID;
+    }
+
+    public Appointment(int appointmentID, String title, String description, String location, String type, Timestamp startTime, Timestamp endTime, int customerID, int contactID) {
+        this.apptIDCol = appointmentID;
+        this.apptTitleCol = title;
+        this.apptDescriptionCol = description;
+        this.apptLocationCol = location;
+        this.apptTypeCol = type;
+        this.apptStart = startTime;
+        this.apptEnd = endTime;
+        this.apptCustomerIDCol = customerID;
+        this.apptContactCol = contactID;
+
+    }
+
+
     //Getters
+
+
+
+    public static Appointment getAppointment() {return appointment;}
+
+    public static void setAppointment(Appointment appointment) {Appointment.appointment = appointment;}
+
+    public int getContactID() { return  apptContactCol;}
+
+    public int getCustomerID() {
+        return apptCustomerIDCol;
+    }
+
+    public void setCustomerId(int customerID) {
+        this.apptCustomerIDCol = customerID;
+    }
+    public void setContactID(int contactID) { this.apptContactCol = contactID; }
+
+
     public int getApptIDCol() {
         return apptIDCol;
     }
@@ -61,11 +101,11 @@ public class Appointments implements Initializable {
         return apptTypeCol;
     }
 
-    public LocalDateTime getApptStartTimeCol() {
+    public Timestamp getApptStartTimeCol() {
         return apptStartTimeCol;
     }
 
-    public LocalDateTime getApptEndTimeCol() {
+    public Timestamp getApptEndTimeCol() {
         return apptEndTimeCol;
     }
 
@@ -102,11 +142,11 @@ public class Appointments implements Initializable {
         this.apptTypeCol = apptTypeCol;
     }
 
-    public void setApptStartTimeCol(LocalDateTime apptStartTimeCol) {
+    public void setApptStartTimeCol(Timestamp apptStartTimeCol) {
         this.apptStartTimeCol = apptStartTimeCol;
     }
 
-    public void setApptEndTimeCol(LocalDateTime apptEndTimeCol) {
+    public void setApptEndTimeCol(Timestamp apptEndTimeCol) {
         this.apptEndTimeCol = apptEndTimeCol;
     }
 
@@ -117,6 +157,8 @@ public class Appointments implements Initializable {
     public void setApptUserIDCol(int apptUserIDCol) {
         this.apptUserIDCol = apptUserIDCol;
     }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

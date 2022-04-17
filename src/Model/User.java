@@ -1,6 +1,7 @@
 package Model;
 
-public class loginUser {
+
+public class User {
     private int userId;
     private String userName;
     private String userPassword;
@@ -8,19 +9,20 @@ public class loginUser {
     private String createdBy;
     private String lastUpdatedBy;
     private String lastUpdatedOn;
+/*    private String tzOffset;*/
 
     //Constructor
-    public loginUser(int userId, String userName, String password){
+    public User(int userId, String userName, String password){
         this.userId = userId;
         this.userName = userName;
         this.userPassword = password;
     }
 
-    public loginUser(String userName){
+    public User(String userName){
         this.userName = userName;
     }
 
-
+    public User(int user_id) {this.userId = user_id; }
 
 
     //Getters
@@ -41,6 +43,7 @@ public class loginUser {
     public String userNameString() {return this.userName;}
 
 
+
     //Setters
     public void setUserId(int userId) {this.userId = userId;}
 
@@ -55,4 +58,5 @@ public class loginUser {
     public void setLastUpdatedBy(String lastUpdatedBy) {this.lastUpdatedBy = lastUpdatedBy;}
 
     public void setLastUpdatedOn(String lastUpdatedOn) {this.lastUpdatedOn = lastUpdatedOn;}
+
 }

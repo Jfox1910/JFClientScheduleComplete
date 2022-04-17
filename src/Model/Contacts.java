@@ -12,6 +12,13 @@ public class Contacts {
         this.contactEmail = contactEmail;
     }
 
+    public static int getContactIDByName(String contactName)
+    {
+        int contactID = Integer.parseInt(contactName.substring(0, contactName.indexOf(":")));
+
+        return contactID;
+    }
+
     public int getContactID() {return contactID;}
 
     public String getContactName() {return contactName;}

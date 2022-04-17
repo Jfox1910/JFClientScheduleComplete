@@ -9,16 +9,7 @@
    <children>
       <VBox alignment="TOP_CENTER" layoutY="51.0" prefHeight="355.0" prefWidth="640.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="640.0">
-               <children>
-                  <Label text="User:">
-                     <HBox.margin>
-                        <Insets left="40.0" right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <ComboBox fx:id="userComboBox" onAction="#handleUserCombobox" prefWidth="150.0" promptText="Select:" />
-               </children>
-            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="640.0" />
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                <children>
                   <Label text="Title:">
@@ -78,7 +69,7 @@
                         <Insets left="40.0" right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker fx:id="datePicker" promptText="Appointment Date" />
+                  <DatePicker fx:id="appointmentDate" promptText="Appointment Date" />
                   <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="80.0">
                      <children>
                         <Label text="Start Time:">
@@ -101,8 +92,8 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="85.0">
                      <children>
-                        <ComboBox fx:id="startTimeCombo" prefWidth="100.0" promptText="Select:" />
-                        <ComboBox fx:id="endTimeCombo" prefWidth="100.0" promptText="Select:">
+                        <ComboBox fx:id="startTimeCombo" prefWidth="75.0" promptText="Hour:" />
+                        <ComboBox fx:id="endTimeCombo" prefWidth="75.0" promptText="Hour:">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
@@ -113,6 +104,46 @@
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <children>
+                        <ComboBox fx:id="startMinCombo" prefWidth="75.0" promptText="Min:" />
+                        <ComboBox fx:id="endMinCombo" prefWidth="75.0" promptText="Min:">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="75.0" prefWidth="119.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="200.0">
+                           <children>
+                              <ToggleButton fx:id="startAM" mnemonicParsing="false" text="AM:">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="am_pmStart" />
+                                 </toggleGroup>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </ToggleButton>
+                              <ToggleButton fx:id="startPM" mnemonicParsing="false" text="PM:" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="200.0">
+                           <children>
+                              <ToggleButton fx:id="endAM" mnemonicParsing="false" text="AM:">
+
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="am_pmEnd" />
+                                 </toggleGroup>
+
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </ToggleButton>
+                              <ToggleButton fx:id="endPM" mnemonicParsing="false" text="PM:" />
+                           </children>
+                        </HBox>
+                     </children>
                   </VBox>
                </children>
             </HBox>

@@ -1,14 +1,13 @@
 package Dao;
 
-import Model.Appointments;
+import Model.Appointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
+import utils.Utils;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import Dao.DaoCustomers;
-import utils.Utils;
 
 /**
  Appointment table database access
@@ -16,10 +15,11 @@ import utils.Utils;
 public final class DaoAppointments {
 
     private static final Connection connection = JDBC.getConnection();
+    //private static final String tzOffset = DaoUser.loggedInUser().getTzOffset();
     public static DaoCustomers customer;
 
-    public static ObservableList<Appointments> getAllAppointments(){
-        ObservableList<Appointments> appointments = FXCollections.observableArrayList();
+    public static ObservableList<Appointment> getAllAppointments(){
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
         try {
             String sql = "SELECT * FROM appointments";
@@ -34,13 +34,11 @@ public final class DaoAppointments {
                 String apptLocationCol = rs.getString("Location");
                 int apptContactCol = rs.getInt("Contact_ID");
                 String apptTypeCol = rs.getString("Type");
-                Timestamp appointmentStartTS = rs.getTimestamp("Start");
-                Timestamp appointmentEndTS = rs.getTimestamp("End");
-                LocalDateTime apptStartTimeCol = appointmentStartTS.toLocalDateTime();
-                LocalDateTime apptEndTimeCol = appointmentEndTS.toLocalDateTime();
+                Timestamp apptStartTimeCol = rs.getTimestamp("Start");
+                Timestamp apptEndTimeCol = rs.getTimestamp("End");
                 int apptCustomerIDCol = rs.getInt("Customer_ID");
                 int apptUserIDCol = rs.getInt("User_ID");
-                Appointments appointment = new Appointments(apptIDCol, apptTitleCol, apptDescriptionCol, apptLocationCol, apptContactCol, apptTypeCol, apptStartTimeCol,
+                Appointment appointment = new Appointment(apptIDCol, apptTitleCol, apptDescriptionCol, apptLocationCol, apptContactCol, apptTypeCol, apptStartTimeCol,
                         apptEndTimeCol, apptCustomerIDCol, apptUserIDCol);
 
                 appointments.add(appointment);
@@ -52,39 +50,43 @@ public final class DaoAppointments {
         return appointments;
     }
 
-    public static void newAppointment(String title, String description, String location, String type, Timestamp startTime, Timestamp endTime, String createdBy, int customerID, int user, int contactID){
 
-//Selects the highest existing appointment ID then adds 1 to it to increment sequentially.
+    public static void newAppointment(Appointment appt, Timestamp startTime, Timestamp endTime){
+
+            int customerID = appt.getCustomerID();
+            int contactID = appt.getContactID();
+            String title = appt.getApptTitleCol();
+            String description = appt.getApptDescriptionCol();
+            String location = appt.getApptLocationCol();
+            String type = appt.getApptTypeCol();
+            Timestamp start = startTime;
+            Timestamp end = endTime;
+
         try {
-            int appointmentID = 1;
-            try {
-                Statement id = connection.createStatement();
-                ResultSet rs = id.executeQuery("select max(Appointment_ID) as Last_Appointment from appointments");
-                if (rs.next()) {
-                    appointmentID = rs.getInt("Last_Appointment") + 1;
-                }
-                id.close();
-            } catch (SQLException throwable) {
-                throwable.printStackTrace();
-            }
+            //String sql = "INSERT INTO appointments VALUES(NULL,?,?,?,?,?,?,NULL,?,NULL,?,?,?,?)";
+            String sql = "INSERT INTO appointments(Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            String sql = "INSERT INTO appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Create_Date = now(), Created_By = ?, last_update = now(), Customer_ID = ?, User_ID = ?, Contact_ID = ?;";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            //String sql = "INSERT INTO appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Create_Date = now(), Created_By = ?, last_update = now(), Customer_ID = ?, User_ID = ?, Contact_ID = ?;";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            ps.setInt(1, appointmentID);
-            ps.setString(2, title);
-            ps.setString(3, description);
-            ps.setString(4, location);
-            ps.setString(5, type);
-            ps.setTimestamp(6, startTime);
-            ps.setTimestamp(7, endTime);
-            ps.setString(8, createdBy);
-            //ps.setString(9, updatedBy);
-            ps.setInt(9, customerID);
-            ps.setInt(10, Utils.getLogin);
-            ps.setInt(11, contactID);
-            //ps.setInt(6, userID);
-            //ps.setString(7, JDBC.getLoginUser());
+
+            ps.setString(1, title);
+            ps.setString(2, description);
+            ps.setString(3, location);
+            ps.setString(4, type);
+
+
+            ps.setTimestamp(5, startTime);
+            ps.setTimestamp(6, endTime);
+            ps.setString(7, Utils.getInstance().getLocalDateTimeString());
+            ps.setString(8, DaoUser.getLoggedinUser().getUserName());
+            ps.setString(9, Utils.getInstance().getLocalDateTimeString());
+            ps.setString(10,DaoUser.getLoggedinUser().getUserName());
+            ps.setInt(11, customerID);
+            ps.setInt(12, DaoUser.getLoggedinUser().getUserId());
+            ps.setInt(13, contactID);
+
 
             ps.execute();
             ps.close();
@@ -105,7 +107,6 @@ public final class DaoAppointments {
             psdc.setInt(1, appointmentID);
 
             psdc.execute();
-
 
         }
         catch (SQLException exception){

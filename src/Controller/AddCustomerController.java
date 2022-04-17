@@ -2,7 +2,7 @@ package Controller;
 
 import Dao.*;
 import Model.*;
-import Model.loginUser;
+import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,9 +17,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -31,7 +28,7 @@ public class AddCustomerController implements Initializable {
     @FXML private TextField CustomerPhone;
     @FXML private ComboBox customerCountry;
     @FXML private ComboBox customerDivision;
-    loginUser loginuser;
+    User loginuser;
 
     int retrieveDivisionID = 0;
     int retrieveUserID = 0;
@@ -56,7 +53,7 @@ public class AddCustomerController implements Initializable {
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
         int divisionID = retrieveDivisionID;
-        //loginUser loginUser = DaoLogin.getLoggedInUser();
+        //User User = DaoUser.getLoggedInUser();
         int userID = retrieveUserID;
 
     /**
@@ -192,8 +189,6 @@ public class AddCustomerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        System.out.println(DaoLogin.getLoggedInUser());
 
         customerCountry.setItems(countryList());
 

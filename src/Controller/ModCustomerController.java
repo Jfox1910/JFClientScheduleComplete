@@ -1,14 +1,11 @@
 package Controller;
 
-import Dao.DaoAppointments;
 import Dao.DaoCountries;
 import Dao.DaoCustomers;
 import Dao.DaoDivisions;
-import Model.Appointments;
 import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
-import Controller.MainScreenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,14 +48,14 @@ public class ModCustomerController implements Initializable{
     public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
     public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
     public ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
-    public ObservableList<Appointments> allAppointments = DaoAppointments.getAllAppointments();
+    public ObservableList<Appointment> allAppointments = DaoAppointments.getAllAppointments();
     private final ObservableList<Countries> countries = FXCollections.observableArrayList();
     private final ObservableList<String> divID = FXCollections.observableArrayList();
 
     private final Customers modifyCustomer = AddApptController.customers;
-    private ObservableList<Appointments> appointments;
+    private ObservableList<Appointment> appointment;
 
-    private final Customers customerAppt = Appointments.customers;*/
+    private final Customers customerAppt = Appointment.customers;*/
 
 
     /**

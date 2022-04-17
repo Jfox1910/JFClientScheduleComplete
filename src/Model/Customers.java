@@ -93,6 +93,12 @@ import java.sql.Timestamp;
 
         public String getDivisionName() {return divisionName;}
 
+    public static int getCustomerIDByName(String customerName)
+    {
+        int customerID = Integer.parseInt(customerName.substring(0, customerName.indexOf(":")));
+        return customerID;
+    }
+
 
     //Setters
         public void setCustomerId(int customerId) {this.customerId = customerId;}
@@ -113,9 +119,7 @@ import java.sql.Timestamp;
 
         public void setCustomerCreatedDate(String customerCreatedDate) {this.customerCreatedDate = customerCreatedDate;}
 
-        public void setCustomerCreated(String customerCreated) {
-            this.customerCreated = customerCreated;
-        }
+        public void setCustomerCreated(String customerCreated) {this.customerCreated = customerCreated;}
 
         public void setCustomerUpdatedOn(Timestamp customerUpdatedOn) {
             this.customerUpdatedOn = customerUpdatedOn;
