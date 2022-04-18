@@ -68,20 +68,15 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER">
                                                     <children>
-                                                        <RadioButton fx:id="weekSelect" mnemonicParsing="false" onAction="#onActionSelectWeek" text="Sort By Week">
+                                                        <RadioButton fx:id="weekSelect" mnemonicParsing="false" onAction="#onActionSelectRange" text="Sort By Week">
                                                             <HBox.margin>
-                                                                <Insets right="50.0" />
-                                                            </HBox.margin></RadioButton>
-                                                        <RadioButton fx:id="monthSelect" mnemonicParsing="false" onAction="#onActionSelectMonth" text="Sort By Month">
-                                                            <padding>
-                                                                <Insets left="10.0" right="10.0" />
-                                                            </padding>
+                                                                <Insets right="10.0" />
+                                                            </HBox.margin>
+                                                            <toggleGroup>
+                                                                <ToggleGroup fx:id="weekmonth" />
+                                                            </toggleGroup>
                                                         </RadioButton>
-                                                        <RadioButton fx:id="allButton" mnemonicParsing="false" text="Show All">
-                                                            <padding>
-                                                                <Insets left="10.0" right="10.0" />
-                                                            </padding>
-                                                        </RadioButton>
+                                                        <RadioButton fx:id="monthSelect" mnemonicParsing="false" onAction="#onActionSelectRange" text="Sort By Month" />
                                                     </children>
                                        <padding>
                                           <Insets top="20.0" />

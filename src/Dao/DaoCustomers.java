@@ -8,10 +8,17 @@ import utils.JDBC;
 
 import java.sql.*;
 
+/**
+ * Customer DB access class
+ */
 public class DaoCustomers {
 
     private static final Connection connection = JDBC.getConnection();
 
+    /**
+     * Gets all existing customers in the DB and stores them in a list.
+     * @return customerList
+     */
     public static ObservableList<Customers> getAllCustomers(){
         ObservableList<Customers> customerList = FXCollections.observableArrayList();
 
@@ -42,7 +49,11 @@ public class DaoCustomers {
         return customerList;
     }
 
-
+    /**
+     * Select customer by division.
+     * @param customers
+     * @return
+     */
     public static Integer getCustomerDivision(Customers customers){
         int customerID = customers.getCustomerId();
         int divisionID = 0;
@@ -56,17 +67,25 @@ public class DaoCustomers {
                 divisionID = rs.getInt("Division_ID");
             }
 
-
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return divisionID;
     }
 
-//Adds a new customer to the database.
+
+    /**
+     * Adds a new customer to the database.
+     * @param userID
+     * @param customerName
+     * @param customerAddy
+     * @param customerZipCode
+     * @param customerPhone
+     * @param customerDivision
+     */
     public static void newCustomer(int userID, String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
 
-//Selects the highest existing customer ID then adds 1 to it to increment sequentially.
+//Selects the highest existing customer ID then adds 1 to it to increment sequentially. Probably not needed.
         try {
             int customerID = 1;
             try {
@@ -101,7 +120,16 @@ public class DaoCustomers {
         }
     }
 
-    //Modifies a selected customer and updates the database
+
+    /**
+     * DB access used in the modify customer method.
+     * @param customerId
+     * @param customerName
+     * @param customerAddy
+     * @param customerZipCode
+     * @param customerPhone
+     * @param customerDivision
+     */
     public static void modifyCustomer(int customerId, String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
         try {
 
@@ -124,8 +152,39 @@ public class DaoCustomers {
         }
     }
 
+
     /**
-     * Deletes the selected CUSTOMER from the DB
+     * Boolean used to check for existing appointments for a selected customer.
+     * @param customers
+     * @return
+     */
+    public static boolean customerDeleteValidation(Customers customers)
+    {
+        int customerID = customers.getCustomerId();
+        try {
+            String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerID);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next())
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }catch(SQLException throwables)
+        {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
+     * Deletes the selected CUSTOMER from the DB if the above boolean returns no associated appointments to the delete customer method in the mainscreen.
      * @param customerID
      */
     public static void deleteCustomer(Integer customerID){
@@ -141,6 +200,11 @@ public class DaoCustomers {
         }
     }
 
+    /**
+     * Gets the customers country by division.
+     * @param customers
+     * @return
+     */
     public static String getCountry(Customers customers){
         return DaoCountries.getCountryID(DaoDivisions.getCountryDivision(DaoCustomers.getCustomerDivision(customers)));
     }

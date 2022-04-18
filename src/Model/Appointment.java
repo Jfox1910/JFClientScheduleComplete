@@ -1,5 +1,7 @@
 package Model;
 
+import Dao.DaoAppointments;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
@@ -60,22 +62,13 @@ public class Appointment implements Initializable {
     //Getters
 
 
-
     public static Appointment getAppointment() {return appointment;}
-
-    public static void setAppointment(Appointment appointment) {Appointment.appointment = appointment;}
 
     public int getContactID() { return  apptContactCol;}
 
     public int getCustomerID() {
         return apptCustomerIDCol;
     }
-
-    public void setCustomerId(int customerID) {
-        this.apptCustomerIDCol = customerID;
-    }
-    public void setContactID(int contactID) { this.apptContactCol = contactID; }
-
 
     public int getApptIDCol() {
         return apptIDCol;
@@ -118,6 +111,14 @@ public class Appointment implements Initializable {
     }
 
     //Setters
+    public static void setAppointment(Appointment appointment) {Appointment.appointment = appointment;}
+
+    public void setCustomerId(int customerID) {
+        this.apptCustomerIDCol = customerID;
+    }
+
+    public void setContactID(int contactID) { this.apptContactCol = contactID; }
+
     public void setApptIDCol(int apptIDCol) {
         this.apptIDCol = apptIDCol;
     }
@@ -157,7 +158,6 @@ public class Appointment implements Initializable {
     public void setApptUserIDCol(int apptUserIDCol) {
         this.apptUserIDCol = apptUserIDCol;
     }
-
 
 
     @Override

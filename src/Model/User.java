@@ -46,7 +46,6 @@ public class User {
 
     public String userNameString() {return this.userName;}
 
-
     public String getTzOffset() { return tzOffset; }
 
     public static String getCurrentTimezoneOffset() {

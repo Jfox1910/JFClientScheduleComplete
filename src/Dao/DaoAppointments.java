@@ -124,4 +124,87 @@ public final class DaoAppointments {
             exception.printStackTrace();
         }
     }
+
+    public ObservableList<Appointment> getAllByCustomerId(int id) {
+
+        String query = "SELECT * FROM appointments WHERE Customer_ID = ?;";
+
+        ObservableList<Appointment> apptList = FXCollections.observableArrayList();
+
+        try {
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(query);
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int apptIDCol = rs.getInt("Appointment_ID");
+                String apptTitleCol = rs.getString("Title");
+                String apptDescriptionCol = rs.getString("Description");
+                String apptLocationCol = rs.getString("Location");
+                int apptContactCol = rs.getInt("Contact_ID");
+                String apptTypeCol = rs.getString("Type");
+                Timestamp apptStartTimeCol = rs.getTimestamp("Start");
+                Timestamp apptEndTimeCol = rs.getTimestamp("End");
+                int apptCustomerIDCol = rs.getInt("Customer_ID");
+                int apptUserIDCol = rs.getInt("User_ID");
+                Appointment appointment = new Appointment(apptIDCol, apptTitleCol, apptDescriptionCol, apptLocationCol, apptContactCol, apptTypeCol, apptStartTimeCol,
+                        apptEndTimeCol, apptCustomerIDCol, apptUserIDCol);
+
+                apptList.add(appointment);
+            }
+
+            return apptList;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+
+    public static ObservableList<Appointment> getAppointments(int customerID, int days) {
+        Appointment appointment;
+        ObservableList<Appointment> Appts = FXCollections.observableArrayList();
+        try {
+            String sql = "select  c.Contact_Name, a.*, convert_tz(a.Start, '+00:00', ?) as StartFormat, convert_tz(a.End, '+00:00', ?) as EndFormat\n" +
+                    " from appointments a join contacts c \n" +
+                    " on a.Contact_ID = c.Contact_ID \n" +
+                    " where a.Customer_ID = ? \n" +
+                    " AND a.Start between now() and (now() + interval ? day);";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            assert ps != null;
+            ps.setString(1, tzOffset);
+            ps.setString(2, tzOffset);
+            ps.setInt(3, customerID);
+            ps.setInt(4, days);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int apptIDCol = rs.getInt("Appointment_ID");
+                String apptTitleCol = rs.getString("Title");
+                String apptDescriptionCol = rs.getString("Description");
+                String apptLocationCol = rs.getString("Location");
+                int apptContactCol = rs.getInt("Contact_ID");
+                String apptTypeCol = rs.getString("Type");
+                Timestamp apptStartTimeCol = rs.getTimestamp("Start");
+                Timestamp apptEndTimeCol = rs.getTimestamp("End");
+                int apptCustomerIDCol = rs.getInt("Customer_ID");
+                int apptUserIDCol = rs.getInt("User_ID");
+                Appointment appointments = new Appointment(apptIDCol, apptTitleCol, apptDescriptionCol, apptLocationCol, apptContactCol, apptTypeCol, apptStartTimeCol,
+                        apptEndTimeCol, apptCustomerIDCol, apptUserIDCol);
+                Appts.add(appointments);
+            }
+            ps.close();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return null;
+        }
+        return Appts;
+    }
+
+
+
 }
