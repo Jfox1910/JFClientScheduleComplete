@@ -69,7 +69,7 @@
                         <Insets left="40.0" right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker fx:id="appointmentDate" promptText="Appointment Date" />
+                  <DatePicker fx:id="appointmentDate" onAction="#handleDateChoice" promptText="Appointment Date" />
                   <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="80.0">
                      <children>
                         <Label text="Start Time:">
@@ -92,7 +92,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="85.0">
                      <children>
-                        <ComboBox fx:id="startTimeCombo" prefWidth="75.0" promptText="Hour:" />
+                        <ComboBox fx:id="startTimeCombo" onAction="#handleTimeChoice" prefWidth="75.0" promptText="Hour:" />
                         <ComboBox fx:id="endTimeCombo" prefWidth="75.0" promptText="Hour:">
                            <VBox.margin>
                               <Insets top="10.0" />

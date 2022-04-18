@@ -1,6 +1,7 @@
 package Dao;
 
 import Model.Appointment;
+import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public final class DaoAppointments {
 
     private static final Connection connection = JDBC.getConnection();
-    //private static final String tzOffset = DaoUser.loggedInUser().getTzOffset();
+    private static final String tzOffset = User.getCurrentTimezoneOffset();
     public static DaoCustomers customer;
 
     public static ObservableList<Appointment> getAllAppointments(){
@@ -51,7 +52,7 @@ public final class DaoAppointments {
     }
 
 
-    public static void newAppointment(Appointment appt, Timestamp startTime, Timestamp endTime){
+    public static void newAppointment(Appointment appt, String startTime, int endTime){
 
             int customerID = appt.getCustomerID();
             int contactID = appt.getContactID();
@@ -59,34 +60,41 @@ public final class DaoAppointments {
             String description = appt.getApptDescriptionCol();
             String location = appt.getApptLocationCol();
             String type = appt.getApptTypeCol();
-            Timestamp start = startTime;
-            Timestamp end = endTime;
+            String start = startTime;
+            int end = endTime;
 
         try {
-            //String sql = "INSERT INTO appointments VALUES(NULL,?,?,?,?,?,?,NULL,?,NULL,?,?,?,?)";
-            String sql = "INSERT INTO appointments(Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            int appointmentID = 1;
+            try {
+                Statement id = connection.createStatement();
+                ResultSet rs = id.executeQuery("select max(Appointment_ID) as Last_Appointment from appointments");
+                if (rs.next()) {
+                    appointmentID = rs.getInt("Last_Appointment") + 1;
+                }
+                id.close();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
 
-            //String sql = "INSERT INTO appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Create_Date = now(), Created_By = ?, last_update = now(), Customer_ID = ?, User_ID = ?, Contact_ID = ?;";
+           String sql = "insert into appointments set Appointment_ID=?, Title=?, Description=?, Location=?, Type=?, Start=convert_tz(?, ?, '+00:00'), End=(convert_tz(?, ?, '+00:00') + interval ? minute ), Create_Date=now(), Created_By=?, Customer_ID=?, User_ID=?, Contact_ID=?, Last_Updated_by=?, Last_Update=now();";
+
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-
-            ps.setString(1, title);
-            ps.setString(2, description);
-            ps.setString(3, location);
-            ps.setString(4, type);
-
-
-            ps.setTimestamp(5, startTime);
-            ps.setTimestamp(6, endTime);
-            ps.setString(7, Utils.getInstance().getLocalDateTimeString());
-            ps.setString(8, DaoUser.getLoggedinUser().getUserName());
-            ps.setString(9, Utils.getInstance().getLocalDateTimeString());
-            ps.setString(10,DaoUser.getLoggedinUser().getUserName());
-            ps.setInt(11, customerID);
-            ps.setInt(12, DaoUser.getLoggedinUser().getUserId());
-            ps.setInt(13, contactID);
-
+            ps.setInt(1, appointmentID);
+            ps.setString(2, title);
+            ps.setString(3, description);
+            ps.setString(4, location);
+            ps.setString(5, type);
+            ps.setString(6, startTime);
+            ps.setString(7, tzOffset);
+            ps.setString(8, startTime);
+            ps.setString(9, tzOffset);
+            ps.setInt(10, endTime);
+            ps.setString(11, DaoUser.getLoggedinUser().getUserName());
+            ps.setInt(12, customerID);
+            ps.setInt(13, DaoUser.getLoggedinUser().getUserId());
+            ps.setInt(14, contactID);
+            ps.setString(15,DaoUser.getLoggedinUser().getUserName());
 
             ps.execute();
             ps.close();
@@ -97,7 +105,10 @@ public final class DaoAppointments {
         }
     }
 
-
+    /**
+     * Deletes the selected APPOINTMENT from the DB.
+     * @param appointmentID
+     */
     public static void deleteAppointment(int appointmentID) {
         try {
 

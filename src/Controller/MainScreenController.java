@@ -84,23 +84,21 @@ public class MainScreenController implements Initializable {
     TODO LIST COMPLETE PROJECT
     Must haves----------
     LAMBDAS
-    FRENCH LOGIN
-    ADD APPOINTMENTS
     MOD APPTS
-    DELETE APPTS
     ADD REPORTS
     JAVADOCS
     README
-
-    Nice to haves-----------
-    Add an alert controller
      */
 
 
 
-
     //----APPOINTMENT TAB METHODS----
-//Add Appointment Method
+
+    /**
+     * ADD appointment method
+     * @param event
+     * @throws IOException
+     */
     public void onActionAddAppt(ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/addApptScreen.fxml"));
@@ -110,7 +108,11 @@ public class MainScreenController implements Initializable {
         stage.show();
     }
 
-//Modify Appointment Method
+    /**
+     * MODIFY appointment method
+     * @param event
+     * @throws IOException
+     */
     public void onActionModAppt(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/modApptScreen.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -119,12 +121,46 @@ public class MainScreenController implements Initializable {
         stage.show();
     }
 
-//Cancel an appointment method
+    /**
+     * CANCEL appointment method
+     * @param event
+     * @throws IOException
+     */
     public void onActionCancelAppt(ActionEvent event) throws IOException {
 
-        //NEEDS TO BE IMPLEMENTED
+        if (apptTableview.getSelectionModel().getSelectedItem() != null){
+            Appointment selectedAppointment = apptTableview.getSelectionModel().getSelectedItem();
 
-        System.out.println("Test CANCEL Appointment Button.");
+            for (Appointment appointment : appointments) {
+                if (appointment.getApptIDCol() == selectedAppointment.getApptIDCol()) {
+                    DaoAppointments.deleteAppointment(appointment.getApptIDCol());
+                }
+            }
+
+//Hold and alert the user before deleting the selected appointment. Holds first and deletes on OK then reloads the tableview.
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("The selected appointment will be deleted from the database!");
+            alert.setContentText("This action cannot be undone. Are you sure you wish to continue?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                DaoAppointments.deleteAppointment(selectedAppointment.getApptIDCol());
+                apptTableview.setItems(DaoAppointments.getAllAppointments());
+
+//Confirmation that the appointment has been deleted.
+                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert2.setTitle("SUCCESS!");
+                alert2.setContentText("The appointment has been deleted from the system.");
+                alert2.showAndWait();
+            }
+        }else {
+//Hold and alert the user that an appointment must be selected.
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("An appointment has not been selected. Please click on an appointment and try again.");
+            alert.showAndWait();
+        }
 
     }
 

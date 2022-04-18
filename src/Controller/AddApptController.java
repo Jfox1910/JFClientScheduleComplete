@@ -4,6 +4,7 @@ import Dao.*;
 import Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,12 +24,16 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class AddApptController implements Initializable {
+
     private final ObservableList<Integer> hourInput = FXCollections.observableArrayList();
     private final ObservableList<String> minuteInput = FXCollections.observableArrayList();
 
@@ -53,7 +58,7 @@ public class AddApptController implements Initializable {
     @FXML private ComboBox contactCombobox;
 
 
-    @FXML private ComboBox startTimeCombo;
+    @FXML private ComboBox <String> startTimeCombo;
     @FXML private ComboBox <Integer> startMinCombo;
 
 
@@ -88,23 +93,29 @@ public class AddApptController implements Initializable {
      * @param event
      * @throws IOException
      */
-    public void onActionAdd(javafx.event.ActionEvent event) throws IOException, ParseException {
+    public void onActionAdd(javafx.event.ActionEvent event) throws IOException{
 
             int appointmentID = 0;
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String appointmentDate = this.appointmentDate.getValue().format(dtf);
             String title = titleField.getText();
             String location = locationField.getText();
             String description = descriptionField.getText();
             String type = typeField.getText();
-            Timestamp startTime = startTime();
-            Timestamp endTime =  endTime();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String appointmentDate = this.appointmentDate.getValue().format(dtf);
+
+            String startTime = String.format("%s %s",appointmentDate, startTimeCombo.getValue());
+            int endTime = startMinCombo.getSelectionModel().getSelectedIndex() + 15;
+
             int customerID = getIdFromComboBox(customerCombobox);
             int contactID = getIdFromComboBox(contactCombobox);
 
             Appointment appt = new Appointment(appointmentID, title, description, location, type, startTime, endTime, customerID, contactID);
 
-            System.out.println(appointmentDate + title + location + description + type + startTime +  endTime + customerID + contactID);
+        /**TODO
+         * 15minute increments fixed
+         */
+
+        System.out.println(appointmentDate + title + location + description + type + startTime +  endTime + customerID + contactID);
         /**
          * Check that a name, address and phone has been entered and gives an alert if it isn't there.
          */
@@ -159,33 +170,17 @@ public class AddApptController implements Initializable {
         return Utils.getIdFromComboString((String) comboBox.getSelectionModel().getSelectedItem());
     }
 
-    /**
-     * Creates an appointment beginning timestamp.
-     * @return
-     * @throws ParseException
-     */
-    public Timestamp startTime() throws ParseException {
+
+   /* public Timestamp startTime() throws ParseException {
         return getTimestamp(appointmentDate, startTimeCombo, startMinCombo, am_pmStart);
     }
 
-    /**
-     * Creates an appointment end timestamp.
-     * @return
-     * @throws ParseException
-     */
+
     public Timestamp endTime() throws ParseException {
         return getTimestamp(appointmentDate, endTimeCombo, endMinCombo, am_pmEnd);
     }
 
-    /**
-     * Date/Time method
-     * @param datePicker
-     * @param hourPicker
-     * @param minutePicker
-     * @param am_pm
-     * @return
-     * @throws ParseException
-     */
+
     private Timestamp getTimestamp(DatePicker datePicker, ComboBox hourPicker, ComboBox minutePicker, ToggleGroup am_pm) throws ParseException {
         String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
         String hour = hourPicker.getValue().toString();
@@ -204,14 +199,14 @@ public class AddApptController implements Initializable {
         String concatTime = date + " " + time24HourFormat + ":00";
 
         return Timestamp.valueOf(concatTime);
-    }
+    }*/
 
 
 
-    /**
+/*    *//**
      * Creates and returns an array of HOUR options.
      * @return hourInput
-     */
+     *//*
     public ObservableList apptHour() {
         int[] hours = new int[]{12,11,10,9,8,7,6,5,4,3,2,1};
         for(Integer H : hours)
@@ -224,10 +219,10 @@ public class AddApptController implements Initializable {
             return hourInput;
     }
 
-    /**
+    *//**
      * Creates and returns an array of MINUTE options.
      * @return minuteInput
-     */
+     *//*
     public ObservableList apptMin() {
         String[] minutes = new String[]{"00","15","30","45","60"};
         for(String Minutes : minutes)
@@ -238,7 +233,7 @@ public class AddApptController implements Initializable {
             }
         }
         return minuteInput;
-    }
+    }*/
 
 
     /** AN observable list holding the customers from the database. Used to initialize the "Customer" combobox.
@@ -266,24 +261,59 @@ public class AddApptController implements Initializable {
     }
 
     /**
-     * timeHandler method. Populates the time combo boxes with available times during business hours.
+     * timeHandler method. Populates the time combo boxes with available times during business hours using the local timezone.
      */
     private void timeHandler(){
         try {
-            // Creating a loop that will add times from 08:00 to 22:00 in 30 minute increments to list for creating Time Combo box.
-            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat simpledateformat = new SimpleDateFormat("HH:mm:ss");
             String timer = "08:00:00";
             while (!timer.equals("22:00:00")) {
-                Date d = df.parse(timer);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(d);
-                cal.add(Calendar.MINUTE, 30);
-                times.add(df.format(cal.getTime()));
-                timer = df.format(cal.getTime());
+                Date date = simpledateformat.parse(timer);
+                Calendar calender = Calendar.getInstance();
+                calender.setTime(date);
+                calender.add(Calendar.MINUTE, 30);
+                times.add(simpledateformat.format(calender.getTime()));
+                timer = simpledateformat.format(calender.getTime());
             }
             startTimeCombo.setItems(times);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Prevents a previous date from being selected for an appointment.
+     * @param actionEvent
+     */
+    public void handleDateChoice(ActionEvent actionEvent) {
+        long days = ChronoUnit.DAYS.between(LocalDate.now(), appointmentDate.getValue());
+        if (days < 0){
+            Alert eAlert = new Alert(Alert.AlertType.NONE);
+            eAlert.setTitle("ERROR!");
+            eAlert.getDialogPane().getButtonTypes().add(ButtonType.OK);
+            eAlert.setContentText("You are selecting a date in the past. A date on or after " + LocalDate.now() + " must be selected");
+            eAlert.showAndWait();
+            appointmentDate.getEditor().clear();
+        }
+    }
+
+    /**
+     * Prevents a previous time on the current day from being selected.
+     * @param actionEvent
+     */
+    public void handleTimeChoice(ActionEvent actionEvent) {
+        long days = ChronoUnit.DAYS.between(LocalDate.now(), appointmentDate.getValue());
+        if (days == 0){
+            long timer = ChronoUnit.MINUTES.between(LocalTime.now(), LocalTime.parse(startTimeCombo.getValue()));
+            if (timer < 60){
+                Alert eAlert = new Alert(Alert.AlertType.NONE);
+                eAlert.setTitle("ERROR!");
+                eAlert.getDialogPane().getButtonTypes().add(ButtonType.OK);
+                eAlert.setContentText("You are selecting a time in the past. A time on or after " + LocalTime.now().plusMinutes(60).format(DateTimeFormatter.ofPattern("HH:mm")) + " must be selected.");
+                eAlert.showAndWait();
+                appointmentDate.getEditor().clear();
+            }
         }
     }
 
@@ -298,7 +328,7 @@ public class AddApptController implements Initializable {
         customerCombobox.setItems(customerList());
         contactCombobox.setItems(contactList());
 
-        startTimeCombo.setItems(apptHour());
+        startTimeCombo.setItems(times);
         startMinCombo.setItems(length);
 
 

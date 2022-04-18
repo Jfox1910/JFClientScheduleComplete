@@ -124,7 +124,10 @@ public class DaoCustomers {
         }
     }
 
-    //Deletes an exisiting customer from the database.
+    /**
+     * Deletes the selected CUSTOMER from the DB
+     * @param customerID
+     */
     public static void deleteCustomer(Integer customerID){
         try {
             String sqldeleteCustomer = "DELETE from customers WHERE Customer_ID = ?";

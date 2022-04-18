@@ -22,8 +22,8 @@ public class Appointment implements Initializable {
     private Timestamp apptEndTimeCol;
     private int apptCustomerIDCol;
     private int apptUserIDCol;
-    private Timestamp apptStart;
-    private Timestamp apptEnd;
+    private String apptStart;
+    private int apptEnd;
 
 
     public Appointment(int apptIDCol, String apptTitleCol, String apptDescriptionCol, String apptLocationCol, int apptContactCol, String apptTypeCol, Timestamp apptStartTimeCol, Timestamp apptEndTimeCol, int apptCustomerIDCol, int apptUserIDCol) {
@@ -43,7 +43,7 @@ public class Appointment implements Initializable {
         this.apptCustomerIDCol = customerID;
     }
 
-    public Appointment(int appointmentID, String title, String description, String location, String type, Timestamp startTime, Timestamp endTime, int customerID, int contactID) {
+    public Appointment(int appointmentID, String title, String description, String location, String type, String startTime, int endTime, int customerID, int contactID) {
         this.apptIDCol = appointmentID;
         this.apptTitleCol = title;
         this.apptDescriptionCol = description;
