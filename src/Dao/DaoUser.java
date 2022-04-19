@@ -9,19 +9,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**This is the DAO class that checks the user table for the correct login credentials and stores it in an OL.
- *
+/**
+ *This is the USER class that checks the user table for the correct login credentials and stores it in an OL.
  */
 public class DaoUser {
-
-    //private static final String tzOffset = User.getCurrentTimezoneOffset();
 
     private static User loggedinUser;
     public static User getLoggedinUser() { return loggedinUser; }
 
 
-    /** Get all users from the user table in the DB
-     *
+    /**
+     *Get all users from the user table in the DB
      * @return list of all customers from the DB
      */
     public static ObservableList<User> getAllUsers(){
@@ -83,22 +81,4 @@ public class DaoUser {
             return Boolean.FALSE;
         }
     }
-
-/*    public static boolean loggedInUser(String username, String password) {
-        try {
-            String sqlQuery = "select 1 from users where User_Name = ? and Password = ?;";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sqlQuery);
-            ResultSet resultSet = ps.executeQuery();
-            liveUser = new User((resultSet.getInt("User_ID")));
-            ps.setString(1, username);
-            ps.setString(2, password);
-
-
-            return resultSet.next();
-        } catch (SQLException e){
-            return false;
-        }
-    }*/
-
-
 }

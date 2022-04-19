@@ -19,9 +19,14 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import static java.time.LocalDate.now;
 
 public class MainScreenController implements Initializable {
 
@@ -79,32 +84,17 @@ public class MainScreenController implements Initializable {
     @FXML
     private RadioButton monthSelect;
 
+    @FXML
+    RadioButton appViewAllRadio;
+    @FXML
+    ToggleGroup weekmonth;
+
+
     private int customerModID = 0;
     private int days = 0;
     private static Customers modifyCustomers;
     private ObservableList<Customers> customers;
     private ObservableList<Appointment> appointments;
-
-
-    /*    @FXML private TextField CustomerID;
-    @FXML private TextField CustomerName;
-    @FXML private TextField CustomerAddress;
-    @FXML private TextField CustomerZip;
-    @FXML private TextField CustomerPhone;
-    @FXML private ComboBox customerCountry;
-    @FXML private ComboBox customerDivision;
-    @FXML private RadioButton monthSelect;
-    @FXML private RadioButton weekSelect;*/
-
-/*    private static Divisions modifyCustomerDivision;
-    private static Countries modifyCustomerCountry;
-
-    public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
-    public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
-    public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
-    public ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
-    public ObservableList<Appointment> allAppointments = DaoAppointments.getAllAppointments();*/
-
 
 
     /*
@@ -113,6 +103,7 @@ public class MainScreenController implements Initializable {
     LAMBDAS
     MONTH WEEK SELECT
     MOD APPTS
+    LOGIN APPT CHECK
     ADD REPORTS
     JAVADOCS
     README
@@ -152,7 +143,6 @@ public class MainScreenController implements Initializable {
 
     /**
      * CANCEL appointment method
-     *
      * @param event
      * @throws IOException
      */
@@ -162,8 +152,8 @@ public class MainScreenController implements Initializable {
             Appointment selectedAppointment = apptTableview.getSelectionModel().getSelectedItem();
 
             for (Appointment appointment : appointments) {
-                if (appointment.getApptIDCol() == selectedAppointment.getApptIDCol()) {
-                    DaoAppointments.deleteAppointment(appointment.getApptIDCol());
+                if (appointment.getAppt_ID() == selectedAppointment.getAppt_ID()) {
+                    DaoAppointments.deleteAppointment(appointment.getAppt_ID());
                 }
             }
 
@@ -177,7 +167,7 @@ public class MainScreenController implements Initializable {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                DaoAppointments.deleteAppointment(selectedAppointment.getApptIDCol());
+                DaoAppointments.deleteAppointment(selectedAppointment.getAppt_ID());
                 apptTableview.setItems(DaoAppointments.getAllAppointments());
 
                 /**
@@ -203,7 +193,6 @@ public class MainScreenController implements Initializable {
 
     /**
      * Load Reports Method
-     *
      * @param event
      * @throws IOException
      */
@@ -215,19 +204,51 @@ public class MainScreenController implements Initializable {
     }
 
 
-    /**
+/*    *//**
      * Handle month/week selection
      *
-     * @param actionEvent
-     */
+
+     *//*
     public void onActionSelectRange(ActionEvent actionEvent) {
-    /*    if (weekSelect.isSelected()) {
-            apptTableview.setItems(DaoAppointments.getAllAppointments(days, 7));
+        if (weekmonth.getSelectedToggle().equals(weekSelect)) {
+            filterWeek();
+        } else if (weekmonth.getSelectedToggle().equals(monthSelect)) {
+            filterMonth();
+        } else {
+            filterAll();
         }
-        if (monthSelect.isSelected()) {
-            apptTableview.setItems(DaoAppointments.getAllAppointments(days, 30));
-        }*/
-        System.out.println("Testing month");
+    }*/
+
+
+    //TODO WORKING THROUGH module_info.java
+
+
+    private void filterAll() {
+        appointments = DaoAppointments.getAllAppointments();
+        apptTableview.setItems(appointments);
+    }
+
+
+    public void onActionViewMonth() {showByMonth();}
+    public void onActionViewWeek() {showByWeek();}
+    public void onActionViewAll() {filterAll();}
+
+
+    private void showByMonth() {
+        System.out.println("MONTH TEST");
+        LocalDate date = now();
+        LocalDate firstDayOfMonth = date.withDayOfMonth(1);
+        LocalDate lastDayOfMonth = date.withDayOfMonth(date.lengthOfMonth());
+        apptTableview.setItems(DaoAppointments.getAppointmentDates(firstDayOfMonth, lastDayOfMonth));
+    }
+
+    private void showByWeek() {
+        System.out.println("WEEK TEST");
+        DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;
+        DayOfWeek lastDayOfWeek = DayOfWeek.FRIDAY;
+        LocalDate firstDateOfWeek = now().with(TemporalAdjusters.previousOrSame(firstDayOfWeek));
+        LocalDate lastDateOfWeek = now().with(TemporalAdjusters.nextOrSame(lastDayOfWeek));
+        apptTableview.setItems(DaoAppointments.getAppointmentDates(firstDateOfWeek, lastDateOfWeek));
     }
 
 
@@ -285,12 +306,6 @@ public class MainScreenController implements Initializable {
 
             Customers selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
 
-            /*for (Appointment appointment : appointments) {
-                if (appointment.getApptIDCol() == selectedCustomer.getCustomerId()) {
-                    DaoAppointments.deleteAppointment(appointment.getApptIDCol());
-                }
-            }*/
-
             /**
              * Hold and alert the user before deleting the selected customer. Holds first and deletes on OK then reloads the tableview.
              * If an appointment is scheduled, alerts the user that the appointment has to be deleted before the customer will be removed.
@@ -342,22 +357,25 @@ public class MainScreenController implements Initializable {
     }
 
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        weekmonth.selectToggle(appViewAllRadio);
 
         /**
          * Appointment table initialization. Loads the columns with the information from the DB appointment table
          */
         appointments = DaoAppointments.getAllAppointments();
         apptTableview.setItems(appointments);
-        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("apptIDCol"));
+        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("appt_ID"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitleCol"));
         apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescriptionCol"));
         apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocationCol"));
         apptContactCol.setCellValueFactory(new PropertyValueFactory<>("apptContactCol"));
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("apptTypeCol"));
-        apptStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptStartTimeCol"));
-        apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptEndTimeCol"));
+        apptStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptStartTime"));
+        apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptEndTime"));
         apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerIDCol"));
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("apptUserIDCol"));
 
@@ -373,13 +391,6 @@ public class MainScreenController implements Initializable {
         customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
         customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivision"));
 
-
-        if (weekSelect.isSelected()) {
-            apptTableview.setItems(DaoAppointments.getAppointments(days, 7));
-        }
-        if (monthSelect.isSelected()) {
-            apptTableview.setItems(DaoAppointments.getAppointments(days, 30));
-        }
 
     }
 }

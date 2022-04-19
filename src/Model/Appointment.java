@@ -1,7 +1,5 @@
 package Model;
 
-import Dao.DaoAppointments;
-import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
@@ -14,29 +12,39 @@ public class Appointment implements Initializable {
     public static Customers customers;
     public static Appointment appointment;
 
-    private int apptIDCol;
+    private int appt_ID;
     private String apptTitleCol;
     private String apptDescriptionCol;
     private String apptLocationCol;
     private int apptContactCol;
     private String apptTypeCol;
-    private Timestamp apptStartTimeCol;
-    private Timestamp apptEndTimeCol;
+    private Timestamp apptStartTime;
+    private Timestamp apptEndTime;
     private int apptCustomerIDCol;
     private int apptUserIDCol;
     private String apptStart;
     private int apptEnd;
 
+    private String title;
+    private String description;
+    private String location;
+    private String type;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private int customer_id;
+    private int contact_id;
+    private int user_id;
 
-    public Appointment(int apptIDCol, String apptTitleCol, String apptDescriptionCol, String apptLocationCol, int apptContactCol, String apptTypeCol, Timestamp apptStartTimeCol, Timestamp apptEndTimeCol, int apptCustomerIDCol, int apptUserIDCol) {
-        this.apptIDCol = apptIDCol;
+
+    public Appointment(int appt_ID, String apptTitleCol, String apptDescriptionCol, String apptLocationCol, int apptContactCol, String apptTypeCol, Timestamp apptStartTime, Timestamp apptEndTime, int apptCustomerIDCol, int apptUserIDCol) {
+        this.appt_ID = appt_ID;
         this.apptTitleCol = apptTitleCol;
         this.apptDescriptionCol = apptDescriptionCol;
         this.apptLocationCol = apptLocationCol;
         this.apptContactCol = apptContactCol;
         this.apptTypeCol = apptTypeCol;
-        this.apptStartTimeCol = apptStartTimeCol;
-        this.apptEndTimeCol = apptEndTimeCol;
+        this.apptStartTime = apptStartTime;
+        this.apptEndTime = apptEndTime;
         this.apptCustomerIDCol = apptCustomerIDCol;
         this.apptUserIDCol = apptUserIDCol;
     }
@@ -46,7 +54,7 @@ public class Appointment implements Initializable {
     }
 
     public Appointment(int appointmentID, String title, String description, String location, String type, String startTime, int endTime, int customerID, int contactID) {
-        this.apptIDCol = appointmentID;
+        this.appt_ID = appointmentID;
         this.apptTitleCol = title;
         this.apptDescriptionCol = description;
         this.apptLocationCol = location;
@@ -58,9 +66,20 @@ public class Appointment implements Initializable {
 
     }
 
+    public Appointment(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customer_id, int user_id, int contact_id) {
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+        this.customer_id = customer_id;
+        this.user_id = user_id;
+        this.contact_id = contact_id;
+    }
+
 
     //Getters
-
 
     public static Appointment getAppointment() {return appointment;}
 
@@ -70,8 +89,8 @@ public class Appointment implements Initializable {
         return apptCustomerIDCol;
     }
 
-    public int getApptIDCol() {
-        return apptIDCol;
+    public int getAppt_ID() {
+        return appt_ID;
     }
 
     public String getApptTitleCol() {
@@ -94,12 +113,12 @@ public class Appointment implements Initializable {
         return apptTypeCol;
     }
 
-    public Timestamp getApptStartTimeCol() {
-        return apptStartTimeCol;
+    public Timestamp getApptStartTime() {
+        return apptStartTime;
     }
 
-    public Timestamp getApptEndTimeCol() {
-        return apptEndTimeCol;
+    public Timestamp getApptEndTime() {
+        return apptEndTime;
     }
 
     public int getApptCustomerIDCol() {
@@ -119,8 +138,8 @@ public class Appointment implements Initializable {
 
     public void setContactID(int contactID) { this.apptContactCol = contactID; }
 
-    public void setApptIDCol(int apptIDCol) {
-        this.apptIDCol = apptIDCol;
+    public void setAppt_ID(int appt_ID) {
+        this.appt_ID = appt_ID;
     }
 
     public void setApptTitleCol(String apptTitleCol) {
@@ -143,12 +162,12 @@ public class Appointment implements Initializable {
         this.apptTypeCol = apptTypeCol;
     }
 
-    public void setApptStartTimeCol(Timestamp apptStartTimeCol) {
-        this.apptStartTimeCol = apptStartTimeCol;
+    public void setApptStartTime(Timestamp apptStartTime) {
+        this.apptStartTime = apptStartTime;
     }
 
-    public void setApptEndTimeCol(Timestamp apptEndTimeCol) {
-        this.apptEndTimeCol = apptEndTimeCol;
+    public void setApptEndTime(Timestamp apptEndTime) {
+        this.apptEndTime = apptEndTime;
     }
 
     public void setApptCustomerIDCol(int apptCustomerIDCol) {

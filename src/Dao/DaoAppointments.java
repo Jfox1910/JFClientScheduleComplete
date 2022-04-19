@@ -5,10 +5,9 @@ import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
-import utils.Utils;
 
 import java.sql.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  Appointment table database access
@@ -164,6 +163,41 @@ public final class DaoAppointments {
         return null;
     }
 
+//TODO IN PROGRESS
+
+
+    public static ObservableList<Appointment> getAppointmentDates(LocalDate firstDate, LocalDate lastDate) {
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+        try {
+            String query = "select * from appointments where Start between ? and ?;";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                ps.setTimestamp(1, Timestamp.valueOf(firstDate.atStartOfDay()));
+                ps.setTimestamp(2, Timestamp.valueOf(lastDate.atTime(23, 59, 59, 999)));
+               /* Appointment appointment = new Appointment(
+                        rs.getString("Title"),
+                        rs.getString("Description"),
+                        rs.getString("Location"),
+                        rs.getString("Type"),
+                        rs.getTimestamp("Start").toLocalDateTime(),
+                        rs.getTimestamp("End").toLocalDateTime(),
+                        rs.getInt("Customer_ID"),
+                        rs.getInt("User_ID"),
+                        rs.getInt("Contact_ID")
+                );*/
+
+               /*ps.setTimestamp(1, Timestamp.valueOf(firstDate.atStartOfDay()));
+                ps.setTimestamp(2, Timestamp.valueOf(lastDate.atTime(23, 59, 59, 999)));*/
+
+                //appointments.add(appointment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointments;
+    }
 
 
     public static ObservableList<Appointment> getAppointments(int customerID, int days) {

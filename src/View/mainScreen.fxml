@@ -68,7 +68,7 @@
                                                 </HBox>
                                                 <HBox alignment="CENTER">
                                                     <children>
-                                                        <RadioButton fx:id="weekSelect" mnemonicParsing="false" onAction="#onActionSelectRange" text="Sort By Week">
+                                                        <RadioButton fx:id="weekSelect" mnemonicParsing="false" onAction="#onActionViewWeek" text="Sort By Week" toggleGroup="$weekmonth">
                                                             <HBox.margin>
                                                                 <Insets right="10.0" />
                                                             </HBox.margin>
@@ -76,7 +76,11 @@
                                                                 <ToggleGroup fx:id="weekmonth" />
                                                             </toggleGroup>
                                                         </RadioButton>
-                                                        <RadioButton fx:id="monthSelect" mnemonicParsing="false" onAction="#onActionSelectRange" text="Sort By Month" />
+                                                        <RadioButton fx:id="monthSelect" mnemonicParsing="false" onAction="#onActionViewMonth" text="Sort By Month" toggleGroup="$weekmonth">
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin></RadioButton>
+                                          <RadioButton fx:id="viewAllRadio" mnemonicParsing="false" onAction="#onActionViewAll" text="View All" toggleGroup="$weekmonth"/>
                                                     </children>
                                        <padding>
                                           <Insets top="20.0" />
