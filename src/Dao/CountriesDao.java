@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DaoCountries {
+public class CountriesDao {
     public static ObservableList<Countries> getAllCountries(){
         ObservableList<Countries> countries = FXCollections.observableArrayList();
 

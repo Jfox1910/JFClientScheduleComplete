@@ -1,186 +1,122 @@
 package Model;
 
-import javafx.fxml.Initializable;
 
-import java.net.URL;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ResourceBundle;
 
-public class Appointment implements Initializable {
+/**
+ * Appointment model object class.
+ */
+public class Appointment {
 
     public static Customers customers;
     public static Appointment appointment;
 
-    private int appt_ID;
-    private String apptTitleCol;
-    private String apptDescriptionCol;
-    private String apptLocationCol;
-    private int apptContactCol;
-    private String apptTypeCol;
-    private Timestamp apptStartTime;
-    private Timestamp apptEndTime;
-    private int apptCustomerIDCol;
-    private int apptUserIDCol;
-    private String apptStart;
-    private int apptEnd;
-
+    private int Appointment_ID;
     private String title;
     private String description;
     private String location;
     private String type;
+    private String userName;
     private LocalDateTime start;
     private LocalDateTime end;
-    private int customer_id;
-    private int contact_id;
-    private int user_id;
+    private int Customer_ID;
+    private int Contact_ID;
+    private String ContactName;
+    private int User_ID;
 
 
-    public Appointment(int appt_ID, String apptTitleCol, String apptDescriptionCol, String apptLocationCol, int apptContactCol, String apptTypeCol, Timestamp apptStartTime, Timestamp apptEndTime, int apptCustomerIDCol, int apptUserIDCol) {
-        this.appt_ID = appt_ID;
-        this.apptTitleCol = apptTitleCol;
-        this.apptDescriptionCol = apptDescriptionCol;
-        this.apptLocationCol = apptLocationCol;
-        this.apptContactCol = apptContactCol;
-        this.apptTypeCol = apptTypeCol;
-        this.apptStartTime = apptStartTime;
-        this.apptEndTime = apptEndTime;
-        this.apptCustomerIDCol = apptCustomerIDCol;
-        this.apptUserIDCol = apptUserIDCol;
-    }
+    public Appointment(int customerID) {this.Customer_ID = customerID;}
 
-    public Appointment(int customerID) {
-        this.apptCustomerIDCol = customerID;
-    }
+    public Appointment(String userName, String contactName){
+        this.userName = userName;
+        this.ContactName = contactName;}
 
-    public Appointment(int appointmentID, String title, String description, String location, String type, String startTime, int endTime, int customerID, int contactID) {
-        this.appt_ID = appointmentID;
-        this.apptTitleCol = title;
-        this.apptDescriptionCol = description;
-        this.apptLocationCol = location;
-        this.apptTypeCol = type;
-        this.apptStart = startTime;
-        this.apptEnd = endTime;
-        this.apptCustomerIDCol = customerID;
-        this.apptContactCol = contactID;
 
-    }
-
-    public Appointment(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customer_id, int user_id, int contact_id) {
+    public Appointment(int Appointment_ID, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int Customer_ID, int User_ID, int Contact_ID) {
+        this.Appointment_ID = Appointment_ID;
         this.title = title;
         this.description = description;
         this.location = location;
         this.type = type;
         this.start = start;
         this.end = end;
-        this.customer_id = customer_id;
-        this.user_id = user_id;
-        this.contact_id = contact_id;
+        this.Customer_ID = Customer_ID;
+        this.User_ID = User_ID;
+        this.Contact_ID = Contact_ID;
     }
 
 
-    //Getters
+    /**
+     * Appointment Getters
+     * @return Appointment_ID
+     * customers
+     * appointment
+     * title
+     * description
+     * location
+     * type
+     * userName
+     * start
+     * end
+     * Customer_ID
+     * Contact_ID
+     * User_ID
+     * ContactName
+     */
+    public int getAppointment_ID() {return Appointment_ID;}
+
+    public static Customers getCustomers() {return customers;}
 
     public static Appointment getAppointment() {return appointment;}
 
-    public int getContactID() { return  apptContactCol;}
+    public String getTitle() {return title;}
 
-    public int getCustomerID() {
-        return apptCustomerIDCol;
-    }
+    public String getDescription() {return description;}
 
-    public int getAppt_ID() {
-        return appt_ID;
-    }
+    public String getLocation() {return location;}
 
-    public String getApptTitleCol() {
-        return apptTitleCol;
-    }
+    public String getType() {return type;}
 
-    public String getApptDescriptionCol() {
-        return apptDescriptionCol;
-    }
+    public String getUserName() {return userName;}
 
-    public String getApptLocationCol() {
-        return apptLocationCol;
-    }
+    public LocalDateTime getStart() {return start;}
 
-    public int getApptContactCol() {
-        return apptContactCol;
-    }
+    public LocalDateTime getEnd() {return end;}
 
-    public String getApptTypeCol() {
-        return apptTypeCol;
-    }
+    public int getCustomer_ID() {return Customer_ID;}
 
-    public Timestamp getApptStartTime() {
-        return apptStartTime;
-    }
+    public int getContact_ID() {return Contact_ID;}
 
-    public Timestamp getApptEndTime() {
-        return apptEndTime;
-    }
+    public int getUser_ID() {return User_ID;}
 
-    public int getApptCustomerIDCol() {
-        return apptCustomerIDCol;
-    }
-
-    public int getApptUserIDCol() {
-        return apptUserIDCol;
-    }
+    public String getContactName() {return ContactName;}
 
     //Setters
+    public void setAppointment_ID(int appointment_ID) {Appointment_ID = appointment_ID;}
+
+    public static void setCustomers(Customers customers) {Appointment.customers = customers;}
+
     public static void setAppointment(Appointment appointment) {Appointment.appointment = appointment;}
 
-    public void setCustomerId(int customerID) {
-        this.apptCustomerIDCol = customerID;
-    }
+    public void setTitle(String title) {this.title = title;}
 
-    public void setContactID(int contactID) { this.apptContactCol = contactID; }
+    public void setDescription(String description) {this.description = description;}
 
-    public void setAppt_ID(int appt_ID) {
-        this.appt_ID = appt_ID;
-    }
+    public void setLocation(String location) {this.location = location;}
 
-    public void setApptTitleCol(String apptTitleCol) {
-        this.apptTitleCol = apptTitleCol;
-    }
+    public void setType(String type) {this.type = type;}
 
-    public void setApptDescriptionCol(String apptDescriptionCol) {
-        this.apptDescriptionCol = apptDescriptionCol;
-    }
+    public void setUserName(String userName) {this.userName = userName;}
 
-    public void setApptLocationCol(String apptLocationCol) {
-        this.apptLocationCol = apptLocationCol;
-    }
+    public void setStart(LocalDateTime start) {this.start = start;}
 
-    public void setApptContactCol(int apptContactCol) {
-        this.apptContactCol = apptContactCol;
-    }
+    public void setEnd(LocalDateTime end) {this.end = end;}
 
-    public void setApptTypeCol(String apptTypeCol) {
-        this.apptTypeCol = apptTypeCol;
-    }
+    public void setCustomer_ID(int customer_ID) {this.Customer_ID = customer_ID;}
 
-    public void setApptStartTime(Timestamp apptStartTime) {
-        this.apptStartTime = apptStartTime;
-    }
+    public void setContact_ID(int contact_ID) {this.Contact_ID = contact_ID;}
 
-    public void setApptEndTime(Timestamp apptEndTime) {
-        this.apptEndTime = apptEndTime;
-    }
+    public void setUser_ID(int user_ID) {this.User_ID = user_ID;}
 
-    public void setApptCustomerIDCol(int apptCustomerIDCol) {
-        this.apptCustomerIDCol = apptCustomerIDCol;
-    }
-
-    public void setApptUserIDCol(int apptUserIDCol) {
-        this.apptUserIDCol = apptUserIDCol;
-    }
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
+    public void setContactName(String contactName) {ContactName = contactName;}
 }

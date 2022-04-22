@@ -1,33 +1,38 @@
 package Model;
 
+/**
+ * Contact model object class.
+ */
 public class Contacts {
 
     private int contactID;
     private String contactName;
-    private String contactEmail;
 
     public Contacts(int contactID, String contactName, String contactEmail) {
         this.contactID = contactID;
         this.contactName = contactName;
-        this.contactEmail = contactEmail;
     }
 
-    public static int getContactIDByName(String contactName)
-    {
+    public static int getContactIDByName(String contactName) {
         int contactID = Integer.parseInt(contactName.substring(0, contactName.indexOf(":")));
-
         return contactID;
     }
 
+
+    /**
+     * Contacts Getters
+     * @return contactID, contactName, contactEmail
+     */
     public int getContactID() {return contactID;}
 
     public String getContactName() {return contactName;}
 
-    public String getContactEmail() {return contactEmail;}
 
+    /**
+     * Contacts Setters
+     * @param contactID
+     */
     public void setContactID(int contactID) {this.contactID = contactID;}
 
     public void setContactName(String contactName) {this.contactName = contactName;}
-
-    public void setContactEmail(String contactEmail) {this.contactEmail = contactEmail;}
 }

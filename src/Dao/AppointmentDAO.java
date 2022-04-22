@@ -8,17 +8,95 @@ import utils.JDBC;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Locale;
 
 /**
  Appointment table database access
  */
-public final class DaoAppointments {
+public final class AppointmentDAO {
 
     private static final Connection connection = JDBC.getConnection();
     private static final String tzOffset = User.getCurrentTimezoneOffset();
-    public static DaoCustomers customer;
+    public static CustomersDao customer;
 
     public static ObservableList<Appointment> getAllAppointments(){
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * FROM appointments";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Appointment appt = createAppointment(rs);
+                appointments.add(appt);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return appointments;
+    }
+
+    public static void newAppointment(Appointment appt){
+
+        /*int customerID = appt.getCustomer_ID();
+        int contactID = appt.getContact_ID();
+        String title = appt.getTitle();
+        String description = appt.getDescription();
+        String location = appt.getLocation();
+        String type = appt.getType();
+        LocalDateTime start = startTime;
+        LocalDateTime end = endTime;*/
+
+
+        /*    int appointmentID = 1;
+            try {
+                Statement id = connection.createStatement();
+                ResultSet rs = id.executeQuery("select max(Appointment_ID) as Last_Appointment from appointments");
+                if (rs.next()) {
+                    appointmentID = rs.getInt("Last_Appointment") + 1;
+                }
+                id.close();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }*/
+
+        LocalDateTime startTime;
+        LocalDateTime endTime;
+        startTime = appt.getStart();
+        endTime = appt.getEnd();
+
+        try {
+            String sql = "INSERT INTO appointments(Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?,?,?,?,?,?,NOW(),?,NOW(),?,?,?,?)";
+            //String sql = "insert into appointments set Appointment_ID=?, Title=?, Description=?, Location=?, Type=?, Start= ?, End=?, Create_Date=now(), Created_By=?, Customer_ID=?, User_ID=?, Contact_ID=?, Last_Updated_by=?, Last_Update=now();";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+           // ps.setInt(1, appointmentID);
+            ps.setString(1, appt.getTitle());
+            ps.setString(2, appt.getDescription());
+            ps.setString(3, appt.getLocation());
+            ps.setString(4, appt.getType());
+            ps.setTimestamp(5, Timestamp.valueOf(startTime));
+            ps.setTimestamp(6, Timestamp.valueOf(endTime));
+            ps.setString(7, UserDao.getLoggedinUser().getUserName());
+            ps.setInt(8, appt.getCustomer_ID());
+            ps.setInt(9, UserDao.getLoggedinUser().getUserId());
+            ps.setInt(10, appt.getContact_ID());
+            ps.setString(11, UserDao.getLoggedinUser().getUserName());
+
+            ps.execute();
+            ps.close();
+            getAllAppointments();
+
+        } catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
+/*    public static ObservableList<Appointment> getAllAppointments(){
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
         try {
@@ -48,10 +126,9 @@ public final class DaoAppointments {
         }
 
         return appointments;
-    }
+    }*/
 
-
-    public static void newAppointment(Appointment appt, String startTime, int endTime){
+  /*  public static void newAppointment(Appointment appt, String startTime, int endTime){
 
             int customerID = appt.getCustomerID();
             int contactID = appt.getContactID();
@@ -89,11 +166,11 @@ public final class DaoAppointments {
             ps.setString(8, startTime);
             ps.setString(9, tzOffset);
             ps.setInt(10, endTime);
-            ps.setString(11, DaoUser.getLoggedinUser().getUserName());
+            ps.setString(11, UserDao.getLoggedinUser().getUserName());
             ps.setInt(12, customerID);
-            ps.setInt(13, DaoUser.getLoggedinUser().getUserId());
+            ps.setInt(13, UserDao.getLoggedinUser().getUserId());
             ps.setInt(14, contactID);
-            ps.setString(15,DaoUser.getLoggedinUser().getUserName());
+            ps.setString(15,UserDao.getLoggedinUser().getUserName());
 
             ps.execute();
             ps.close();
@@ -102,7 +179,7 @@ public final class DaoAppointments {
         } catch (SQLException throwables){
             throwables.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * Deletes the selected APPOINTMENT from the DB.
@@ -124,6 +201,8 @@ public final class DaoAppointments {
         }
     }
 
+
+    // POSSIBLY USABLE FOR REPORTS
     public ObservableList<Appointment> getAllByCustomerId(int id) {
 
         String query = "SELECT * FROM appointments WHERE Customer_ID = ?;";
@@ -138,19 +217,7 @@ public final class DaoAppointments {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                int apptIDCol = rs.getInt("Appointment_ID");
-                String apptTitleCol = rs.getString("Title");
-                String apptDescriptionCol = rs.getString("Description");
-                String apptLocationCol = rs.getString("Location");
-                int apptContactCol = rs.getInt("Contact_ID");
-                String apptTypeCol = rs.getString("Type");
-                Timestamp apptStartTimeCol = rs.getTimestamp("Start");
-                Timestamp apptEndTimeCol = rs.getTimestamp("End");
-                int apptCustomerIDCol = rs.getInt("Customer_ID");
-                int apptUserIDCol = rs.getInt("User_ID");
-                Appointment appointment = new Appointment(apptIDCol, apptTitleCol, apptDescriptionCol, apptLocationCol, apptContactCol, apptTypeCol, apptStartTimeCol,
-                        apptEndTimeCol, apptCustomerIDCol, apptUserIDCol);
-
+                Appointment appointment = createAppointment(rs);
                 apptList.add(appointment);
             }
 
@@ -163,44 +230,60 @@ public final class DaoAppointments {
         return null;
     }
 
-//TODO IN PROGRESS
 
+    public static ObservableList<Appointment> getAppointmentDates(LocalDate begin, LocalDate end) {
+        ObservableList<Appointment> selectAppointmentDates = FXCollections.observableArrayList();
+        String query = "SELECT * FROM appointments WHERE Start BETWEEN ? AND ?";
 
-    public static ObservableList<Appointment> getAppointmentDates(LocalDate firstDate, LocalDate lastDate) {
-        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         try {
-            String query = "select * from appointments where Start between ? and ?;";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(query);
+            ps.setTimestamp(1, Timestamp.valueOf(begin.atStartOfDay()));
+            ps.setTimestamp(2, Timestamp.valueOf(end.atTime(23, 59, 59, 999)));
+
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
-
-                ps.setTimestamp(1, Timestamp.valueOf(firstDate.atStartOfDay()));
-                ps.setTimestamp(2, Timestamp.valueOf(lastDate.atTime(23, 59, 59, 999)));
-               /* Appointment appointment = new Appointment(
-                        rs.getString("Title"),
-                        rs.getString("Description"),
-                        rs.getString("Location"),
-                        rs.getString("Type"),
-                        rs.getTimestamp("Start").toLocalDateTime(),
-                        rs.getTimestamp("End").toLocalDateTime(),
-                        rs.getInt("Customer_ID"),
-                        rs.getInt("User_ID"),
-                        rs.getInt("Contact_ID")
-                );*/
-
-               /*ps.setTimestamp(1, Timestamp.valueOf(firstDate.atStartOfDay()));
-                ps.setTimestamp(2, Timestamp.valueOf(lastDate.atTime(23, 59, 59, 999)));*/
-
-                //appointments.add(appointment);
+                Appointment appointment = createAppointment(rs);
+                selectAppointmentDates.add(appointment);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return appointments;
+        return selectAppointmentDates;
     }
 
 
-    public static ObservableList<Appointment> getAppointments(int customerID, int days) {
+    /**
+     * New appointment object.
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
+    private static Appointment createAppointment(ResultSet rs) throws SQLException {
+
+        Appointment appointment = new Appointment(
+                rs.getInt("Appointment_ID"),
+                rs.getString("Title"),
+                rs.getString("Description"),
+                rs.getString("Location"),
+                rs.getString("Type"),
+                rs.getTimestamp("Start").toLocalDateTime(),
+                rs.getTimestamp("End").toLocalDateTime(),
+                rs.getInt("Customer_ID"),
+                rs.getInt("User_ID"),
+                rs.getInt("Contact_ID")
+
+        );
+        appointment.setAppointment_ID(rs.getInt("Appointment_ID"));
+        appointment.setCustomer_ID(appointment.getCustomer_ID());
+
+        appointment.setContact_ID(rs.getInt("Contact_ID"));
+        appointment.setUser_ID(UserDao.getLoggedinUser().getUserId());
+        appointment.setUserName(UserDao.getLoggedinUser().getUserName());
+    return appointment;
+}
+
+/*    public static ObservableList<Appointment> getAppointments(int customerID, int days) {
         Appointment appointment;
         ObservableList<Appointment> Appts = FXCollections.observableArrayList();
         try {
@@ -237,7 +320,7 @@ public final class DaoAppointments {
             return null;
         }
         return Appts;
-    }
+    }*/
 
 
 

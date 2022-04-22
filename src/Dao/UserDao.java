@@ -12,7 +12,7 @@ import java.sql.SQLException;
 /**
  *This is the USER class that checks the user table for the correct login credentials and stores it in an OL.
  */
-public class DaoUser {
+public class UserDao {
 
     private static User loggedinUser;
     public static User getLoggedinUser() { return loggedinUser; }

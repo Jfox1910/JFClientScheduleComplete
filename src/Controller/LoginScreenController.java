@@ -1,6 +1,6 @@
 package Controller;
 
-import Dao.DaoUser;
+import Dao.UserDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,14 +46,16 @@ public class LoginScreenController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    public String getUserName() {return usernameTextField.getText();}
 
-
-//Login Method. Creates a list and populates it with all the users in the DB.
+    /**
+     * Login Method. Creates a list and populates it with all the users in the DB. Sets an alert in either French or English based on locale.
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     public void onActionLogin(ActionEvent event) throws IOException, SQLException {
-        boolean verifyUser = DaoUser.loggedInUser(usernameTextField.getText(), usernamePasswordField.getText());{
+        boolean verifyUser = UserDao.loggedInUser(usernameTextField.getText(), usernamePasswordField.getText());{
 
-            String user = usernameTextField.getText();
             String userName = usernameTextField.getText();
             String password = usernamePasswordField.getText();
             if (verifyUser) {
@@ -71,23 +73,26 @@ public class LoginScreenController implements Initializable {
                 usernamePasswordField.clear();
 
                 reports(userName, password, "FALSE");
-
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Username and/or password is incorrect. Verify your information and try again.");
+                if (Locale.getDefault().getDisplayLanguage().equals("français")){
+                alert.setContentText(rb.getString("Login_Error!"));
+                }
+                else {
+                    alert.setContentText("Login Error! Check Username and Password and try again.");
+                }
                 alert.showAndWait();
                 return;
             }
         }
     }
 
-    public String getLoginUser() {
-        return usernameTextField.getText();
-    }
 
-
-
-
-//Writes a log of login attempts to a textfile LoginAttempts.txt.
+    /**
+     * Writes a log of login attempts to a textfile LoginAttempts.txt.
+     * @param userName
+     * @param password
+     * @param successfulLogin
+     */
     private void reports (String userName, String password, String successfulLogin){
         try {
             PrintWriter printWriter = new PrintWriter(new FileWriter(reportsFile, true));
@@ -96,13 +101,15 @@ public class LoginScreenController implements Initializable {
         }catch (IOException e){}
     }
 
-//Exit Method with a confirmation
+    /**
+     * Exit with a confirmation
+     * @param event
+     */
     @FXML
     void onActionExit(ActionEvent event) {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("This will Exit the Program. Are you sure you wish to continue?");
-        System.out.println("Exiting Program.");
+        alert.setContentText(rb.getString("Do_You_Wish_To_Exit?"));
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
@@ -127,6 +134,8 @@ public class LoginScreenController implements Initializable {
             loginButton.setText(rb.getString("loginbutton"));
             cancelButton.setText(rb.getString("cancelbutton"));
             locationLabel.setText(rb.getString("Location"));
+
+
         }catch (MissingResourceException e){
 
         }

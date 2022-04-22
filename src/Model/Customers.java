@@ -3,7 +3,9 @@ package Model;
 import java.sql.Timestamp;
 
 
-//Customer Class
+/**
+ * Customer model object class.
+ */
     public class Customers {
         private int customerId;
         private String customerName;
@@ -19,7 +21,6 @@ import java.sql.Timestamp;
         private String divisionName;
 
 
-//Constructors
         public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, String customerCreatedDate, String customerCreated, Timestamp customerUpdatedOn, String customerUpdatedBy, int customerDivision, String divisionName) {
             this.customerId = customerId;
             this.customerName = customerName;
@@ -32,8 +33,6 @@ import java.sql.Timestamp;
             this.customerUpdatedBy = customerUpdatedBy;
             this.customerDivision = customerDivision;
             this.divisionName = divisionName;
-
-
         }
 
 
@@ -49,43 +48,28 @@ import java.sql.Timestamp;
         }
 
 
+    /**
+     *Customer Getters
+     * @return customerId, customerName, customerAddy, customerZip, customerPhone, customerCreatedDate,
+     * customerCreated, customerUpdatedOn, customerUpdatedBy, customerCountry, divisionNam, divisionName
+     */
+        public int getCustomerId() {return customerId;}
 
-//Getters
-        public int getCustomerId() {
-            return customerId;
-        }
+        public String getCustomerName() {return customerName;}
 
-        public String getCustomerName() {
-            return customerName;
-        }
+        public String getCustomerAddy() {return customerAddy;}
 
-        public String getCustomerAddy() {
-            return customerAddy;
-        }
+        public String getCustomerZip() {return customerZip;}
 
-        public String getCustomerZip() {
-            return customerZip;
-        }
+        public String getCustomerPhone() {return customerPhone;}
 
-        public String getCustomerPhone() {
-            return customerPhone;
-        }
+        public String getCustomerCreatedDate() {return customerCreatedDate;}
 
-        public String getCustomerCreatedDate() {
-            return customerCreatedDate;
-        }
+        public String getCustomerCreated() {return customerCreated;}
 
-        public String getCustomerCreated() {
-            return customerCreated;
-        }
+        public Timestamp getCustomerUpdatedOn() {return customerUpdatedOn;}
 
-        public Timestamp getCustomerUpdatedOn() {
-            return customerUpdatedOn;
-        }
-
-        public String getCustomerUpdatedBy() {
-            return customerUpdatedBy;
-        }
+        public String getCustomerUpdatedBy() {return customerUpdatedBy;}
 
         public int getCustomerCountry() {return customerCountry;}
 
@@ -93,47 +77,44 @@ import java.sql.Timestamp;
 
         public String getDivisionName() {return divisionName;}
 
-    public static int getCustomerIDByName(String customerName)
-    {
-        int customerID = Integer.parseInt(customerName.substring(0, customerName.indexOf(":")));
-        return customerID;
-    }
 
-
-    //Setters
+    /**
+     *Customer Setters
+     *
+     * @param customerId
+     * customerName
+     * customerAddy
+     * customerZip
+     * customerPhone
+     * customerCreatedDate
+     * customerCreated
+     * customerUpdatedOn
+     * customerUpdatedBy
+     * customerCountry
+     * customerDivision
+     * customerDivisionName
+     */
         public void setCustomerId(int customerId) {this.customerId = customerId;}
 
-        public void setCustomerName(String customerName) {
-            this.customerName = customerName;
-        }
+        public void setCustomerName(String customerName) {this.customerName = customerName;}
 
-        public void setCustomerAddy(String customerAddy) {
-            this.customerAddy = customerAddy;
-        }
+        public void setCustomerAddy(String customerAddy) {this.customerAddy = customerAddy;}
 
         public void setCustomerZip(String customerZip) {this.customerZip = customerZip;}
 
-        public void setCustomerPhone(String customerPhone) {
-            this.customerPhone = customerPhone;
-        }
+        public void setCustomerPhone(String customerPhone) {this.customerPhone = customerPhone;}
 
         public void setCustomerCreatedDate(String customerCreatedDate) {this.customerCreatedDate = customerCreatedDate;}
 
         public void setCustomerCreated(String customerCreated) {this.customerCreated = customerCreated;}
 
-        public void setCustomerUpdatedOn(Timestamp customerUpdatedOn) {
-            this.customerUpdatedOn = customerUpdatedOn;
-        }
+        public void setCustomerUpdatedOn(Timestamp customerUpdatedOn) {this.customerUpdatedOn = customerUpdatedOn;}
 
-        public void setCustomerUpdatedBy(String customerUpdatedBy) {
-            this.customerUpdatedBy = customerUpdatedBy;
-        }
+        public void setCustomerUpdatedBy(String customerUpdatedBy) {this.customerUpdatedBy = customerUpdatedBy;}
 
         public void setCustomerCountry(int customerCountry) {this.customerCountry = customerCountry;}
 
-        public void setCustomerDivision(int customerDivision) {
-            this.customerDivision = customerDivision;
-        }
+        public void setCustomerDivision(int customerDivision) {this.customerDivision = customerDivision;}
 
         public void setDivisionName(String customerDivisionName) {this.divisionName = customerDivisionName;}
 }

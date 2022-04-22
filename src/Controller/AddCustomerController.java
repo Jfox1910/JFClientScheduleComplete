@@ -53,7 +53,7 @@ public class AddCustomerController implements Initializable {
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
         int divisionID = retrieveDivisionID;
-        //User User = DaoUser.getLoggedInUser();
+        //User User = UserDao.getLoggedInUser();
         int userID = retrieveUserID;
 
     /**
@@ -75,7 +75,7 @@ public class AddCustomerController implements Initializable {
             alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
-                    DaoCustomers.newCustomer(userID, customerName, customerAddress, customerZip, customerPhone, divisionID);
+                    CustomersDao.newCustomer(userID, customerName, customerAddress, customerZip, customerPhone, divisionID);
 
 
     /**
@@ -122,9 +122,9 @@ public class AddCustomerController implements Initializable {
         if(customerDivision.getSelectionModel().getSelectedItem() != null) {
             Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
             String division = selectedDivision.toString();
-            for (int i = 0; i < DaoDivisions.getAllDivisions().size(); i++) {
-                if (division.equalsIgnoreCase(DaoDivisions.getAllDivisions().get(i).getDivisionName())) {
-                    retrieveDivisionID = DaoDivisions.getAllDivisions().get(i).getDivisionID();
+            for (int i = 0; i < DivisionsDao.getAllDivisions().size(); i++) {
+                if (division.equalsIgnoreCase(DivisionsDao.getAllDivisions().get(i).getDivisionName())) {
+                    retrieveDivisionID = DivisionsDao.getAllDivisions().get(i).getDivisionID();
                     break;
                 }
             }
@@ -161,7 +161,7 @@ public class AddCustomerController implements Initializable {
     public ObservableList countryList(){
         ObservableList<String> countries = FXCollections.observableArrayList();
 
-        for(Countries country : DaoCountries.getAllCountries()){
+        for(Countries country : CountriesDao.getAllCountries()){
             countries.add(country.getName());
         }
         return countries;
@@ -175,7 +175,7 @@ public class AddCustomerController implements Initializable {
     public ObservableList divisionsByCountry(String modCustomerCountry){
         ObservableList<String> divisions = FXCollections.observableArrayList();
 
-        for(String divisionName : DaoDivisions.getAllByCountry(modCustomerCountry)){
+        for(String divisionName : DivisionsDao.getAllByCountry(modCustomerCountry)){
             divisions.add(divisionName);
         }
         return divisions;

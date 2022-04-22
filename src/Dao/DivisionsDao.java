@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class DaoDivisions {
+public class DivisionsDao {
     public static ObservableList<Divisions> getUsStates(){
         //array list of all US divisions
         ObservableList<Divisions> usStates = FXCollections.observableArrayList();
@@ -130,7 +130,7 @@ public class DaoDivisions {
 
     public static ObservableList<String> getAllByCountry(String modCustomerCountry){
         ObservableList<String>division = FXCollections.observableArrayList();
-        int countryID = DaoCountries.getCountryName(modCustomerCountry);
+        int countryID = CountriesDao.getCountryName(modCustomerCountry);
 
         try {
             String sql = "SELECT * FROM first_level_divisions WHERE Country_ID = ?";

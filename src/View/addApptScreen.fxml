@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddApptController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddApptController">
    <children>
-      <VBox alignment="TOP_CENTER" layoutY="51.0" prefHeight="355.0" prefWidth="640.0">
+      <VBox alignment="CENTER" layoutY="51.0" prefHeight="375.0" prefWidth="640.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="640.0" />
-            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+            <HBox alignment="CENTER_LEFT">
                <children>
                   <Label text="Title:">
                      <HBox.margin>
@@ -31,8 +25,11 @@
                   </Label>
                   <TextField fx:id="locationField" alignment="CENTER" prefHeight="30.0" promptText="Location" />
                </children>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+            <HBox alignment="CENTER_LEFT">
                <children>
                   <Label text="Customer:">
                      <HBox.margin>
@@ -51,8 +48,11 @@
                      </HBox.margin>
                   </TextField>
                </children>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+            <HBox alignment="CENTER_LEFT">
                <children>
                   <Label text="Type:">
                      <HBox.margin>
@@ -67,18 +67,24 @@
                   </Label>
                   <ComboBox fx:id="contactCombobox" prefWidth="150.0" promptText="Select:" />
                </children>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="640.0">
+            <HBox alignment="CENTER_LEFT">
                <children>
                   <Label text="Date:">
                      <HBox.margin>
                         <Insets left="40.0" right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker fx:id="appointmentDate" onAction="#handleDateChoice" promptText="Appointment Date" />
+                  <DatePicker fx:id="appointmentDate" onAction="#handleDateChoice" promptText="Appointment Date">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></DatePicker>
                   <VBox alignment="CENTER" prefHeight="75.0" prefWidth="95.0">
                      <children>
-                        <Label prefHeight="18.0" prefWidth="106.0" text="Appt. Time:">
+                        <Label prefHeight="18.0" prefWidth="106.0" text="Start Time:">
                            <padding>
                               <Insets left="10.0" right="10.0" />
                            </padding>
@@ -88,14 +94,54 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="279.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="280.0">
                      <children>
-                        <ComboBox fx:id="startTimeCombo" onAction="#handleTimeChoice" prefWidth="75.0" promptText="Hour:">
+                        <ComboBox fx:id="startHourCombo" prefWidth="75.0" promptText="Hour:">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </ComboBox>
                         <ComboBox fx:id="startMinCombo" prefWidth="75.0" promptText="Min:">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </ComboBox>
+                        <ComboBox fx:id="startAMPM" promptText="AM/PM">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </ComboBox>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="75.0" prefWidth="95.0">
+                     <children>
+                        <Label prefHeight="18.0" prefWidth="106.0" text="End Time:">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <HBox alignment="CENTER_LEFT" prefWidth="280.0">
+                     <children>
+                        <ComboBox fx:id="endHourCombo" prefWidth="75.0" promptText="Hour:">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </ComboBox>
+                        <ComboBox fx:id="endMinCombo" prefWidth="75.0" promptText="Min:">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </ComboBox>
+                        <ComboBox fx:id="endAMPM" promptText="AM/PM">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
@@ -106,7 +152,7 @@
             </HBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER" layoutY="404.0" prefHeight="75.0" prefWidth="640.0">
+      <HBox alignment="TOP_CENTER" layoutY="414.0" prefHeight="65.0" prefWidth="640.0">
          <children>
             <Button fx:id="addAppointment" mnemonicParsing="false" onAction="#onActionAdd" text="Add Appointment">
                <padding>

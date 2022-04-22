@@ -11,7 +11,7 @@ import java.sql.*;
 /**
  * Customer DB access class
  */
-public class DaoCustomers {
+public class CustomersDao {
 
     private static final Connection connection = JDBC.getConnection();
 
@@ -39,7 +39,7 @@ public class DaoCustomers {
                 String customerLastUpdatedBy = rs.getString("Last_Updated_By");
                 int customerDivision = rs.getInt("Division_ID");
 
-                String divisionName = DaoDivisions.getDivisionName(customerDivision);
+                String divisionName = DivisionsDao.getDivisionName(customerDivision);
                 Customers customers = new Customers(customerId,customerName,customerAddress,customerPostalCode,customerPhone,customerCreateDate,customerCreatedBy,customerLastUpdate,customerLastUpdatedBy,customerDivision,divisionName);
                 customerList.add(customers);
             }
@@ -107,8 +107,8 @@ public class DaoCustomers {
             psnewCustomer.setString(3,customerAddy);
             psnewCustomer.setString(4,customerZipCode);
             psnewCustomer.setString(5,customerPhone);
-            psnewCustomer.setString(6, DaoUser.getLoggedinUser().getUserName());
-            psnewCustomer.setString(7, DaoUser.getLoggedinUser().getUserName());
+            psnewCustomer.setString(6, UserDao.getLoggedinUser().getUserName());
+            psnewCustomer.setString(7, UserDao.getLoggedinUser().getUserName());
             psnewCustomer.setInt(8, customerDivision);
 
             psnewCustomer.execute();
@@ -140,8 +140,8 @@ public class DaoCustomers {
             psmodifyCustomer.setString(2,customerAddy);
             psmodifyCustomer.setString(3,customerZipCode);
             psmodifyCustomer.setString(4,customerPhone);
-            psmodifyCustomer.setString(5, DaoUser.getLoggedinUser().getUserName());
-            psmodifyCustomer.setString(5, DaoUser.getLoggedinUser().getUserName());
+            psmodifyCustomer.setString(5, UserDao.getLoggedinUser().getUserName());
+            psmodifyCustomer.setString(5, UserDao.getLoggedinUser().getUserName());
             psmodifyCustomer.setInt(6,customerDivision);
             psmodifyCustomer.setInt(7,customerId);
 
@@ -206,6 +206,6 @@ public class DaoCustomers {
      * @return
      */
     public static String getCountry(Customers customers){
-        return DaoCountries.getCountryID(DaoDivisions.getCountryDivision(DaoCustomers.getCustomerDivision(customers)));
+        return CountriesDao.getCountryID(DivisionsDao.getCountryDivision(CustomersDao.getCustomerDivision(customers)));
     }
 }

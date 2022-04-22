@@ -1,8 +1,8 @@
 package Controller;
 
-import Dao.DaoCountries;
-import Dao.DaoCustomers;
-import Dao.DaoDivisions;
+import Dao.CountriesDao;
+import Dao.CustomersDao;
+import Dao.DivisionsDao;
 import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
@@ -44,11 +44,11 @@ public class ModCustomerController implements Initializable{
 
     private Customers customers = MainScreenController.getSelectedCustomer();
 
-    /*public ObservableList<Countries> allCountries = DaoCountries.getAllCountries();
-    public ObservableList<Divisions> usDivisionsList = DaoDivisions.getUsStates();
-    public ObservableList<Divisions> canadianDivisionList = DaoDivisions.getCanadianTerritories();
-    public ObservableList<Divisions> UKDivisionList =DaoDivisions.getUKTerritories();
-    public ObservableList<Appointment> allAppointments = DaoAppointments.getAllAppointments();
+    /*public ObservableList<Countries> allCountries = CountriesDao.getAllCountries();
+    public ObservableList<Divisions> usDivisionsList = DivisionsDao.getUsStates();
+    public ObservableList<Divisions> canadianDivisionList = DivisionsDao.getCanadianTerritories();
+    public ObservableList<Divisions> UKDivisionList =DivisionsDao.getUKTerritories();
+    public ObservableList<Appointment> allAppointments = AppointmentDAO.getAllAppointments();
     private final ObservableList<Countries> countries = FXCollections.observableArrayList();
     private final ObservableList<String> divID = FXCollections.observableArrayList();
 
@@ -96,7 +96,7 @@ public class ModCustomerController implements Initializable{
   public ObservableList countryList(){
         ObservableList<String> countries = FXCollections.observableArrayList();
 
-        for(Countries country : DaoCountries.getAllCountries()){
+        for(Countries country : CountriesDao.getAllCountries()){
             countries.add(country.getName());
         }
         return countries;
@@ -110,7 +110,7 @@ public class ModCustomerController implements Initializable{
     public ObservableList divisionList(){
         ObservableList<String> divisions = FXCollections.observableArrayList();
 
-        for(Divisions division : DaoDivisions.getAllDivisions()){
+        for(Divisions division : DivisionsDao.getAllDivisions()){
             divisions.add(division.getDivisionName());
         }
         return divisions;
@@ -124,7 +124,7 @@ public class ModCustomerController implements Initializable{
     public ObservableList divisionsByCountry(String modCustomerCountry){
         ObservableList<String> divisions = FXCollections.observableArrayList();
 
-        for(String divisionName : DaoDivisions.getAllByCountry(modCustomerCountry)){
+        for(String divisionName : DivisionsDao.getAllByCountry(modCustomerCountry)){
             divisions.add(divisionName);
         }
         return divisions;
@@ -143,7 +143,7 @@ public class ModCustomerController implements Initializable{
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
-        int modCustomerDivision = DaoDivisions.getAllDivisionsByName(customerDivision.getValue().toString());
+        int modCustomerDivision = DivisionsDao.getAllDivisionsByName(customerDivision.getValue().toString());
 
 if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty() || customerPhone.isEmpty() || customerDivision.getItems().isEmpty()){
     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -160,7 +160,7 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
             alert.setContentText("By clicking OK, you will be updating " + CustomerName.getText() + "'s information. Are you sure you wish to continue?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                DaoCustomers.modifyCustomer(customerId, customerName, customerAddress, customerZip, customerPhone, modCustomerDivision);
+                CustomersDao.modifyCustomer(customerId, customerName, customerAddress, customerZip, customerPhone, modCustomerDivision);
                 Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                 alert2.setTitle("Success!");
                 alert2.setContentText(CustomerName.getText() + " has been updated.");
@@ -191,7 +191,7 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
         CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
         CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
         CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
-        customerCountry.setValue(DaoCustomers.getCountry(customers));
+        customerCountry.setValue(CustomersDao.getCountry(customers));
         customerDivision.setValue(customers.getDivisionName());
 
     }

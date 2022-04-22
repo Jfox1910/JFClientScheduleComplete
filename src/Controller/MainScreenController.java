@@ -23,6 +23,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -34,55 +35,34 @@ public class MainScreenController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    @FXML
-    private TableView<Appointment> apptTableview;
-    @FXML
-    private TableColumn<Appointment, Integer> apptIDCol;
-    @FXML
-    private TableColumn<Appointment, String> apptTitleCol;
-    @FXML
-    private TableColumn<Appointment, String> apptDescriptionCol;
-    @FXML
-    private TableColumn<Appointment, String> apptLocationCol;
-    @FXML
-    private TableColumn<Appointment, String> apptContactCol;
-    @FXML
-    private TableColumn<Appointment, String> apptTypeCol;
-    @FXML
-    private TableColumn<Appointment, LocalDateTime> apptStartTimeCol;
-    @FXML
-    private TableColumn<Appointment, LocalDateTime> apptEndTimeCol;
-    @FXML
-    private TableColumn<Appointment, Integer> apptCustomerIDCol;
-    @FXML
-    private TableColumn<Appointment, Integer> apptUserIDCol;
+    @FXML private TableView<Appointment> apptTableview;
+    @FXML private TableColumn<Appointment, Integer> apptIDCol;
+    @FXML private TableColumn<Appointment, String> apptTitleCol;
+    @FXML private TableColumn<Appointment, String> apptDescriptionCol;
+    @FXML private TableColumn<Appointment, String> apptLocationCol;
+    @FXML private TableColumn<Appointment, String> apptContactCol;
+    @FXML private TableColumn<Appointment, String> apptTypeCol;
+    @FXML private TableColumn<Appointment, LocalDateTime> apptStartTimeCol;
+    @FXML private TableColumn<Appointment, LocalDateTime> apptEndTimeCol;
+    @FXML private TableColumn<Appointment, Integer> apptCustomerIDCol;
+    @FXML private TableColumn<Appointment, Integer> apptUserIDCol;
 
-    @FXML
-    private TableView<Customers> customersTableView;
-    @FXML
-    private TableColumn<Customers, Integer> customerIdCol;
-    @FXML
-    private TableColumn<Customers, String> customerNameCol;
-    @FXML
-    private TableColumn<Customers, String> customerAddyCol;
-    @FXML
-    private TableColumn<Customers, String> customerZipCol;
-    @FXML
-    private TableColumn<Countries, String> customerPhoneCol;
-    @FXML
-    private TableColumn<Customers, String> customerCreatedDateCol;
-    @FXML
-    private TableColumn<Customers, String> customerCreatedCol;
-    @FXML
-    private TableColumn<Customers, Timestamp> customerUpdatedOnCol;
-    @FXML
-    private TableColumn<Customers, String> customerUpdatedByCol;
-    @FXML
-    private TableColumn<Customers, Integer> customerDivisionCol;
-    @FXML
-    private RadioButton weekSelect;
-    @FXML
-    private RadioButton monthSelect;
+    @FXML private TableView<Customers> customersTableView;
+    @FXML private TableColumn<Customers, Integer> customerIdCol;
+    @FXML private TableColumn<Customers, String> customerNameCol;
+    @FXML private TableColumn<Customers, String> customerAddyCol;
+    @FXML private TableColumn<Customers, String> customerZipCol;
+    @FXML private TableColumn<Countries, String> customerPhoneCol;
+    @FXML private TableColumn<Customers, Integer> customerDivisionCol;
+
+
+    @FXML private TableColumn<Customers, String> customerCreatedDateCol;
+    @FXML private TableColumn<Customers, String> customerCreatedCol;
+    @FXML private TableColumn<Customers, Timestamp> customerUpdatedOnCol;
+    @FXML private TableColumn<Customers, String> customerUpdatedByCol;
+
+    @FXML private RadioButton weekSelect;
+    @FXML private RadioButton monthSelect;
 
     @FXML
     RadioButton appViewAllRadio;
@@ -90,8 +70,10 @@ public class MainScreenController implements Initializable {
     ToggleGroup weekmonth;
 
 
-    private int customerModID = 0;
-    private int days = 0;
+   // private int customerModID = 0;
+   // private int days = 0;
+
+
     private static Customers modifyCustomers;
     private ObservableList<Customers> customers;
     private ObservableList<Appointment> appointments;
@@ -111,14 +93,14 @@ public class MainScreenController implements Initializable {
 
 
     /**
-     * ADD appointment method
+     * ADD appointment screen/controller load method
      *
      * @param event
      * @throws IOException
      */
     public void onActionAddAppt(ActionEvent event) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/addApptScreen.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("View/addApptScreen.fxml")));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -127,13 +109,13 @@ public class MainScreenController implements Initializable {
 
 
     /**
-     * MODIFY appointment method
+     * MODIFY appointment screen/controller load method
      *
      * @param event
      * @throws IOException
      */
     public void onActionModAppt(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/modApptScreen.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("View/modApptScreen.fxml")));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -142,7 +124,7 @@ public class MainScreenController implements Initializable {
 
 
     /**
-     * CANCEL appointment method
+     * CANCEL appointment method. Cancels the selected appointment. Provides a warning confirmation, delete confirmation and null selection alerts.
      * @param event
      * @throws IOException
      */
@@ -152,14 +134,11 @@ public class MainScreenController implements Initializable {
             Appointment selectedAppointment = apptTableview.getSelectionModel().getSelectedItem();
 
             for (Appointment appointment : appointments) {
-                if (appointment.getAppt_ID() == selectedAppointment.getAppt_ID()) {
-                    DaoAppointments.deleteAppointment(appointment.getAppt_ID());
+                if (appointment.getAppointment_ID() == selectedAppointment.getAppointment_ID()) {
+                    AppointmentDAO.deleteAppointment(appointment.getAppointment_ID());
                 }
             }
 
-            /**
-             * Hold and alert the user before deleting the selected appointment. Holds first and deletes on OK then reloads the tableview.
-             */
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("The selected appointment will be deleted from the database!");
@@ -167,21 +146,15 @@ public class MainScreenController implements Initializable {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                DaoAppointments.deleteAppointment(selectedAppointment.getAppt_ID());
-                apptTableview.setItems(DaoAppointments.getAllAppointments());
+                AppointmentDAO.deleteAppointment(selectedAppointment.getAppointment_ID());
+                apptTableview.setItems(AppointmentDAO.getAllAppointments());
 
-                /**
-                 * Confirmation that the appointment has been deleted.
-                 */
                 Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                 alert2.setTitle("SUCCESS!");
                 alert2.setContentText("The appointment has been deleted from the system.");
                 alert2.showAndWait();
             }
         } else {
-            /**
-             * Hold and alert the user that an appointment must be selected.
-             */
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("An appointment has not been selected. Please click on an appointment and try again.");
@@ -204,56 +177,11 @@ public class MainScreenController implements Initializable {
     }
 
 
-/*    *//**
-     * Handle month/week selection
-     *
 
-     *//*
-    public void onActionSelectRange(ActionEvent actionEvent) {
-        if (weekmonth.getSelectedToggle().equals(weekSelect)) {
-            filterWeek();
-        } else if (weekmonth.getSelectedToggle().equals(monthSelect)) {
-            filterMonth();
-        } else {
-            filterAll();
-        }
-    }*/
-
-
-    //TODO WORKING THROUGH module_info.java
-
-
-    private void filterAll() {
-        appointments = DaoAppointments.getAllAppointments();
-        apptTableview.setItems(appointments);
-    }
-
-
-    public void onActionViewMonth() {showByMonth();}
-    public void onActionViewWeek() {showByWeek();}
-    public void onActionViewAll() {filterAll();}
-
-
-    private void showByMonth() {
-        System.out.println("MONTH TEST");
-        LocalDate date = now();
-        LocalDate firstDayOfMonth = date.withDayOfMonth(1);
-        LocalDate lastDayOfMonth = date.withDayOfMonth(date.lengthOfMonth());
-        apptTableview.setItems(DaoAppointments.getAppointmentDates(firstDayOfMonth, lastDayOfMonth));
-    }
-
-    private void showByWeek() {
-        System.out.println("WEEK TEST");
-        DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;
-        DayOfWeek lastDayOfWeek = DayOfWeek.FRIDAY;
-        LocalDate firstDateOfWeek = now().with(TemporalAdjusters.previousOrSame(firstDayOfWeek));
-        LocalDate lastDateOfWeek = now().with(TemporalAdjusters.nextOrSame(lastDayOfWeek));
-        apptTableview.setItems(DaoAppointments.getAppointmentDates(firstDateOfWeek, lastDateOfWeek));
-    }
 
 
     /**
-     * Add a customer method (Contained within the customer tab).
+     * Add a customer screen/controller load method (Contained within the customer tab).
      *
      * @param event
      * @throws IOException
@@ -270,7 +198,7 @@ public class MainScreenController implements Initializable {
 
 
     /**
-     * Modify customer method (Contained within the customer tab).
+     * Modify customer screen/controller load method (Contained within the customer tab). Contains a null selection alert.
      *
      * @param actionEvent
      * @throws IOException
@@ -295,7 +223,9 @@ public class MainScreenController implements Initializable {
 
 
     /**
-     * Selects the customer and deletes them and any appointment they have scheduled.
+     * Selects the customer and deletes them. If an appointment is scheduled, alerts the user that the appointment has to be deleted before the customer will be removed.
+     * Provides a confirmation upon successful deletion and reloads the customer tableview.
+     * Provides a null selection alert.
      *
      * @param event
      * @throws IOException
@@ -306,10 +236,6 @@ public class MainScreenController implements Initializable {
 
             Customers selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
 
-            /**
-             * Hold and alert the user before deleting the selected customer. Holds first and deletes on OK then reloads the tableview.
-             * If an appointment is scheduled, alerts the user that the appointment has to be deleted before the customer will be removed.
-             */
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("The selected customer will be deleted from the database!");
@@ -318,16 +244,12 @@ public class MainScreenController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK)
             {
-                if (DaoCustomers.customerDeleteValidation(selectedCustomer))
+                if (CustomersDao.customerDeleteValidation(selectedCustomer))
                 {
-                    DaoCustomers.deleteCustomer(selectedCustomer.getCustomerId());
+                    CustomersDao.deleteCustomer(selectedCustomer.getCustomerId());
                     {
-                        customersTableView.setItems(DaoCustomers.getAllCustomers());
+                        customersTableView.setItems(CustomersDao.getAllCustomers());
                 }
-
-                    /**
-                     * Confirmation that the customer has been deleted.
-                     */
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("SUCCESS!");
                     alert2.setContentText("The customer has been deleted from the system.");
@@ -341,9 +263,6 @@ public class MainScreenController implements Initializable {
                 }
             }
         }else {
-            /**
-             * Hold and alert the user that a customer name must be selected.
-             */
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
@@ -351,11 +270,60 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * Holds the selected customer for the modCustomerController
+     * @return modifyCustomers
+     */
+    public static Customers getSelectedCustomer() {return modifyCustomers;}
 
-    public static Customers getSelectedCustomer() {
-        return modifyCustomers;
+
+    /*    *//**
+     * Handle month/week selection
+     *
+
+     */
+
+    public void onActionSelectRange() {
+        if (weekmonth.getSelectedToggle().equals(weekSelect)) {
+            onActionViewWeek();
+        } else if (weekmonth.getSelectedToggle().equals(monthSelect)) {
+            onActionViewMonth();
+        } else {
+            filterAll();
+        }
     }
 
+
+    //TODO WORKING THROUGH module_info.java
+
+
+    private void filterAll() {
+        appointments = AppointmentDAO.getAllAppointments();
+        apptTableview.setItems(appointments);
+    }
+
+
+    public void onActionViewMonth() {showByMonth();}
+    public void onActionViewWeek() {showByWeek();}
+    public void onActionViewAll() {filterAll();}
+
+
+    private void showByMonth() {
+        System.out.println("MONTH TEST");
+        LocalDate date = now();
+        LocalDate firstDayOfMonth = date.withDayOfMonth(1);
+        LocalDate lastDayOfMonth = date.withDayOfMonth(date.lengthOfMonth());
+        apptTableview.setItems(AppointmentDAO.getAppointmentDates(firstDayOfMonth, lastDayOfMonth));
+    }
+
+    private void showByWeek() {
+        System.out.println("WEEK TEST");
+        DayOfWeek firstDayOfWeek = DayOfWeek.SUNDAY;
+        DayOfWeek lastDayOfWeek = DayOfWeek.SATURDAY;
+        LocalDate firstDateOfWeek = now().with(TemporalAdjusters.previousOrSame(firstDayOfWeek));
+        LocalDate lastDateOfWeek = now().with(TemporalAdjusters.nextOrSame(lastDayOfWeek));
+        apptTableview.setItems(AppointmentDAO.getAppointmentDates(firstDateOfWeek, lastDateOfWeek));
+    }
 
 
     @Override
@@ -366,23 +334,23 @@ public class MainScreenController implements Initializable {
         /**
          * Appointment table initialization. Loads the columns with the information from the DB appointment table
          */
-        appointments = DaoAppointments.getAllAppointments();
+        appointments = AppointmentDAO.getAllAppointments();
         apptTableview.setItems(appointments);
-        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("appt_ID"));
-        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("apptTitleCol"));
-        apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("apptDescriptionCol"));
-        apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("apptLocationCol"));
-        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("apptContactCol"));
-        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("apptTypeCol"));
-        apptStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptStartTime"));
-        apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("apptEndTime"));
-        apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("apptCustomerIDCol"));
-        apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("apptUserIDCol"));
+        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
+        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("Contact_ID"));
+        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        apptStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
+        apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("User_ID"));
 
         /**
          * Customers table initialization. Loads the columns with the information from the DB customers table
          */
-        customers = DaoCustomers.getAllCustomers();
+        customers = CustomersDao.getAllCustomers();
         customersTableView.setItems(customers);
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));

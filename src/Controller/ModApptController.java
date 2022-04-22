@@ -1,6 +1,6 @@
 package Controller;
 
-import Dao.DaoUser;
+import Dao.UserDao;
 import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +26,7 @@ public class ModApptController implements Initializable {
      */
     private ObservableList<String> userList(){
         ObservableList<String> allUserNames = FXCollections.observableArrayList();
-        for (User allUsers : DaoUser.getAllUsers()){
+        for (User allUsers : UserDao.getAllUsers()){
             String loginName;
             loginName = allUsers.getUserName();
             allUserNames.add(loginName);
