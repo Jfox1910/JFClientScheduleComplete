@@ -310,6 +310,10 @@ public class MainScreenController implements Initializable {
     }
 
 
+    /**
+     * Checks for impending appointments and alerts the user during login to an appointment in the next 15 minutes.
+     * Otherwise it alerts that no appointments are pending.
+     */
     private void impendingAppointments() {
         LocalDateTime now = LocalDateTime.now();
         ObservableList<Appointment> pendingAppt = AppointmentDAO.getImpendingAppt(now);

@@ -29,13 +29,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+
+/**
+ * Add appointment class.
+ */
 public class AddApptController implements Initializable {
-
-    //private final ObservableList<Integer> hourInput = FXCollections.observableArrayList();
-   // private final ObservableList<String> minuteInput = FXCollections.observableArrayList();
-    //private final ObservableList<String> times = FXCollections.observableArrayList();
-    //private final ObservableList<Integer> length = FXCollections.observableArrayList(IntStream.range(15, 91).boxed().collect(Collectors.toList()));
-
 
     public static Customers customers;
     public static Appointment appointment;
@@ -65,10 +63,6 @@ public class AddApptController implements Initializable {
     private LocalDateTime start;
     private LocalDateTime end;
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy");
-
-
-    ObservableList<String> hours = FXCollections.observableArrayList();
-    ObservableList<String> minutes = FXCollections.observableArrayList();
 
     private final ObservableList<Integer> selectableHour = FXCollections.observableArrayList();
     private final ObservableList<String> selectableMinute = FXCollections.observableArrayList();
