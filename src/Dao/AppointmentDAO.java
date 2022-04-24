@@ -21,10 +21,16 @@ public final class AppointmentDAO {
     private static final String tzOffset = User.getCurrentTimezoneOffset();
     public static CustomersDao customer;
 
+
+    /**
+     * Used to pull all existing appointments from the database.
+     * @return appointments
+     */
     public static ObservableList<Appointment> getAllAppointments(){
+
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM appointments";
         try {
-            String sql = "SELECT * FROM appointments";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -39,15 +45,19 @@ public final class AppointmentDAO {
         return appointments;
     }
 
+
+    /**
+     * Used to add a new appointment to the database.
+     * @param appt
+     */
     public static void newAppointment(Appointment appt){
         Timestamp startTime;
         Timestamp endTime;
         startTime = appt.getStart();
         endTime = appt.getEnd();
 
+        String sql = "insert into appointments set Title=?, Description=?, Location=?, Type=?, Start= ?, End=?, Create_Date=now(), Created_By=?, Customer_ID=?, User_ID=?, Contact_ID=?, Last_Updated_by=?, Last_Update=now();";
         try {
-            String sql = "insert into appointments set Title=?, Description=?, Location=?, Type=?, Start= ?, End=?, Create_Date=now(), Created_By=?, Customer_ID=?, User_ID=?, Contact_ID=?, Last_Updated_by=?, Last_Update=now();";
-
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setString(1, appt.getTitle());
@@ -156,15 +166,15 @@ public final class AppointmentDAO {
         }
     }*/
 
+
     /**
      * Deletes the selected APPOINTMENT from the DB.
      * @param appointmentID
      */
     public static void deleteAppointment(int appointmentID) {
+
+        String sql = "DELETE from appointments where Appointment_ID = ?";
         try {
-
-            String sql = "DELETE from appointments where Appointment_ID = ?";
-
             PreparedStatement psdc = JDBC.getConnection().prepareStatement(sql);
             psdc.setInt(1, appointmentID);
 
@@ -177,15 +187,17 @@ public final class AppointmentDAO {
     }
 
 
-    // POSSIBLY USABLE FOR REPORTS
+    /**
+     * Pulls all customers by their ID. Used in the making of reports.
+     * @param id
+     * @return apptList
+     */
     public ObservableList<Appointment> getAllByCustomerId(int id) {
 
         String query = "SELECT * FROM appointments WHERE Customer_ID = ?;";
-
         ObservableList<Appointment> apptList = FXCollections.observableArrayList();
 
         try {
-
             PreparedStatement ps = JDBC.getConnection().prepareStatement(query);
             ps.setInt(1, id);
 
@@ -206,7 +218,14 @@ public final class AppointmentDAO {
     }
 
 
+    /**
+     * Gets the appointments by dates. Used with the week/month radio buttons in the mainscreen.
+     * @param begin
+     * @param end
+     * @return selectedAppointmentDates
+     */
     public static ObservableList<Appointment> getAppointmentDates(LocalDate begin, LocalDate end) {
+
         ObservableList<Appointment> selectAppointmentDates = FXCollections.observableArrayList();
         String query = "SELECT * FROM appointments WHERE Start BETWEEN ? AND ?";
 
@@ -255,47 +274,6 @@ public final class AppointmentDAO {
         appointment.setContact_ID(rs.getInt("Contact_ID"));
         appointment.setUserName(UserDao.getLoggedinUser().getUserName());
     return appointment;
-}
 
-/*    public static ObservableList<Appointment> getAppointments(int customerID, int days) {
-        Appointment appointment;
-        ObservableList<Appointment> Appts = FXCollections.observableArrayList();
-        try {
-            String sql = "select  c.Contact_Name, a.*, convert_tz(a.Start, '+00:00', ?) as StartFormat, convert_tz(a.End, '+00:00', ?) as EndFormat\n" +
-                    " from appointments a join contacts c \n" +
-                    " on a.Contact_ID = c.Contact_ID \n" +
-                    " where a.Customer_ID = ? \n" +
-                    " AND a.Start between now() and (now() + interval ? day);";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            assert ps != null;
-            ps.setString(1, tzOffset);
-            ps.setString(2, tzOffset);
-            ps.setInt(3, customerID);
-            ps.setInt(4, days);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int apptIDCol = rs.getInt("Appointment_ID");
-                String apptTitleCol = rs.getString("Title");
-                String apptDescriptionCol = rs.getString("Description");
-                String apptLocationCol = rs.getString("Location");
-                int apptContactCol = rs.getInt("Contact_ID");
-                String apptTypeCol = rs.getString("Type");
-                Timestamp apptStartTimeCol = rs.getTimestamp("Start");
-                Timestamp apptEndTimeCol = rs.getTimestamp("End");
-                int apptCustomerIDCol = rs.getInt("Customer_ID");
-                int apptUserIDCol = rs.getInt("User_ID");
-                Appointment appointments = new Appointment(apptIDCol, apptTitleCol, apptDescriptionCol, apptLocationCol, apptContactCol, apptTypeCol, apptStartTimeCol,
-                        apptEndTimeCol, apptCustomerIDCol, apptUserIDCol);
-                Appts.add(appointments);
-            }
-            ps.close();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-            return null;
-        }
-        return Appts;
-    }*/
-
-
-
+    }
 }

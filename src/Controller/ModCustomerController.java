@@ -131,8 +131,10 @@ public class ModCustomerController implements Initializable{
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
         int modCustomerDivision = DivisionsDao.getAllDivisionsByName(customerDivision.getValue().toString());
+        //Used to verify a division has been selected
+        int checkDivision = customerDivision.getSelectionModel().getSelectedIndex() +1;
 
-if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty() || customerPhone.isEmpty() || customerDivision.getItems().isEmpty()){
+if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty() || customerPhone.isEmpty() || customerCountry.getItems().isEmpty() || checkDivision <=0){
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setTitle("Attention!");
     alert.setContentText("All customer fields must be filled before saving.");

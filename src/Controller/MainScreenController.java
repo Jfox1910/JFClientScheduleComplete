@@ -108,7 +108,6 @@ public class MainScreenController implements Initializable {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-            System.out.println(modifyAppointment.getDescription());
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
@@ -129,12 +128,6 @@ public class MainScreenController implements Initializable {
 
         if (apptTableview.getSelectionModel().getSelectedItem() != null) {
             Appointment selectedAppointment = apptTableview.getSelectionModel().getSelectedItem();
-
-            for (Appointment appointment : appointments) {
-                if (appointment.getAppointment_ID() == selectedAppointment.getAppointment_ID()) {
-                    AppointmentDAO.deleteAppointment(appointment.getAppointment_ID());
-                }
-            }
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("ATTENTION!");

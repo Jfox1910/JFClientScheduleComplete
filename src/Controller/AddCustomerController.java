@@ -39,7 +39,7 @@ public class AddCustomerController implements Initializable {
 
 
     /**
-     * Add a customer method (Contained within the customer tab)
+     * Add a customer method (Contained within the customer tab) has a LAMBDA alert for customer added and null fields.
      * @param event
      * @throws IOException
      */
@@ -53,13 +53,11 @@ public class AddCustomerController implements Initializable {
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
         int divisionID = retrieveDivisionID;
-        //User User = UserDao.getLoggedInUser();
         int userID = retrieveUserID;
+        //Used to verify a division has been selected
+        int checkDivision = customerDivision.getSelectionModel().getSelectedIndex() +1;
 
-    /**
-    * Check that a name, address and phone has been entered and gives an alert if it isn't there.
-    */
-        if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty() || customerDivision.getItems().isEmpty()){
+        if (customerName.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty() || customerZip.isEmpty() || customerCountry.getItems().isEmpty() || checkDivision <=0){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
             alert.setContentText("All customer fields must be filled before saving.");

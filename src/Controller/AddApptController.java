@@ -95,74 +95,30 @@ public class AddApptController implements Initializable {
     }
 
 
-    /**
-     * Collects the date from the date pickerd.
-     */
-    //protected void setDate() {date = appointmentDate.getValue();}
 
-
-    /**
-     * Collects the start time from the hour, minute and AMPM comboboxes.
-     */
-    //protected void setStartDateTime() {start = getLocalDateTime(startHourCombo, startMinCombo, startAMPM);}
-
-    //protected void setStartDateTime() {start = getLocalDateTime(startHourCombo, startMinCombo, startAMPM);}
-
-/*    private LocalDateTime getStart() {
-        String startString = appointmentDate.getValue() + " " + startHourCombo.getValue() + " " + startMinCombo.getValue();
-        return LocalDateTime.parse(startString, utils.getDateTimeFormatter());
-    }*/
-
-    /**
-     * Collects the end time from the hour, minute and AMPM comboboxes.
-     */
-   // protected void setEndDateTime() {end = getLocalDateTime(endHourCombo, endMinCombo, endAMPM);}
-
-    //protected void setEndDateTime() {end = getLocalDateTime(endHourCombo, endMinCombo, endAMPM);}
-
-    /*public LocalDateTime getStartDateTime() {return start;}
-
-    public LocalDateTime getEndDateTime() {return end;}*/
-
-
-    public Timestamp startTimeStamper() throws ParseException
-    {
+    public Timestamp startTimeStamper() throws ParseException {
         return getTimestamp(appointmentDate, startHourCombo, startMinCombo, startAMPM);
     }
 
 
-    public Timestamp endTimeStamper() throws ParseException
-    {
+    public Timestamp endTimeStamper() throws ParseException {
         return getTimestamp(appointmentDate, endHourCombo, endMinCombo, endAMPM);
     }
 
-    //TODO Appointment-Schediling
 
-    private Timestamp getTimestamp(DatePicker datePicker, ComboBox hourPicker, ComboBox minutePicker, ComboBox am_pm) throws ParseException
-    {
+
+    private Timestamp getTimestamp(DatePicker datePicker, ComboBox hourPicker, ComboBox minutePicker, ComboBox am_pm) throws ParseException {
         String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
-
         String hour = hourPicker.getValue().toString();
         String min = minutePicker.getValue().toString();
-/*
-        ToggleButton selectedToggleButton = (ToggleButton) am_pm.getValue();
-        String am_pmValue = selectedToggleButton.getText();*/
-
-        String time = hour + ":" + min /*+ " " + am_pmValue*/;
-
-        //SimpleDateFormat date12Format = new SimpleDateFormat("hh:mm a");
+        String time = hour + ":" + min ;
         SimpleDateFormat date24Format = new SimpleDateFormat("HH:mm");
         String time24HourFormat = date24Format.format(date24Format.parse(time));
-
         String concatTimeStamp = date + " " + time24HourFormat + ":00";
 
         return Timestamp.valueOf(concatTimeStamp);
     }
 
-/*    private LocalDateTime getEnd(){
-        String endTime = appointmentDate.getValue() + " " + endHourCombo.getValue() + " " + endMinCombo.getValue();
-        return LocalDateTime.parse(endTime, dtf);
-    }*/
 
 /*    protected int getLocalOffsetFromEst() {
         ZoneId systemZone = ZoneId.systemDefault();
@@ -180,18 +136,6 @@ public class AddApptController implements Initializable {
         return dateTime;
     }
 
-/*    protected void setDate() {
-        date = appointmentDate.getValue();
-    }
-
-    protected void setStart() {
-        start = getLocalDateTime(startHourCombo, startMinCombo);
-    }
-
-    protected void setEnd() {
-        end = getLocalDateTime(endHourCombo, endMinCombo);
-    }*/
-
 
     /**
      * new Appointment handler. Collects the information from the fields and adds them to the DB.
@@ -201,24 +145,18 @@ public class AddApptController implements Initializable {
     public void onActionAdd(javafx.event.ActionEvent event) throws IOException, ParseException {
 
 
-            int Appointment_ID = 0;
-            String title = titleField.getText();
-            String location = locationField.getText();
-            String description = descriptionField.getText();
-            String type = typeField.getText();
+        int Appointment_ID = 0;
+        String title = titleField.getText();
+        String location = locationField.getText();
+        String description = descriptionField.getText();
+        String type = typeField.getText();
+        Timestamp start = startTimeStamper();
+        Timestamp end = endTimeStamper();
+        int customerID = getIdFromComboBox(customerCombobox);
+        int User_ID = UserDao.getLoggedinUser().getUserId();
+        int contactID = getIdFromComboBox(contactCombobox);
 
-            Timestamp start = startTimeStamper();
-            Timestamp end = endTimeStamper();
-
-            int customerID = getIdFromComboBox(customerCombobox);
-            int User_ID = UserDao.getLoggedinUser().getUserId();
-            int contactID = getIdFromComboBox(contactCombobox);
-       // int contactID = contactCombobox.getSelectionModel().getSelectedIndex();
-
-           //return new Appointment (titleField.getText(), locationField.getText(), descriptionField.getText(), typeField.getText(), start, end, customerID, User_ID, contactID);
-           Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customerID, User_ID, contactID);
-
-
+        Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customerID, User_ID, contactID);
 
         System.out.println(titleField.getText() + locationField.getText()+ descriptionField.getText()+ typeField.getText()+ start + end + customerID+ User_ID+ contactID);
         /**
@@ -242,7 +180,6 @@ public class AddApptController implements Initializable {
                 if (response == ButtonType.OK) {
 
                     AppointmentDAO.newAppointment(appt);
-                    //AppointmentDAO.newAppointment(appt, startDateTime, endDateTime);
 
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("Success!");
@@ -336,33 +273,31 @@ public class AddApptController implements Initializable {
         }
     }
 
-    public ObservableList apptHour()
-    {
-        int[] hours = new int[]{23,22,21,20,19,18,17,16,15,14,13,12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    public ObservableList apptHour() {
 
-        for(Integer H : hours)
-        {
-            if(!(selectableHour.contains(H)))
-            {
+        int[] hours = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
+
+        for(Integer H : hours) {
+
+            if(!(selectableHour.contains(H))) {
+
                 selectableHour.add(H);
             }
         }
-
         return selectableHour;
     }
 
-    public ObservableList apptMin()
-    {
+    public ObservableList apptMin() {
+
         String[] mins = new String[]{"00", "15", "30", "45", "55"};
 
-        for(String M : mins)
-        {
-            if(!(selectableMinute.contains(M)))
-            {
+        for(String M : mins) {
+
+            if(!(selectableMinute.contains(M))) {
+
                 selectableMinute.add(M);
             }
         }
-
         return selectableMinute;
     }
 
@@ -374,9 +309,6 @@ public class AddApptController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-       /* hours.addAll("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
-                "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
-        minutes.addAll("00", "15", "30", "45");*/
         startHourCombo.setItems(apptHour());
         startMinCombo.setItems(apptMin());
         endHourCombo.setItems(apptHour());
