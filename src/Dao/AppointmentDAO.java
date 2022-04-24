@@ -5,6 +5,7 @@ import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
+import utils.Utils;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -22,7 +23,6 @@ public final class AppointmentDAO {
 
     public static ObservableList<Appointment> getAllAppointments(){
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
-
         try {
             String sql = "SELECT * FROM appointments";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -40,47 +40,22 @@ public final class AppointmentDAO {
     }
 
     public static void newAppointment(Appointment appt){
-
-        /*int customerID = appt.getCustomer_ID();
-        int contactID = appt.getContact_ID();
-        String title = appt.getTitle();
-        String description = appt.getDescription();
-        String location = appt.getLocation();
-        String type = appt.getType();
-        LocalDateTime start = startTime;
-        LocalDateTime end = endTime;*/
-
-
-        /*    int appointmentID = 1;
-            try {
-                Statement id = connection.createStatement();
-                ResultSet rs = id.executeQuery("select max(Appointment_ID) as Last_Appointment from appointments");
-                if (rs.next()) {
-                    appointmentID = rs.getInt("Last_Appointment") + 1;
-                }
-                id.close();
-            } catch (SQLException throwable) {
-                throwable.printStackTrace();
-            }*/
-
-        LocalDateTime startTime;
-        LocalDateTime endTime;
+        Timestamp startTime;
+        Timestamp endTime;
         startTime = appt.getStart();
         endTime = appt.getEnd();
 
         try {
-            String sql = "INSERT INTO appointments(Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?,?,?,?,?,?,NOW(),?,NOW(),?,?,?,?)";
-            //String sql = "insert into appointments set Appointment_ID=?, Title=?, Description=?, Location=?, Type=?, Start= ?, End=?, Create_Date=now(), Created_By=?, Customer_ID=?, User_ID=?, Contact_ID=?, Last_Updated_by=?, Last_Update=now();";
+            String sql = "insert into appointments set Title=?, Description=?, Location=?, Type=?, Start= ?, End=?, Create_Date=now(), Created_By=?, Customer_ID=?, User_ID=?, Contact_ID=?, Last_Updated_by=?, Last_Update=now();";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
-           // ps.setInt(1, appointmentID);
             ps.setString(1, appt.getTitle());
             ps.setString(2, appt.getDescription());
             ps.setString(3, appt.getLocation());
             ps.setString(4, appt.getType());
-            ps.setTimestamp(5, Timestamp.valueOf(startTime));
-            ps.setTimestamp(6, Timestamp.valueOf(endTime));
+            ps.setTimestamp(5, (startTime));
+            ps.setTimestamp(6, (endTime));
             ps.setString(7, UserDao.getLoggedinUser().getUserName());
             ps.setInt(8, appt.getCustomer_ID());
             ps.setInt(9, UserDao.getLoggedinUser().getUserId());
@@ -267,8 +242,8 @@ public final class AppointmentDAO {
                 rs.getString("Description"),
                 rs.getString("Location"),
                 rs.getString("Type"),
-                rs.getTimestamp("Start").toLocalDateTime(),
-                rs.getTimestamp("End").toLocalDateTime(),
+                rs.getTimestamp("Start"),
+                rs.getTimestamp("End"),
                 rs.getInt("Customer_ID"),
                 rs.getInt("User_ID"),
                 rs.getInt("Contact_ID")
@@ -276,9 +251,8 @@ public final class AppointmentDAO {
         );
         appointment.setAppointment_ID(rs.getInt("Appointment_ID"));
         appointment.setCustomer_ID(appointment.getCustomer_ID());
-
-        appointment.setContact_ID(rs.getInt("Contact_ID"));
         appointment.setUser_ID(UserDao.getLoggedinUser().getUserId());
+        appointment.setContact_ID(rs.getInt("Contact_ID"));
         appointment.setUserName(UserDao.getLoggedinUser().getUserName());
     return appointment;
 }

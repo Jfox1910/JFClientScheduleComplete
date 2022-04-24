@@ -44,19 +44,6 @@ public class ModCustomerController implements Initializable{
 
     private Customers customers = MainScreenController.getSelectedCustomer();
 
-    /*public ObservableList<Countries> allCountries = CountriesDao.getAllCountries();
-    public ObservableList<Divisions> usDivisionsList = DivisionsDao.getUsStates();
-    public ObservableList<Divisions> canadianDivisionList = DivisionsDao.getCanadianTerritories();
-    public ObservableList<Divisions> UKDivisionList =DivisionsDao.getUKTerritories();
-    public ObservableList<Appointment> allAppointments = AppointmentDAO.getAllAppointments();
-    private final ObservableList<Countries> countries = FXCollections.observableArrayList();
-    private final ObservableList<String> divID = FXCollections.observableArrayList();
-
-    private final Customers modifyCustomer = AddApptController.customers;
-    private ObservableList<Appointment> appointment;
-
-    private final Customers customerAppt = Appointment.customers;*/
-
 
     /**
      * Exits back to the main screen
@@ -80,7 +67,7 @@ public class ModCustomerController implements Initializable{
 
 
     /**
-     * Handles populating the COUNTRY combobox customer tableview
+     * Handles populating the COUNTRY combobox
      */
     public void handleCountryComboBox(){
 

@@ -52,29 +52,17 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Customers, String> customerNameCol;
     @FXML private TableColumn<Customers, String> customerAddyCol;
     @FXML private TableColumn<Customers, String> customerZipCol;
-    @FXML private TableColumn<Countries, String> customerPhoneCol;
+    @FXML private TableColumn<Customers, String> customerPhoneCol;
     @FXML private TableColumn<Customers, Integer> customerDivisionCol;
 
+    @FXML RadioButton weekSelect;
+    @FXML RadioButton monthSelect;
 
-    @FXML private TableColumn<Customers, String> customerCreatedDateCol;
-    @FXML private TableColumn<Customers, String> customerCreatedCol;
-    @FXML private TableColumn<Customers, Timestamp> customerUpdatedOnCol;
-    @FXML private TableColumn<Customers, String> customerUpdatedByCol;
-
-    @FXML private RadioButton weekSelect;
-    @FXML private RadioButton monthSelect;
-
-    @FXML
-    RadioButton appViewAllRadio;
-    @FXML
-    ToggleGroup weekmonth;
-
-
-   // private int customerModID = 0;
-   // private int days = 0;
-
+    @FXML RadioButton appViewAllRadio;
+    @FXML ToggleGroup weekmonth;
 
     private static Customers modifyCustomers;
+    private static Appointment modifyAppointment;
     private ObservableList<Customers> customers;
     private ObservableList<Appointment> appointments;
 
@@ -83,7 +71,6 @@ public class MainScreenController implements Initializable {
     TODO LIST COMPLETE PROJECT
     Must haves----------
     LAMBDAS
-    MONTH WEEK SELECT
     MOD APPTS
     LOGIN APPT CHECK
     ADD REPORTS
@@ -94,12 +81,10 @@ public class MainScreenController implements Initializable {
 
     /**
      * ADD appointment screen/controller load method
-     *
      * @param event
      * @throws IOException
      */
     public void onActionAddAppt(ActionEvent event) throws IOException {
-
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("View/addApptScreen.fxml")));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -109,17 +94,29 @@ public class MainScreenController implements Initializable {
 
 
     /**
-     * MODIFY appointment screen/controller load method
-     *
+     * MODIFY appointment screen/controller load method.
      * @param event
      * @throws IOException
      */
     public void onActionModAppt(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("View/modApptScreen.fxml")));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+
+        modifyAppointment = apptTableview.getSelectionModel().getSelectedItem();
+
+        if (modifyAppointment != null) {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("View/modApptScreen.fxml")));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+            System.out.println(modifyAppointment.getDescription());
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setHeaderText("An appointment has not been selected. Please click on the correct appointment and try again.");
+            alert.showAndWait();
+        }
+
+
     }
 
 
@@ -141,20 +138,22 @@ public class MainScreenController implements Initializable {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("ATTENTION!");
-            alert.setHeaderText("The selected appointment will be deleted from the database!");
+            alert.setHeaderText("Appointment # " + selectedAppointment.getAppointment_ID() + " will be cancelled!");
             alert.setContentText("This action cannot be undone. Are you sure you wish to continue?");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 AppointmentDAO.deleteAppointment(selectedAppointment.getAppointment_ID());
-                apptTableview.setItems(AppointmentDAO.getAllAppointments());
+
 
                 Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                 alert2.setTitle("SUCCESS!");
-                alert2.setContentText("The appointment has been deleted from the system.");
+                alert2.setContentText("The selected appointment has been cancelled.");
                 alert2.showAndWait();
-            }
-        } else {
+                apptTableview.setItems(AppointmentDAO.getAllAppointments());
+            } else apptTableview.setItems(AppointmentDAO.getAllAppointments());
+        } else
+        {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("An appointment has not been selected. Please click on an appointment and try again.");
@@ -177,9 +176,6 @@ public class MainScreenController implements Initializable {
     }
 
 
-
-
-
     /**
      * Add a customer screen/controller load method (Contained within the customer tab).
      *
@@ -188,7 +184,6 @@ public class MainScreenController implements Initializable {
      */
     public void onActionAddCustomer
     (ActionEvent event) throws IOException {
-
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/addCustomerScreen.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -199,7 +194,6 @@ public class MainScreenController implements Initializable {
 
     /**
      * Modify customer screen/controller load method (Contained within the customer tab). Contains a null selection alert.
-     *
      * @param actionEvent
      * @throws IOException
      */
@@ -213,7 +207,6 @@ public class MainScreenController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } else {
-
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setHeaderText("A customer has not been selected. Please click on a customer name and try again.");
@@ -270,59 +263,55 @@ public class MainScreenController implements Initializable {
         }
     }
 
+
     /**
      * Holds the selected customer for the modCustomerController
      * @return modifyCustomers
      */
     public static Customers getSelectedCustomer() {return modifyCustomers;}
 
+    public static Appointment getSelectedAppointment() {return modifyAppointment;}
 
-    /*    *//**
-     * Handle month/week selection
-     *
 
+    /**
+     * Week, month and all handlers.
      */
-
-    public void onActionSelectRange() {
-        if (weekmonth.getSelectedToggle().equals(weekSelect)) {
-            onActionViewWeek();
-        } else if (weekmonth.getSelectedToggle().equals(monthSelect)) {
-            onActionViewMonth();
-        } else {
-            filterAll();
-        }
-    }
+    public void monthView() {showByMonth();}
+    public void weekView() {showByWeek();}
+    public void viewAll() {showAll();}
 
 
-    //TODO WORKING THROUGH module_info.java
-
-
-    private void filterAll() {
-        appointments = AppointmentDAO.getAllAppointments();
-        apptTableview.setItems(appointments);
-    }
-
-
-    public void onActionViewMonth() {showByMonth();}
-    public void onActionViewWeek() {showByWeek();}
-    public void onActionViewAll() {filterAll();}
-
-
-    private void showByMonth() {
-        System.out.println("MONTH TEST");
-        LocalDate date = now();
-        LocalDate firstDayOfMonth = date.withDayOfMonth(1);
-        LocalDate lastDayOfMonth = date.withDayOfMonth(date.lengthOfMonth());
-        apptTableview.setItems(AppointmentDAO.getAppointmentDates(firstDayOfMonth, lastDayOfMonth));
-    }
-
+    /**
+     *Sorts all the listed appointments scheduled for the current week.
+     */
     private void showByWeek() {
         System.out.println("WEEK TEST");
-        DayOfWeek firstDayOfWeek = DayOfWeek.SUNDAY;
-        DayOfWeek lastDayOfWeek = DayOfWeek.SATURDAY;
+        DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;
+        DayOfWeek lastDayOfWeek = DayOfWeek.FRIDAY;
         LocalDate firstDateOfWeek = now().with(TemporalAdjusters.previousOrSame(firstDayOfWeek));
         LocalDate lastDateOfWeek = now().with(TemporalAdjusters.nextOrSame(lastDayOfWeek));
         apptTableview.setItems(AppointmentDAO.getAppointmentDates(firstDateOfWeek, lastDateOfWeek));
+    }
+
+
+    /**
+     * Sorts all the listed appointments scheduled for the current month.
+     */
+    private void showByMonth() {
+        System.out.println("MONTH TEST");
+        LocalDate day = now();
+        LocalDate monthStartDay = day.withDayOfMonth(1);
+        LocalDate monthEndDay = day.withDayOfMonth(day.lengthOfMonth());
+        apptTableview.setItems(AppointmentDAO.getAppointmentDates(monthStartDay, monthEndDay));
+    }
+
+
+    /**
+     * Shows all the scheduled appointments.
+     */
+    private void showAll() {
+        appointments = AppointmentDAO.getAllAppointments();
+        apptTableview.setItems(appointments);
     }
 
 
