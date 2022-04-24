@@ -4,7 +4,6 @@ import Model.Customers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
-//import utils.Utils;
 
 import java.sql.*;
 
@@ -14,6 +13,7 @@ import java.sql.*;
 public class CustomersDao {
 
     private static final Connection connection = JDBC.getConnection();
+
 
     /**
      * Gets all existing customers in the DB and stores them in a list.
@@ -49,10 +49,11 @@ public class CustomersDao {
         return customerList;
     }
 
+
     /**
      * Select customer by division.
      * @param customers
-     * @return
+     * @return divisionID
      */
     public static Integer getCustomerDivision(Customers customers){
         int customerID = customers.getCustomerId();
@@ -158,8 +159,7 @@ public class CustomersDao {
      * @param customers
      * @return
      */
-    public static boolean customerDeleteValidation(Customers customers)
-    {
+    public static boolean customerDeleteValidation(Customers customers) {
         int customerID = customers.getCustomerId();
         try {
             String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
@@ -167,16 +167,12 @@ public class CustomersDao {
             ps.setInt(1, customerID);
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next())
-            {
+            if(rs.next()) {
                 return false;
-            }
-            else
-            {
+            } else {
                 return true;
             }
-        }catch(SQLException throwables)
-        {
+        }catch(SQLException throwables) {
             throwables.printStackTrace();
             return false;
         }
@@ -199,6 +195,7 @@ public class CustomersDao {
             throwables.printStackTrace();
         }
     }
+
 
     /**
      * Gets the customers country by division.

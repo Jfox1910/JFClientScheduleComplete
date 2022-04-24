@@ -9,70 +9,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+/**
+ * Division table DB access
+ */
 public class DivisionsDao {
-    public static ObservableList<Divisions> getUsStates(){
-        //array list of all US divisions
-        ObservableList<Divisions> usStates = FXCollections.observableArrayList();
-
-        try{
-            String sql = "SELECT Division_ID, Division FROM client_schedule.first_level_divisions WHERE Country_ID = 1";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()){
-                int divisionID = rs.getInt("Division_ID");
-                String divisionName = rs.getString("Division");
-                Divisions divisions = new Divisions(divisionID, divisionName);
-                usStates.add(divisions);
-            }
-        } catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
-        return usStates;
-    }
 
 
-    public static ObservableList<Divisions> getCanadianTerritories() {
-        ObservableList<Divisions> canadianDivisions = FXCollections.observableArrayList();
-        try {
-            String sql = "SELECT Division_ID, Division FROM client_schedule.first_level_divisions WHERE Country_ID = 3";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int divisionID = rs.getInt("Division_ID");
-                String divisionName = rs.getString("Division");
-                Divisions divisions = new Divisions(divisionID, divisionName);
-                canadianDivisions.add(divisions);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return canadianDivisions;
-    }
-
-
-    public static ObservableList<Divisions> getUKTerritories() {
-        ObservableList<Divisions> UkTerritories = FXCollections.observableArrayList();
-        try {
-            String sql = "SELECT Division_ID, Division FROM client_schedule.first_level_divisions WHERE Country_ID = 2";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int divisionID = rs.getInt("Division_ID");
-                String divisionName = rs.getString("Division");
-                Divisions divisions = new Divisions(divisionID, divisionName);
-                UkTerritories.add(divisions);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return UkTerritories;
-    }
-
-
+    /**
+     * Gets all divisions
+     * @return allDivisions
+     */
     public static ObservableList<Divisions> getAllDivisions(){
         ObservableList<Divisions> allDivisions = FXCollections.observableArrayList();
         try {
@@ -94,6 +40,11 @@ public class DivisionsDao {
     }
 
 
+    /**
+     * Used in parsing divisions by their respective country.
+     * @param divisionID
+     * @return countryID
+     */
     public static Integer getCountryDivision(int divisionID){
         int countryID = 0;
 
@@ -111,6 +62,12 @@ public class DivisionsDao {
         return countryID;
     }
 
+
+    /**
+     * Gets the division names
+     * @param divisionID
+     * @return
+     */
     public static String getDivisionName(int divisionID){
         String divisionName = null;
         try {
@@ -128,6 +85,12 @@ public class DivisionsDao {
         return divisionName;
     }
 
+
+    /**
+     * Provides names for countries used in various methods
+     * @param modCustomerCountry
+     * @return division
+     */
     public static ObservableList<String> getAllByCountry(String modCustomerCountry){
         ObservableList<String>division = FXCollections.observableArrayList();
         int countryID = CountriesDao.getCountryName(modCustomerCountry);
@@ -148,6 +111,12 @@ public class DivisionsDao {
         return division;
     }
 
+
+    /**
+     * Gets divisions by name
+     * @param divisionName
+     * @return divisionID
+     */
     public static int getAllDivisionsByName(String divisionName){
         int divisionID = 0;
 
@@ -165,6 +134,4 @@ public class DivisionsDao {
         }
         return divisionID;
     }
-
-
 }

@@ -53,6 +53,8 @@ import java.sql.Timestamp;
      * @return customerId, customerName, customerAddy, customerZip, customerPhone, customerCreatedDate,
      * customerCreated, customerUpdatedOn, customerUpdatedBy, customerCountry, divisionNam, divisionName
      */
+    public String customerToString(){return "[" + customerId + "]" + customerName;}
+
         public int getCustomerId() {return customerId;}
 
         public String getCustomerName() {return customerName;}

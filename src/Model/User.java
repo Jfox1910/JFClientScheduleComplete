@@ -1,6 +1,8 @@
 package Model;
 
 
+import Dao.AppointmentDAO;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -56,6 +58,10 @@ public class User {
         offset = (offsetInMillis >= 0 ? "+" : "-") + offset;
         return offset;
     }
+
+   /* public Appointment getImpendingAppointment() {
+        return new AppointmentDAO().getImpendingAppt(userId);
+    }*/
 
     //Setters
     public void setUserId(int userId) {this.userId = userId;}

@@ -2,7 +2,6 @@ package Controller;
 
 import Dao.*;
 import Model.Appointment;
-import Model.Countries;
 import Model.Customers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -72,7 +71,6 @@ public class MainScreenController implements Initializable {
     Must haves----------
     LAMBDAS
     MOD APPTS
-    LOGIN APPT CHECK
     ADD REPORTS
     JAVADOCS
     README
@@ -136,13 +134,12 @@ public class MainScreenController implements Initializable {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                AppointmentDAO.deleteAppointment(selectedAppointment.getAppointment_ID());
-
 
                 Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                 alert2.setTitle("SUCCESS!");
-                alert2.setContentText("The selected appointment has been cancelled.");
+                alert2.setContentText("Appointment # " + selectedAppointment.getAppointment_ID() + " has been cancelled.");
                 alert2.showAndWait();
+                AppointmentDAO.deleteAppointment(selectedAppointment.getAppointment_ID());
                 apptTableview.setItems(AppointmentDAO.getAllAppointments());
             } else apptTableview.setItems(AppointmentDAO.getAllAppointments());
         } else
@@ -224,7 +221,7 @@ public class MainScreenController implements Initializable {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("ATTENTION!");
-            alert.setHeaderText("The selected customer will be deleted from the database!");
+            alert.setHeaderText(selectedCustomer.getCustomerName() + " will be deleted from the database!");
             alert.setContentText("This action cannot be undone. Are you sure you wish to continue?");
 
             Optional<ButtonType> result = alert.showAndWait();
@@ -232,14 +229,19 @@ public class MainScreenController implements Initializable {
             {
                 if (CustomersDao.customerDeleteValidation(selectedCustomer))
                 {
+                    Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert2.setTitle("SUCCESS!");
+                    alert2.setContentText(selectedCustomer.getCustomerName() + " has been deleted from the system.");
+                    alert2.showAndWait();
+
                     CustomersDao.deleteCustomer(selectedCustomer.getCustomerId());
                     {
                         customersTableView.setItems(CustomersDao.getAllCustomers());
                 }
-                    Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                    /*Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("SUCCESS!");
                     alert2.setContentText("The customer has been deleted from the system.");
-                    alert2.showAndWait();
+                    alert2.showAndWait();*/
                 }
                 else {
                     Alert a = new Alert(Alert.AlertType.ERROR);
@@ -308,9 +310,28 @@ public class MainScreenController implements Initializable {
     }
 
 
+    private void impendingAppointments() {
+        LocalDateTime now = LocalDateTime.now();
+        ObservableList<Appointment> pendingAppt = AppointmentDAO.getImpendingAppt(now);
+        if (pendingAppt.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Welcome!");
+            alert.setHeaderText("There are no pending appointments scheduled within the next 15 minutes.");
+            alert.showAndWait();
+        } else {
+            for (Appointment appointment : pendingAppt) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Welcome!");
+                alert.setHeaderText(" Attention. Appointment # " + appointment.getAppointment_ID() + " is scheduled at " + appointment.getStart());
+                alert.showAndWait();
+            }
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        impendingAppointments();
         weekmonth.selectToggle(appViewAllRadio);
 
         /**

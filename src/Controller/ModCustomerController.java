@@ -46,7 +46,7 @@ public class ModCustomerController implements Initializable{
 
 
     /**
-     * Exits back to the main screen
+     * Exits back to the main screen. Alerts the user first.
      * @param event
      * @throws IOException
      */
@@ -67,59 +67,8 @@ public class ModCustomerController implements Initializable{
 
 
     /**
-     * Handles populating the COUNTRY combobox
-     */
-    public void handleCountryComboBox(){
-
-        String selectedCustomerCountry = customerCountry.getValue().toString();
-        customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
-    }
-
-
-    /**
-     * An observable list holding the countries from the database. Used to initialize the "Country" combobox.
-     * @return countries
-     */
-  public ObservableList countryList(){
-        ObservableList<String> countries = FXCollections.observableArrayList();
-
-        for(Countries country : CountriesDao.getAllCountries()){
-            countries.add(country.getName());
-        }
-        return countries;
-    }
-
-
-    /**
-     * An observable list holding the divisions from the database.
-     * @return divisions
-     */
-    public ObservableList divisionList(){
-        ObservableList<String> divisions = FXCollections.observableArrayList();
-
-        for(Divisions division : DivisionsDao.getAllDivisions()){
-            divisions.add(division.getDivisionName());
-        }
-        return divisions;
-    }
-
-
-    /**
-     * An observable list holding the divisions by country from the database..
-     * @return divisions
-     */
-    public ObservableList divisionsByCountry(String modCustomerCountry){
-        ObservableList<String> divisions = FXCollections.observableArrayList();
-
-        for(String divisionName : DivisionsDao.getAllByCountry(modCustomerCountry)){
-            divisions.add(divisionName);
-        }
-        return divisions;
-    }
-
-
-    /**
-     * Collects the information from the fields and updates the customer in the database. Alerts the user if the fields aren't filled and when a customer is being updated.
+     * Collects the information from the fields and updates the customer in the database. Checks for and alerts the user if the fields aren't filled and when a customer is being updated.
+     * Additional alert for a successful update.
      * @param actionEvent
      * @throws IOException
      */
@@ -139,11 +88,7 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
     alert.setTitle("Attention!");
     alert.setContentText("All customer fields must be filled before saving.");
     alert.showAndWait();
-}else
-{
-    /**
-    * Hold and confirm that a customer is about to be updated. If Okd moves forward with the operation and modifies the selected customer then reloads the main table.
-    */
+}else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Updating an existing customer.");
             alert.setContentText("By clicking OK, you will be updating " + CustomerName.getText() + "'s information. Are you sure you wish to continue?");
@@ -183,6 +128,58 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
         customerCountry.setValue(CustomersDao.getCountry(customers));
         customerDivision.setValue(customers.getDivisionName());
 
+    }
+
+
+    /**
+     * Handles populating the COUNTRY combobox
+     */
+    public void handleCountryComboBox(){
+
+        String selectedCustomerCountry = customerCountry.getValue().toString();
+        customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
+    }
+
+
+    /**
+     * An observable list holding the countries from the database. Used to initialize the "Country" combobox.
+     * @return countries
+     */
+    public ObservableList countryList(){
+        ObservableList<String> countries = FXCollections.observableArrayList();
+
+        for(Countries country : CountriesDao.getAllCountries()){
+            countries.add(country.getName());
+        }
+        return countries;
+    }
+
+
+    /**
+     * An observable list holding the divisions from the database.
+     * @return divisions
+     */
+    public ObservableList divisionList(){
+        ObservableList<String> divisions = FXCollections.observableArrayList();
+
+        for(Divisions division : DivisionsDao.getAllDivisions()){
+            divisions.add(division.getDivisionName());
+        }
+        return divisions;
+    }
+
+
+    /**
+     * An observable list holding the divisions by country from the database..
+     * @return divisions
+     */
+    public ObservableList divisionsByCountry(String modCustomerCountry){
+        ObservableList<String> divisions = FXCollections.observableArrayList();
+
+        for(String divisionName : DivisionsDao.getAllByCountry(modCustomerCountry)){
+            divisions.add(divisionName);
+        }
+        return divisions;
     }
 
 

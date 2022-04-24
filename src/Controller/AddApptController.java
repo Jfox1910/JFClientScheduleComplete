@@ -64,7 +64,7 @@ public class AddApptController implements Initializable {
     private LocalDate date;
     private LocalDateTime start;
     private LocalDateTime end;
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy");
 
 
     ObservableList<String> hours = FXCollections.observableArrayList();
@@ -275,7 +275,7 @@ public class AddApptController implements Initializable {
 
     public ObservableList apptHour() {
 
-        int[] hours = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
+        int[] hours = new int[]{8,9,10,11,12,13,14,15,16,17,18,19,20};
 
         for(Integer H : hours) {
 

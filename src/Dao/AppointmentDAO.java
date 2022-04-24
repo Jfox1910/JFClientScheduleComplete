@@ -81,37 +81,6 @@ public final class AppointmentDAO {
         }
     }
 
-/*    public static ObservableList<Appointment> getAllAppointments(){
-        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
-
-        try {
-            String sql = "SELECT * FROM appointments";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()){
-
-                int apptIDCol = rs.getInt("Appointment_ID");
-                String apptTitleCol = rs.getString("Title");
-                String apptDescriptionCol = rs.getString("Description");
-                String apptLocationCol = rs.getString("Location");
-                int apptContactCol = rs.getInt("Contact_ID");
-                String apptTypeCol = rs.getString("Type");
-                Timestamp apptStartTimeCol = rs.getTimestamp("Start");
-                Timestamp apptEndTimeCol = rs.getTimestamp("End");
-                int apptCustomerIDCol = rs.getInt("Customer_ID");
-                int apptUserIDCol = rs.getInt("User_ID");
-                Appointment appointment = new Appointment(apptIDCol, apptTitleCol, apptDescriptionCol, apptLocationCol, apptContactCol, apptTypeCol, apptStartTimeCol,
-                        apptEndTimeCol, apptCustomerIDCol, apptUserIDCol);
-
-                appointments.add(appointment);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return appointments;
-    }*/
 
   /*  public static void newAppointment(Appointment appt, String startTime, int endTime){
 
@@ -207,14 +176,39 @@ public final class AppointmentDAO {
                 Appointment appointment = createAppointment(rs);
                 apptList.add(appointment);
             }
-
             return apptList;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return null;
+
+    }
+
+
+    /**
+     * Used to check for impeding appointments within the next 15 minutes of login.
+     * @param now
+     * @return impendingAppointments
+     */
+    public static ObservableList<Appointment> getImpendingAppt(LocalDateTime now) {
+        ObservableList<Appointment> impendingAppointment = FXCollections.observableArrayList();
+        LocalDateTime plusFifteen = now.plusMinutes(15);
+        String query = "SELECT * FROM appointments WHERE Start BETWEEN ? AND ?";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(query );
+            ps.setTimestamp(1, Timestamp.valueOf(now));
+            ps.setTimestamp(2, Timestamp.valueOf(plusFifteen));
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Appointment appointment = createAppointment(rs);
+                impendingAppointment.add(appointment);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return impendingAppointment;
     }
 
 
