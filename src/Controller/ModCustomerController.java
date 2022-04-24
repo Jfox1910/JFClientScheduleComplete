@@ -46,7 +46,7 @@ public class ModCustomerController implements Initializable{
 
 
     /**
-     * Exits back to the main screen. Alerts the user first.
+     * Exits back to the main screen. Alerts the user first. Uses another LAMBDA expression
      * @param event
      * @throws IOException
      */
@@ -54,15 +54,18 @@ public class ModCustomerController implements Initializable{
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("All unsaved information will be lost. Are you sure you wish to continue?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
+        alert.showAndWait().ifPresent((response -> {
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }
+        }));
     }
 
 

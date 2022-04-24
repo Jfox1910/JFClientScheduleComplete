@@ -67,6 +67,7 @@ public class AddCustomerController implements Initializable {
 
     /**
     *Popup confirmation using a LAMBDA EXPRESSION confirming that a customer is about to be added.
+    * The use of the lambda expression simplified the method and minimized the amount of code.
     */
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
@@ -74,7 +75,6 @@ public class AddCustomerController implements Initializable {
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
                     CustomersDao.newCustomer(userID, customerName, customerAddress, customerZip, customerPhone, divisionID);
-
 
     /**
     * Confirmation that the customer has been added.
@@ -132,7 +132,8 @@ public class AddCustomerController implements Initializable {
 
 
     /**
-     * Exits to the main screen
+     * Exits to the main screen. Uses a LAMBDA expression.
+     * The use of the lambda expression simplified the method and minimized the amount of code.
      * @param event
      * @throws IOException
      */
@@ -140,15 +141,19 @@ public class AddCustomerController implements Initializable {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("All unsaved information will be lost. Are you sure you wish to continue?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        alert.showAndWait().ifPresent((response -> {
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        }
+        }));
     }
 
 

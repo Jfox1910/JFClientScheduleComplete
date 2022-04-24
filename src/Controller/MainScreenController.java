@@ -326,17 +326,19 @@ public class MainScreenController implements Initializable {
             for (Appointment appointment : pendingAppt) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Welcome!");
-                alert.setHeaderText(" Attention. Appointment # " + appointment.getAppointment_ID() + " is scheduled at " + appointment.getStart());
+                alert.setHeaderText(" Attention. Appointment # " + appointment.getAppointment_ID() + " is scheduled at " + appointment.getStart() + " EST.");
                 alert.showAndWait();
             }
         }
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         impendingAppointments();
         weekmonth.selectToggle(appViewAllRadio);
+
 
         /**
          * Appointment table initialization. Loads the columns with the information from the DB appointment table
@@ -353,6 +355,7 @@ public class MainScreenController implements Initializable {
         apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("end"));
         apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("User_ID"));
+
 
         /**
          * Customers table initialization. Loads the columns with the information from the DB customers table
