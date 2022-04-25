@@ -27,6 +27,8 @@ public class Contacts {
 
     public String getContactName() {return contactName;}
 
+    public String getContactToString(){return "[" + contactID + "]" + contactName;}
+
 
     /**
      * Contacts Setters

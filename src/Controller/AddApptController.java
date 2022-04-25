@@ -89,11 +89,11 @@ public class AddApptController implements Initializable {
 
     /**
      * new Appointment handler. Collects the information from the fields and adds them to the DB.
+     * Contains alerts for null fields, and 1 LAMBDA function confirming to an appointment being added, and a successful addition confirmation.
      * @param event
      * @throws IOException
      */
     public void onActionAdd(javafx.event.ActionEvent event) throws IOException, ParseException {
-
 
         int Appointment_ID = 0;
         String title = titleField.getText();
@@ -108,10 +108,6 @@ public class AddApptController implements Initializable {
 
         Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customerID, User_ID, contactID);
 
-
-        /**
-         * Check that a name, address and phone has been entered and gives an alert if it isn't there.
-         */
         if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
@@ -119,10 +115,6 @@ public class AddApptController implements Initializable {
             alert.showAndWait();
         }else
         {
-
-            /**
-             *Popup confirmation using a LAMBDA EXPRESSION confirming that an appointment is about to be added.
-             */
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new appointment.");
             alert.setContentText("By clicking OK, you will be adding an appointment to the system. Are you sure you wish to continue?");

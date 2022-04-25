@@ -179,11 +179,15 @@ public class ModApptController implements Initializable {
         locationField.setText(String.valueOf(selectedAppointment.getLocation()));
         descriptionField.setText(String.valueOf(selectedAppointment.getDescription()));
         typeField.setText(String.valueOf(selectedAppointment.getType()));
-        customerCombobox.setValue(selectedAppointment.getCustomer());
 
-        //contactCombobox.setValue(selectedAppointment.getContactName());
-        //contactCombobox.getSelectionModel().select(selectedAppointment.getCustomer());
-        //appointmentDate.setValue(selectedAppointment.getStart());
+        customerCombobox.setValue(selectedAppointment.getCustomer_ID());
+        contactCombobox.setValue(selectedAppointment.getContact_ID());
+
+        appointmentDate.setValue(selectedAppointment.getStart().toLocalDateTime().toLocalDate());
+        startHourCombo.setValue(String.format("%02d", selectedAppointment.getStart().toLocalDateTime().getHour()));
+        startMinCombo.setValue(String.format("%02d", selectedAppointment.getStart().toLocalDateTime().getMinute()));
+        endHourCombo.setValue(String.format("%02d", selectedAppointment.getStart().toLocalDateTime().getHour()));
+        endMinCombo.setValue(String.format("%02d", selectedAppointment.getEnd().toLocalDateTime().getMinute()));
 
     }
 

@@ -24,6 +24,8 @@ public class Appointment {
     private int Contact_ID;
     private String ContactName;
     private int User_ID;
+    private Customers customer;
+    private Contacts contact;
 
 
     public Appointment(int customerID) {this.Customer_ID = customerID;}
@@ -90,10 +92,10 @@ public class Appointment {
 
     public int getUser_ID() {return User_ID;}
 
-    public String getContactName() {return ContactName;}
+    public Contacts getContact() {return contact;}
 
     public Customers getCustomer() {
-        return customers;
+        return customer;
     }
 
     //Setters
@@ -123,9 +125,13 @@ public class Appointment {
 
     public void setUser_ID(int user_ID) {this.User_ID = user_ID;}
 
-    public void setContactName(String contactName) {ContactName = contactName;}
+    public void setContactName(Contacts contact) {this.contact = contact;}
 
     public void setCustomer(Customers customers) {
         this.customers = customers;
+    }
+
+    public void setContact(Contacts contact) {
+        this.contact = contact;
     }
 }
