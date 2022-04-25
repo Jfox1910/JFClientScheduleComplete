@@ -6,7 +6,6 @@ import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
-import utils.Utils;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -18,8 +17,6 @@ import java.util.Locale;
  */
 public final class AppointmentDAO {
 
-    private static final Connection connection = JDBC.getConnection();
-    private static final String tzOffset = User.getCurrentTimezoneOffset();
     public static CustomersDao customer;
 
 
@@ -30,8 +27,9 @@ public final class AppointmentDAO {
     public static ObservableList<Appointment> getAllAppointments(){
 
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM appointments";
+
         try {
+            String sql = "SELECT * FROM appointments";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -57,8 +55,8 @@ public final class AppointmentDAO {
         startTime = appt.getStart();
         endTime = appt.getEnd();
 
-        String sql = "insert into appointments set Title=?, Description=?, Location=?, Type=?, Start= ?, End=?, Create_Date=now(), Created_By=?, Customer_ID=?, User_ID=?, Contact_ID=?, Last_Updated_by=?, Last_Update=now();";
         try {
+            String sql = "insert into appointments set Title=?, Description=?, Location=?, Type=?, Start= ?, End=?, Create_Date=now(), Created_By=?, Customer_ID=?, User_ID=?, Contact_ID=?, Last_Updated_by=?, Last_Update=now();";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setString(1, appt.getTitle());
@@ -83,58 +81,35 @@ public final class AppointmentDAO {
     }
 
 
-  /*  public static void newAppointment(Appointment appt, String startTime, int endTime){
+    /**
+     * DB access used in the modify customer method.
+     * @param
+     */
 
-            int customerID = appt.getCustomerID();
-            int contactID = appt.getContactID();
-            String title = appt.getApptTitleCol();
-            String description = appt.getApptDescriptionCol();
-            String location = appt.getApptLocationCol();
-            String type = appt.getApptTypeCol();
-            String start = startTime;
-            int end = endTime;
+    public static void updateAppointment(Appointment updateAppt){
+
 
         try {
-            int appointmentID = 1;
-            try {
-                Statement id = connection.createStatement();
-                ResultSet rs = id.executeQuery("select max(Appointment_ID) as Last_Appointment from appointments");
-                if (rs.next()) {
-                    appointmentID = rs.getInt("Last_Appointment") + 1;
-                }
-                id.close();
-            } catch (SQLException throwable) {
-                throwable.printStackTrace();
-            }
+            String sql = "UPDATE appointments SET Title=?, Description=?, Location=?, Type=?, Start= ?, End=?, Customer_ID=?, Last_Updated_By=?, Contact_ID=? WHERE Appointment_ID=?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
-           String sql = "insert into appointments set Appointment_ID=?, Title=?, Description=?, Location=?, Type=?, Start=convert_tz(?, ?, '+00:00'), End=(convert_tz(?, ?, '+00:00') + interval ? minute ), Create_Date=now(), Created_By=?, Customer_ID=?, User_ID=?, Contact_ID=?, Last_Updated_by=?, Last_Update=now();";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-            ps.setInt(1, appointmentID);
-            ps.setString(2, title);
-            ps.setString(3, description);
-            ps.setString(4, location);
-            ps.setString(5, type);
-            ps.setString(6, startTime);
-            ps.setString(7, tzOffset);
-            ps.setString(8, startTime);
-            ps.setString(9, tzOffset);
-            ps.setInt(10, endTime);
-            ps.setString(11, UserDao.getLoggedinUser().getUserName());
-            ps.setInt(12, customerID);
-            ps.setInt(13, UserDao.getLoggedinUser().getUserId());
-            ps.setInt(14, contactID);
-            ps.setString(15,UserDao.getLoggedinUser().getUserName());
+            ps.setString(1,updateAppt.getTitle());
+            ps.setString(2,updateAppt.getDescription());
+            ps.setString(3,updateAppt.getLocation());
+            ps.setString(4,updateAppt.getType());
+            ps.setTimestamp(5, updateAppt.getStart());
+            ps.setTimestamp(6, updateAppt.getEnd());
+            ps.setInt(7, updateAppt.getCustomer_ID());
+            ps.setInt(8, updateAppt.getUser_ID());
+            ps.setInt(9, updateAppt.getContact_ID());
+            ps.setInt(10, updateAppt.getAppointment_ID());
 
             ps.execute();
-            ps.close();
-            getAllAppointments();
 
-        } catch (SQLException throwables){
+        }catch (SQLException throwables){
             throwables.printStackTrace();
         }
-    }*/
+    }
 
 
     /**
@@ -239,6 +214,30 @@ public final class AppointmentDAO {
             e.printStackTrace();
         }
         return selectAppointmentDates;
+    }
+
+
+    /**
+     * Gets all customer names from the DB using the ID provided in the dropdown.
+     * @param customerName
+     * @return customerID
+     */
+    public static int getCustomerByName(String customerName){
+        int customerID = 0;
+
+        try {
+            String sql = "SELECT Customer_ID FROM client_schedule.customers WHERE Customer_Name = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, customerName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                customerID = rs.getInt("Customer_ID");
+            }
+
+        } catch (SQLException throwables){
+            throwables.printStackTrace();;
+        }
+        return customerID;
     }
 
 

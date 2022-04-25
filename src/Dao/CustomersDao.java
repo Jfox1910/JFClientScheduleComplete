@@ -162,8 +162,8 @@ public class CustomersDao {
      * @param customerDivision
      */
     public static void modifyCustomer(int customerId, String customerName, String customerAddy, String customerZipCode, String customerPhone, int customerDivision){
-        try {
 
+        try {
             String sqlModifyCustomer = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Last_Update=NOW(),Phone=?, Last_Updated_By=?, Division_ID=? WHERE Customer_ID=? ";
             PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
 
@@ -224,6 +224,34 @@ public class CustomersDao {
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
+    }
+
+
+    /**
+     * Gets the customers name based off the ID given.
+     * @param customerID
+     * @return selectedCustomerName
+     */
+    public static String setCustomerName(int customerID) {
+        String customerName = null;
+
+        try {
+            String sql = "SELECT Customer_Name FROM customers WHERE Customer_ID = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerID);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) {
+                customerName = rs.getString("Customer_Name");
+            }
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String selectedCustomerName = String.valueOf(customerID) + ": " + customerName;
+        return selectedCustomerName;
     }
 
 

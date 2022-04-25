@@ -80,6 +80,13 @@ import java.sql.Timestamp;
 
         public String getDivisionName() {return divisionName;}
 
+    public static int getCustomerIDByName(String customerName)
+    {
+        int customerID = Integer.parseInt(customerName.substring(0, customerName.indexOf(":")));
+
+        return customerID;
+    }
+
 
 
 

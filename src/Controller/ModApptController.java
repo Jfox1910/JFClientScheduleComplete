@@ -28,11 +28,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import java.awt.*;
-import java.net.URL;
 import java.util.ResourceBundle;
 
 
@@ -83,24 +79,23 @@ public class ModApptController implements Initializable {
 
     public void onActionUpdate(javafx.event.ActionEvent event) throws IOException, ParseException {
 
-
-        int Appointment_ID = 0;
+        int Appointment_ID = selectedAppointment.getAppointment_ID();
         String title = titleField.getText();
         String location = locationField.getText();
         String description = descriptionField.getText();
         String type = typeField.getText();
         Timestamp start = startTimeStamp();
         Timestamp end = endTimeStamp();
-        int customerID = getIdFromComboBox(customerCombobox);
-        int User_ID = UserDao.getLoggedinUser().getUserId();
-        int contactID = getIdFromComboBox(contactCombobox);
 
-        Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customerID, User_ID, contactID);
+        //int customerID = getIdFromComboBox(customerCombobox);
+        int customerID = Customers.getCustomerIDByName(customerCombobox.getValue().toString());
 
-        System.out.println(titleField.getText() + locationField.getText()+ descriptionField.getText()+ typeField.getText()+ start + end + customerID+ User_ID+ contactID);
-        /**
-         * Check that a name, address and phone has been entered and gives an alert if it isn't there.
-         */
+        int User_ID = userComboBox.getSelectionModel().getSelectedIndex();
+        int contactID = Contacts.getContactIDByName(contactCombobox.getValue().toString());
+
+        Appointment updateAppt = new Appointment(Appointment_ID,title,location,description,type,start,end,customerID,User_ID,contactID);
+       System.out.println(titleField.getText() + locationField.getText()+ descriptionField.getText()+ typeField.getText()+ start + end + customerID+ User_ID+ contactID);
+
         if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
@@ -108,21 +103,17 @@ public class ModApptController implements Initializable {
             alert.showAndWait();
         }else
         {
-
-            /**
-             *Popup confirmation using a LAMBDA EXPRESSION confirming that an appointment is about to be added.
-             */
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new appointment.");
-            alert.setContentText("By clicking OK, you will be adding an appointment to the system. Are you sure you wish to continue?");
+            alert.setContentText("By clicking OK, you will be updating the appointment. Are you sure you wish to continue?");
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
 
-                    AppointmentDAO.newAppointment(appt);
+                    AppointmentDAO.updateAppointment(updateAppt);
 
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("Success!");
-                    alert2.setContentText("Appointment has been added.");
+                    alert2.setContentText("Appointment has been updated.");
                     alert2.showAndWait();
 
                     Parent root = null;
@@ -170,9 +161,6 @@ public class ModApptController implements Initializable {
      * @param
      */
     public void getAppointment(Appointment selectedAppointment){
-        //LocalDate startDate = LocalDate.parse(Appointment.appointment.getStart().substring(0, 10));
-        //String fStartDate = startDate.format(dtf);
-
 
         Appointment_ID.setText(String.valueOf(selectedAppointment.getAppointment_ID()));
         titleField.setText(String.valueOf(selectedAppointment.getTitle()));
@@ -180,15 +168,15 @@ public class ModApptController implements Initializable {
         descriptionField.setText(String.valueOf(selectedAppointment.getDescription()));
         typeField.setText(String.valueOf(selectedAppointment.getType()));
 
-        customerCombobox.setValue(selectedAppointment.getCustomer_ID());
-        contactCombobox.setValue(selectedAppointment.getContact_ID());
+        customerCombobox.setValue(CustomersDao.setCustomerName(selectedAppointment.getCustomer_ID()));
+        contactCombobox.setValue(ContactsDao.setContactName(selectedAppointment.getContact_ID()));
+        //contactCombobox.setValue(selectedAppointment.getContact_ID());
 
         appointmentDate.setValue(selectedAppointment.getStart().toLocalDateTime().toLocalDate());
         startHourCombo.setValue(String.format("%02d", selectedAppointment.getStart().toLocalDateTime().getHour()));
         startMinCombo.setValue(String.format("%02d", selectedAppointment.getStart().toLocalDateTime().getMinute()));
         endHourCombo.setValue(String.format("%02d", selectedAppointment.getStart().toLocalDateTime().getHour()));
         endMinCombo.setValue(String.format("%02d", selectedAppointment.getEnd().toLocalDateTime().getMinute()));
-
     }
 
 
