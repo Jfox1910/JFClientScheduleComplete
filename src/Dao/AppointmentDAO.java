@@ -1,6 +1,7 @@
 package Dao;
 
 import Model.Appointment;
+import Model.Customers;
 import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -46,7 +46,7 @@ public class ModCustomerController implements Initializable{
 
 
     /**
-     * Exits back to the main screen. Alerts the user first. Uses another LAMBDA expression
+     * Exits back to the main screen. Alerts the user first. LAMBDA function that eliminates a bit of code.
      * @param event
      * @throws IOException
      */
@@ -71,7 +71,7 @@ public class ModCustomerController implements Initializable{
 
     /**
      * Collects the information from the fields and updates the customer in the database. Checks for and alerts the user if the fields aren't filled and when a customer is being updated.
-     * Additional alert for a successful update.
+     * Additional alert for a successful update. LAMBDA function that eliminates a bit of code.
      * @param actionEvent
      * @throws IOException
      */
@@ -91,17 +91,16 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
     alert.setTitle("Attention!");
     alert.setContentText("All customer fields must be filled before saving.");
     alert.showAndWait();
-}else {
+    }else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Updating an existing customer.");
             alert.setContentText("By clicking OK, you will be updating " + CustomerName.getText() + "'s information. Are you sure you wish to continue?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
+
+            alert.showAndWait().ifPresent((response -> {
                 CustomersDao.modifyCustomer(customerId, customerName, customerAddress, customerZip, customerPhone, modCustomerDivision);
-                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-                alert2.setTitle("Success!");
-                alert2.setContentText(CustomerName.getText() + " has been updated.");
-                alert2.showAndWait();
+                alert.setTitle("Success!");
+                alert.setContentText(CustomerName.getText() + " has been updated.");
+                alert.showAndWait();
 
                 Parent root = null;
                 try {
@@ -113,7 +112,7 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
-            }
+            }));
         }
     }
 

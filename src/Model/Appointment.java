@@ -92,6 +92,10 @@ public class Appointment {
 
     public String getContactName() {return ContactName;}
 
+    public Customers getCustomer() {
+        return customers;
+    }
+
     //Setters
     public void setAppointment_ID(int appointment_ID) {Appointment_ID = appointment_ID;}
 
@@ -120,4 +124,8 @@ public class Appointment {
     public void setUser_ID(int user_ID) {this.User_ID = user_ID;}
 
     public void setContactName(String contactName) {ContactName = contactName;}
+
+    public void setCustomer(Customers customers) {
+        this.customers = customers;
+    }
 }

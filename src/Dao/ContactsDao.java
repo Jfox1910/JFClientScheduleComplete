@@ -21,8 +21,7 @@ public class ContactsDao {
             while(rs.next()){
                 int contactID = rs.getInt("Contact_ID");
                 String contactName = rs.getString("Contact_Name");
-                String contactEmail = rs.getString("Email");
-                Contacts contacts = new Contacts(contactID, contactName, contactEmail);
+                Contacts contacts = new Contacts(contactID, contactName);
                 allContacts.add(contacts);
             }
             ps.close();

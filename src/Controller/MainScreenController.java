@@ -3,6 +3,7 @@ package Controller;
 import Dao.*;
 import Model.Appointment;
 import Model.Customers;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -160,9 +161,11 @@ public class MainScreenController implements Initializable {
      */
     public void onActionLoadReports(ActionEvent event) throws IOException {
 
-        //DECIDE ON WHAT TO REPORT
-
-        System.out.println("Test LOAD Reports Button.");
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/reportsScreen.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
 
@@ -238,12 +241,7 @@ public class MainScreenController implements Initializable {
                     {
                         customersTableView.setItems(CustomersDao.getAllCustomers());
                 }
-                    /*Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert2.setTitle("SUCCESS!");
-                    alert2.setContentText("The customer has been deleted from the system.");
-                    alert2.showAndWait();*/
-                }
-                else {
+                } else {
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setTitle("ERROR!");
                     a.setHeaderText("The selected customer has an appointment scheduled. Please cancel all appointments for the selected customer and try again.");
@@ -333,16 +331,10 @@ public class MainScreenController implements Initializable {
     }
 
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        impendingAppointments();
-        weekmonth.selectToggle(appViewAllRadio);
-
-
-        /**
-         * Appointment table initialization. Loads the columns with the information from the DB appointment table
-         */
+    /**
+     * Appointment table initialization. Loads the columns with the information from the DB appointment table.
+     */
+    private void setApptTables(){
         appointments = AppointmentDAO.getAllAppointments();
         apptTableview.setItems(appointments);
         apptIDCol.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
@@ -355,11 +347,13 @@ public class MainScreenController implements Initializable {
         apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("end"));
         apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("User_ID"));
+    }
 
 
-        /**
-         * Customers table initialization. Loads the columns with the information from the DB customers table
-         */
+    /**
+     * Customers table initialization. Loads the columns with the information from the DB customers table
+     */
+    private void setCustomerTable(){
         customers = CustomersDao.getAllCustomers();
         customersTableView.setItems(customers);
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -368,7 +362,16 @@ public class MainScreenController implements Initializable {
         customerZipCol.setCellValueFactory(new PropertyValueFactory<>("customerZip"));
         customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
         customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("customerDivision"));
+    }
 
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        setApptTables();
+        setCustomerTable();
+        impendingAppointments();
+        weekmonth.selectToggle(appViewAllRadio);
 
     }
 }

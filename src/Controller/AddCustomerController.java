@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -36,6 +37,7 @@ public class AddCustomerController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
 
 
     /**
@@ -105,8 +107,9 @@ public class AddCustomerController implements Initializable {
      * @param actionEvent
      */
     public void handleCountryComboBox(ActionEvent actionEvent){
-        String selectedCustomerCountry = customerCountry.getValue().toString();
-        customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
+
+       String selectedCustomerCountry = customerCountry.getValue().toString();
+       customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
 
     }
 
@@ -118,7 +121,9 @@ public class AddCustomerController implements Initializable {
      */
     public int handleDivisionComboBox(ActionEvent actionEvent){
         if(customerDivision.getSelectionModel().getSelectedItem() != null) {
+
             Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
+
             String division = selectedDivision.toString();
             for (int i = 0; i < DivisionsDao.getAllDivisions().size(); i++) {
                 if (division.equalsIgnoreCase(DivisionsDao.getAllDivisions().get(i).getDivisionName())) {

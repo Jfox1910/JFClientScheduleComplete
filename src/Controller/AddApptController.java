@@ -56,16 +56,14 @@ public class AddApptController implements Initializable {
     @FXML private ComboBox<String> startMinCombo;
     @FXML private ComboBox<String> endHourCombo;
     @FXML private ComboBox<String> endMinCombo;
-    @FXML private ComboBox<String> startAMPM;
-    @FXML private ComboBox<String> endAMPM;
 
     private LocalDate date;
     private LocalDateTime start;
     private LocalDateTime end;
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy");
 
-    private final ObservableList<Integer> selectableHour = FXCollections.observableArrayList();
-    private final ObservableList<String> selectableMinute = FXCollections.observableArrayList();
+    private final ObservableList<Integer> selectableHours = FXCollections.observableArrayList();
+    private final ObservableList<String> selectableMinutes = FXCollections.observableArrayList();
 
 
     /**
@@ -89,48 +87,6 @@ public class AddApptController implements Initializable {
     }
 
 
-
-    public Timestamp startTimeStamper() throws ParseException {
-        return getTimestamp(appointmentDate, startHourCombo, startMinCombo, startAMPM);
-    }
-
-
-    public Timestamp endTimeStamper() throws ParseException {
-        return getTimestamp(appointmentDate, endHourCombo, endMinCombo, endAMPM);
-    }
-
-
-
-    private Timestamp getTimestamp(DatePicker datePicker, ComboBox hourPicker, ComboBox minutePicker, ComboBox am_pm) throws ParseException {
-        String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
-        String hour = hourPicker.getValue().toString();
-        String min = minutePicker.getValue().toString();
-        String time = hour + ":" + min ;
-        SimpleDateFormat date24Format = new SimpleDateFormat("HH:mm");
-        String time24HourFormat = date24Format.format(date24Format.parse(time));
-        String concatTimeStamp = date + " " + time24HourFormat + ":00";
-
-        return Timestamp.valueOf(concatTimeStamp);
-    }
-
-
-/*    protected int getLocalOffsetFromEst() {
-        ZoneId systemZone = ZoneId.systemDefault();
-        ZoneId estZone = ZoneId.of("America/New_York");
-        Instant now = Instant.now();
-        ZoneOffset offsetForSystemZone = systemZone.getRules().getOffset(now);
-        ZoneOffset estOffset = estZone.getRules().getOffset(now);
-        return estOffset.compareTo(offsetForSystemZone);
-    }*/
-
-    private LocalDateTime getLocalDateTime(ComboBox<String> hourCombo, ComboBox<String>minuteCombo) {
-        String timeString = hourCombo.getSelectionModel().getSelectedItem() + ":" + minuteCombo.getSelectionModel().getSelectedItem();
-        LocalTime time = LocalTime.parse(timeString, dtf);
-        LocalDateTime dateTime = LocalDateTime.of(date, time);
-        return dateTime;
-    }
-
-
     /**
      * new Appointment handler. Collects the information from the fields and adds them to the DB.
      * @param event
@@ -144,15 +100,15 @@ public class AddApptController implements Initializable {
         String location = locationField.getText();
         String description = descriptionField.getText();
         String type = typeField.getText();
-        Timestamp start = startTimeStamper();
-        Timestamp end = endTimeStamper();
+        Timestamp start = startTimeStamp();
+        Timestamp end = endTimeStamp();
         int customerID = getIdFromComboBox(customerCombobox);
         int User_ID = UserDao.getLoggedinUser().getUserId();
         int contactID = getIdFromComboBox(contactCombobox);
 
         Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customerID, User_ID, contactID);
 
-        System.out.println(titleField.getText() + locationField.getText()+ descriptionField.getText()+ typeField.getText()+ start + end + customerID+ User_ID+ contactID);
+
         /**
          * Check that a name, address and phone has been entered and gives an alert if it isn't there.
          */
@@ -267,39 +223,53 @@ public class AddApptController implements Initializable {
         }
     }
 
+
+    /**
+     * Sets the hour dropdownbox
+     * @return
+     */
     public ObservableList apptHour() {
 
         int[] hours = new int[]{8,9,10,11,12,13,14,15,16,17,18,19,20};
-
         for(Integer H : hours) {
-
-            if(!(selectableHour.contains(H))) {
-
-                selectableHour.add(H);
+            if(!(selectableHours.contains(H))) {
+                selectableHours.add(H);
             }
-        }
-        return selectableHour;
-    }
-
-    public ObservableList apptMin() {
-
-        String[] mins = new String[]{"00", "15", "30", "45", "55"};
-
-        for(String M : mins) {
-
-            if(!(selectableMinute.contains(M))) {
-
-                selectableMinute.add(M);
-            }
-        }
-        return selectableMinute;
+        }return selectableHours;
     }
 
     /**
-     * initialize
-     * @param url
-     * @param resourceBundle
+     * Sets the minute dropdownbox
+     * @return selectableMinutes
      */
+    public ObservableList apptMin() {
+
+        String[] mins = new String[]{"00", "15", "30", "45", "55"};
+        for(String M : mins) {
+            if(!(selectableMinutes.contains(M))) {
+                selectableMinutes.add(M);
+            }
+        }return selectableMinutes;
+    }
+
+
+    public Timestamp startTimeStamp() throws ParseException {return getTimestamp(appointmentDate, startHourCombo, startMinCombo);}
+    public Timestamp endTimeStamp() throws ParseException {return getTimestamp(appointmentDate, endHourCombo, endMinCombo);}
+
+
+    private Timestamp getTimestamp(DatePicker datePicker, ComboBox hourPicker, ComboBox minutePicker) throws ParseException {
+        String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
+        String hour = hourPicker.getValue().toString();
+        String min = minutePicker.getValue().toString();
+        String time = hour + ":" + min ;
+        SimpleDateFormat date24Format = new SimpleDateFormat("HH:mm");
+        String time24HourFormat = date24Format.format(date24Format.parse(time));
+        String concatTimeStamp = date + " " + time24HourFormat + ":00";
+
+        return Timestamp.valueOf(concatTimeStamp);
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

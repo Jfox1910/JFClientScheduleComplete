@@ -21,6 +21,7 @@ import java.sql.Timestamp;
         private String divisionName;
 
 
+
         public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, String customerCreatedDate, String customerCreated, Timestamp customerUpdatedOn, String customerUpdatedBy, int customerDivision, String divisionName) {
             this.customerId = customerId;
             this.customerName = customerName;
@@ -80,6 +81,8 @@ import java.sql.Timestamp;
         public String getDivisionName() {return divisionName;}
 
 
+
+
     /**
      *Customer Setters
      *
@@ -119,4 +122,6 @@ import java.sql.Timestamp;
         public void setCustomerDivision(int customerDivision) {this.customerDivision = customerDivision;}
 
         public void setDivisionName(String customerDivisionName) {this.divisionName = customerDivisionName;}
+
+
 }

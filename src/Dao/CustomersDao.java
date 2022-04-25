@@ -49,6 +49,36 @@ public class CustomersDao {
         return customerList;
     }
 
+    public static ObservableList<Customers> getCustomerReport(){
+        ObservableList<Customers> customerReportList = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * from customers";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                int customerId = rs.getInt("Customer_ID");
+                String customerName = rs.getString("Customer_Name");
+                String customerAddress = rs.getString("Address");
+                String customerPostalCode = rs.getString("Postal_Code");
+                String customerPhone = rs.getString("Phone");
+                String customerCreateDate = rs.getString("Create_Date");
+                String customerCreatedBy = rs.getString("Created_By");
+                Timestamp customerLastUpdate = rs.getTimestamp("Last_Update");
+                String customerLastUpdatedBy = rs.getString("Last_Updated_By");
+                int customerDivision = rs.getInt("Division_ID");
+
+                String divisionName = DivisionsDao.getDivisionName(customerDivision);
+                Customers customers = new Customers(customerId,customerName,customerAddress,customerPostalCode,customerPhone,customerCreateDate,customerCreatedBy,customerLastUpdate,customerLastUpdatedBy,customerDivision,divisionName);
+                customerReportList.add(customers);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return customerReportList;
+    }
+
 
     /**
      * Select customer by division.
