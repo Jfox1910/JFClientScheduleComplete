@@ -69,14 +69,14 @@ public class ModApptController implements Initializable {
 
     private Appointment selectedAppointment = MainScreenController.getSelectedAppointment();
 
-/*    public void handleUserCombobox(javafx.event.ActionEvent event){
 
-        Object selectedUser = userComboBox.getSelectionModel().getSelectedItem();
-        String allUserNames = selectedUser.toString();
-
-        allUserNames.equalsIgnoreCase("User_Name");
-    }*/
-
+    /**
+     * Collects the information from the fields and updates the appointment in the database. Checks for and alerts the user if the fields aren't filled and when a customer is being updated.
+     * Additional alert for a successful update. LAMBDA function that eliminates a bit of code.
+     * @param event
+     * @throws IOException
+     * @throws ParseException
+     */
     public void onActionUpdate(javafx.event.ActionEvent event) throws IOException, ParseException {
 
         int Appointment_ID = selectedAppointment.getAppointment_ID();
@@ -86,20 +86,16 @@ public class ModApptController implements Initializable {
         String type = typeField.getText();
         Timestamp start = startTimeStamp();
         Timestamp end = endTimeStamp();
-
-        //int customerID = getIdFromComboBox(customerCombobox);
         int customerID = Customers.getCustomerIDByName(customerCombobox.getValue().toString());
-
         int User_ID = userComboBox.getSelectionModel().getSelectedIndex();
         int contactID = Contacts.getContactIDByName(contactCombobox.getValue().toString());
 
-        Appointment updateAppt = new Appointment(Appointment_ID,title,location,description,type,start,end,customerID,User_ID,contactID);
-       System.out.println(titleField.getText() + locationField.getText()+ descriptionField.getText()+ typeField.getText()+ start + end + customerID+ User_ID+ contactID);
+       Appointment updateAppt = new Appointment(Appointment_ID,title,location,description,type,start,end,customerID,User_ID,contactID);
 
-        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty()){
+        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() || userComboBox.getSelectionModel().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
-            alert.setContentText("All fields must be filled before saving.");
+            alert.setContentText("All fields and dropdown menus must be filled before saving.");
             alert.showAndWait();
         }else
         {
@@ -132,6 +128,11 @@ public class ModApptController implements Initializable {
     }
 
 
+    /**
+     * Handles exiting back to the main screen.
+     * @param event
+     * @throws IOException
+     */
     public void onActionMainScreen(javafx.event.ActionEvent event) throws IOException{
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -147,14 +148,7 @@ public class ModApptController implements Initializable {
         }
     }
 
-    /**
-     * Calls the getID to string method from Utils.
-     * @param comboBox
-     * @return
-     */
-    private int getIdFromComboBox(ComboBox comboBox) {
-        return Utils.getIdFromComboString((String) comboBox.getSelectionModel().getSelectedItem());
-    }
+
 
     /**
      * Loads the modify appointment screen fields with the information of the selected appointment.
@@ -170,7 +164,6 @@ public class ModApptController implements Initializable {
 
         customerCombobox.setValue(CustomersDao.setCustomerName(selectedAppointment.getCustomer_ID()));
         contactCombobox.setValue(ContactsDao.setContactName(selectedAppointment.getContact_ID()));
-        //contactCombobox.setValue(selectedAppointment.getContact_ID());
 
         appointmentDate.setValue(selectedAppointment.getStart().toLocalDateTime().toLocalDate());
         startHourCombo.setValue(String.format("%02d", selectedAppointment.getStart().toLocalDateTime().getHour()));
@@ -270,6 +263,7 @@ public class ModApptController implements Initializable {
         }return selectableHours;
     }
 
+
     /**
      * Sets the minute dropdownbox
      * @return selectableMinutes
@@ -284,23 +278,43 @@ public class ModApptController implements Initializable {
         }return selectableMinutes;
     }
 
-    private Timestamp getTimestamp(DatePicker datePicker, ComboBox hourPicker, ComboBox minutePicker, ComboBox am_pm) throws ParseException {
-        String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
-        String hour = hourPicker.getValue().toString();
-        String min = minutePicker.getValue().toString();
-        String time = hour + ":" + min ;
-        SimpleDateFormat date24Format = new SimpleDateFormat("HH:mm");
-        String time24HourFormat = date24Format.format(date24Format.parse(time));
-        String concatTimeStamp = date + " " + time24HourFormat + ":00";
 
-        return Timestamp.valueOf(concatTimeStamp);
+    /**
+     * Uses the end and get timestamp to parse out a datetime.
+     * @param datePicker
+     * @param hourPicker
+     * @param minutePicker
+     * @return
+     * @throws ParseException
+     */
+    private Timestamp getTimestamp(DatePicker datePicker, ComboBox hourPicker, ComboBox minutePicker) throws ParseException {
+        String selectedDate = datePicker.getValue().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
+        String selectedHour = hourPicker.getValue().toString();
+        String selectedMinute = minutePicker.getValue().toString();
+        String selectedTime = selectedHour + ":" + selectedMinute ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String time24HourFormat = dateFormat.format(dateFormat.parse(selectedTime));
+        String timestamp = selectedDate + " " + time24HourFormat + ":00";
+
+        return Timestamp.valueOf(timestamp);
     }
 
 
-    public Timestamp startTimeStamp() throws ParseException {return getTimestamp(appointmentDate, startHourCombo, startMinCombo, startAMPM);}
+    /**
+     * Creates a timestamp used for the start time.
+     * @return getTimestamp
+     * @throws ParseException
+     */
+    public Timestamp startTimeStamp() throws ParseException {return getTimestamp(appointmentDate, startHourCombo, startMinCombo);}
 
 
-    public Timestamp endTimeStamp() throws ParseException {return getTimestamp(appointmentDate, endHourCombo, endMinCombo, endAMPM);}
+    /**
+     * Creates a timestamp used for the end time
+     * @return
+     * @throws ParseException
+     */
+    public Timestamp endTimeStamp() throws ParseException {return getTimestamp(appointmentDate, endHourCombo, endMinCombo);}
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

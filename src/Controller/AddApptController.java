@@ -184,6 +184,8 @@ public class AddApptController implements Initializable {
      * @param actionEvent
      */
     public void handleDateChoice(ActionEvent actionEvent) {
+        String endHour = endHourCombo.getSelectionModel().getSelectedItem();
+        String startHour = startHourCombo.getSelectionModel().getSelectedItem();
 
         long days = ChronoUnit.DAYS.between(LocalDate.now(), appointmentDate.getValue());
         if (days < 0){
@@ -196,14 +198,15 @@ public class AddApptController implements Initializable {
         }
     }
 
+
     /**
      * Prevents a previous time on the current day from being selected.
      * @param actionEvent
      */
-    public void handleTimeChoice(ActionEvent actionEvent) {
+    public void handleTimeChoice() {
         long days = ChronoUnit.DAYS.between(LocalDate.now(), appointmentDate.getValue());
         if (days == 0){
-            long timer = ChronoUnit.MINUTES.between(LocalTime.now(), LocalTime.parse(startHourCombo.getValue()));
+            long timer = ChronoUnit.MINUTES.between(LocalTime.now(), LocalTime.parse(startHourCombo.getSelectionModel().getSelectedItem()));
             if (timer < 60){
                 Alert eAlert = new Alert(Alert.AlertType.NONE);
                 eAlert.setTitle("ERROR!");
@@ -245,20 +248,39 @@ public class AddApptController implements Initializable {
     }
 
 
+    /**
+     * Creates a timestamp used for the start time.
+     * @return getTimestamp
+     * @throws ParseException
+     */
     public Timestamp startTimeStamp() throws ParseException {return getTimestamp(appointmentDate, startHourCombo, startMinCombo);}
+
+    /**
+     * Creates a timestamp used for the end time
+     * @return
+     * @throws ParseException
+     */
     public Timestamp endTimeStamp() throws ParseException {return getTimestamp(appointmentDate, endHourCombo, endMinCombo);}
 
 
+    /**
+     * Uses the end and get timestamp to parse out a datetime.
+     * @param datePicker
+     * @param hourPicker
+     * @param minutePicker
+     * @return
+     * @throws ParseException
+     */
     private Timestamp getTimestamp(DatePicker datePicker, ComboBox hourPicker, ComboBox minutePicker) throws ParseException {
-        String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
-        String hour = hourPicker.getValue().toString();
-        String min = minutePicker.getValue().toString();
-        String time = hour + ":" + min ;
-        SimpleDateFormat date24Format = new SimpleDateFormat("HH:mm");
-        String time24HourFormat = date24Format.format(date24Format.parse(time));
-        String concatTimeStamp = date + " " + time24HourFormat + ":00";
+        String selectedDate = datePicker.getValue().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
+        String selectedHour = hourPicker.getValue().toString();
+        String selectedMinute = minutePicker.getValue().toString();
+        String selectedTime = selectedHour + ":" + selectedMinute ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String time24HourFormat = dateFormat.format(dateFormat.parse(selectedTime));
+        String timestamp = selectedDate + " " + time24HourFormat + ":00";
 
-        return Timestamp.valueOf(concatTimeStamp);
+        return Timestamp.valueOf(timestamp);
     }
 
 
