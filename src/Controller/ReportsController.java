@@ -43,7 +43,7 @@ public class ReportsController implements Initializable {
     @FXML private TableColumn<Reports, String> dateCol;
     @FXML private TableColumn<Reports, String> typeCol;
     @FXML private TableColumn<Reports, Integer>totalCol;
-    @FXML private ComboBox contactCombobox;
+    @FXML private ComboBox<Contacts> contactCombobox;
 
     public TableView contactApptTable;
     public TableColumn Appointment_ID;
@@ -92,9 +92,9 @@ public class ReportsController implements Initializable {
      * @param event
      */
     public void generateContactSchedule(Event event){
-        int contactID = getIdFromComboBox(contactCombobox);
-        Contacts selectedContact = (Contacts) contactCombobox.getSelectionModel().getSelectedItem();
-        if (selectedContact != null){
+        //int contactID = Contacts.getContactIDByName(contactCombobox.getValue().toString());
+        Contacts selectedContact = contactCombobox.getSelectionModel().getSelectedItem();
+        //if (contactCombobox != null){
             contactApptTable.setItems(ReportsDAO.getAllAppointmentsForContact(selectedContact.getContactID()));
             Appointment_ID.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -103,7 +103,7 @@ public class ReportsController implements Initializable {
             startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
             endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
             Customer_ID.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
-        }
+        //}
     }
 
 
@@ -145,8 +145,8 @@ public class ReportsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         ObservableList<Contacts> contacts = ContactsDao.getAllContacts();
-        contactCombobox.setItems(contactList());
-       // contactCombobox.setItems(contacts);
+        //contactCombobox.setItems(contactList());
+       contactCombobox.setItems(contacts);
 
         setApptTables();
     }

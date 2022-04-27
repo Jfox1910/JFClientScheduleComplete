@@ -51,7 +51,6 @@ public class AddApptController implements Initializable {
 
     @FXML private DatePicker appointmentDate;
     @FXML private ComboBox<LocalTime> startHourCombo;
-
     @FXML private ComboBox<LocalTime> endHourCombo;
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy");
 
