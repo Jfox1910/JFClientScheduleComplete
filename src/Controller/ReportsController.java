@@ -68,7 +68,8 @@ public class ReportsController implements Initializable {
     private void setApptTables(){
         reports = ReportsDAO.getTotalAppointments();
         customerApptTable.setItems(reports);
-        customerCol.setCellValueFactory(new PropertyValueFactory<>("Customer_Name"));
+        customerCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
+        dateCol.setCellValueFactory(new PropertyValueFactory<>(""));
         //apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
     }
 
