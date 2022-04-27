@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 
@@ -43,8 +44,17 @@ public class ReportsController implements Initializable {
     @FXML private ComboBox contactCombobox;
 
     @FXML private TableView<Reports> contactApptTable;
+    @FXML private TableColumn<Reports, String> Appointment_ID;
+    @FXML private TableColumn<Reports, String> titleCol;
+    @FXML private TableColumn<Reports, String> contactTypeCol;
+    @FXML private TableColumn<Reports, String> descriptionCol;
+    @FXML private TableColumn<Reports, LocalDateTime> startCol;
+    @FXML private TableColumn<Reports, LocalDateTime> endCol;
+    @FXML private TableColumn<Reports, String> Customer_ID;
 
     @FXML private TableView<Reports> totalApptTable;
+    @FXML private TableColumn<Reports, String> totalCustomersCol;
+    @FXML private TableColumn<Reports, String> totalApptCol;
 
     private ObservableList<Reports> reports;
 
@@ -74,6 +84,13 @@ public class ReportsController implements Initializable {
         }));
     }
 
+
+    private void generateContactSchedule(ActionEvent actionEvent){
+        //Contacts selectedContact = (Contacts) contactCombobox.getSelectionModel().getSelectedItem();
+        if (contactCombobox.getSelectionModel().getSelectedItem() != null){
+
+        }
+    }
 
     /**
      * Sets all of the table in the Appt. by type table.

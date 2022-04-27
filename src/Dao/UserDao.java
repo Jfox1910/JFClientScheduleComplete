@@ -56,9 +56,7 @@ public class UserDao {
     public static boolean loggedInUser(String username, String password) throws SQLException {
         ObservableList<User> loggedInUser = FXCollections.observableArrayList();
         String sqlQuery = "select * from users where User_ID =? AND Password =? or User_Name=? AND Password =?";
-        //JDBC.makePreparedStatement(query, con);
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sqlQuery);
-        assert ps != null;
         ps.setString(1, username);
         ps.setString(2, password);
         ps.setString(3, username);
@@ -68,13 +66,7 @@ public class UserDao {
         if (rs.next()) {
             loggedinUser = new User((rs.getInt("User_ID")));
             loggedinUser.setUserName(rs.getString("User_Name"));
-            //liveUser.setPassword(rs.getString("Password"));
-            //liveUser.setCreateDate(rs.getString("Create_Date"));
-            //liveUser.setCreateBy(rs.getString("Created_By"));
-            //liveUser.setLastUpdate(rs.getString("Last_Update"));
             loggedinUser.setLastUpdatedBy(rs.getString("Last_Updated_By"));
-           // loggedInUser.setTzOffset(tzOffset);
-            //Logger.log(liveUser.getUserName(), Boolean.TRUE);
             return Boolean.TRUE;
         }
         else {

@@ -55,8 +55,8 @@
                                                     <columns>
                                                         <TableColumn fx:id="Appointment_ID" prefWidth="54.199952721595764" text="Appt ID" />
                                                         <TableColumn fx:id="titleCol" prefWidth="116.79998016357422" text="Title" />
-                                          <TableColumn fx:id="typeCol" prefWidth="75.0" text="Type" />
-                                          <TableColumn fx:id="descCol" prefWidth="119.20002746582031" text="Description" />
+                                          <TableColumn fx:id="contactTypeCol" prefWidth="75.0" text="Type" />
+                                          <TableColumn fx:id="descriptionCol" prefWidth="119.20002746582031" text="Description" />
                                           <TableColumn fx:id="startCol" prefWidth="100.79998779296875" text="Start Date/Time" />
                                           <TableColumn fx:id="endCol" prefWidth="92.5999755859375" text="End Date/Time" />
                                           <TableColumn fx:id="Customer_ID" prefWidth="82.0" text="Customer_ID" />
