@@ -71,7 +71,6 @@ public class MainScreenController implements Initializable {
     LAMBDAS
     ADD REPORTS
     JAVADOCS
-    README
      */
 
 
