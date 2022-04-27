@@ -3,7 +3,6 @@ package Controller;
 import Dao.*;
 import Model.Appointment;
 import Model.Customers;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +17,6 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -71,7 +69,6 @@ public class MainScreenController implements Initializable {
     TODO LIST COMPLETE PROJECT
     Must haves----------
     LAMBDAS
-    MOD APPTS
     ADD REPORTS
     JAVADOCS
     README
@@ -278,7 +275,6 @@ public class MainScreenController implements Initializable {
      *Sorts all the listed appointments scheduled for the current week.
      */
     private void showByWeek() {
-        System.out.println("WEEK TEST");
         DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;
         DayOfWeek lastDayOfWeek = DayOfWeek.FRIDAY;
         LocalDate firstDateOfWeek = now().with(TemporalAdjusters.previousOrSame(firstDayOfWeek));
@@ -291,7 +287,6 @@ public class MainScreenController implements Initializable {
      * Sorts all the listed appointments scheduled for the current month.
      */
     private void showByMonth() {
-        System.out.println("MONTH TEST");
         LocalDate day = now();
         LocalDate monthStartDay = day.withDayOfMonth(1);
         LocalDate monthEndDay = day.withDayOfMonth(day.lengthOfMonth());

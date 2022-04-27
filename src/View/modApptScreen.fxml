@@ -101,7 +101,7 @@
                      </HBox.margin></DatePicker>
                   <VBox alignment="CENTER" prefHeight="75.0" prefWidth="95.0">
                      <children>
-                        <Label prefHeight="18.0" prefWidth="106.0" text="Start Time:">
+                        <Label text="Start Time:">
                            <padding>
                               <Insets left="10.0" right="10.0" />
                            </padding>
@@ -113,14 +113,19 @@
                   </VBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="280.0">
                      <children>
-                        <ComboBox fx:id="startHourCombo" prefWidth="75.0" promptText="Hour:">
+                        <ComboBox fx:id="startHourCombo" promptText="Hour:">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </ComboBox>
-                        <ComboBox fx:id="startMinCombo" prefWidth="75.0" promptText="Min:">
-                           <HBox.margin>
+                        <Label text="End Time:">
+                           <padding>
                               <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <ComboBox fx:id="endHourCombo" promptText="Hour:">
+                           <HBox.margin>
+                              <Insets right="10.0" />
                            </HBox.margin>
                         </ComboBox>
                      </children>
@@ -130,31 +135,11 @@
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="640.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="75.0" prefWidth="95.0">
-                     <children>
-                        <Label prefHeight="18.0" prefWidth="106.0" text="End Time:">
-                           <padding>
-                              <Insets left="10.0" right="10.0" />
-                           </padding>
-                        </Label>
-                     </children>
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <HBox alignment="CENTER_LEFT" prefWidth="280.0">
-                     <children>
-                        <ComboBox fx:id="endHourCombo" prefWidth="75.0" promptText="Hour:">
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </ComboBox>
-                        <ComboBox fx:id="endMinCombo" prefWidth="75.0" promptText="Min:">
-                           <HBox.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </HBox.margin>
-                        </ComboBox>
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefWidth="280.0" />
                </children>
             </HBox>
          </children>

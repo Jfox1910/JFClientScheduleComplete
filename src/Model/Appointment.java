@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
- * Appointment model object class.
+ * Appointment model object class. Used in appointments.
  */
 public class Appointment {
 
@@ -18,8 +18,12 @@ public class Appointment {
     private String location;
     private String type;
     private String userName;
-    private Timestamp start;
-    private Timestamp end;
+
+    private LocalDateTime start;
+    private LocalDateTime end;
+
+    //private Timestamp start;
+   // private Timestamp end;
     private int Customer_ID;
     private int Contact_ID;
     private String ContactName;
@@ -35,7 +39,7 @@ public class Appointment {
         this.ContactName = contactName;}
 
 
-    public Appointment(int Appointment_ID, String title, String description, String location, String type, Timestamp start, Timestamp end, int Customer_ID, int User_ID, int Contact_ID) {
+    public Appointment(int Appointment_ID, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int Customer_ID, int User_ID, int Contact_ID) {
         this.Appointment_ID = Appointment_ID;
         this.title = title;
         this.description = description;
@@ -82,9 +86,9 @@ public class Appointment {
 
     public String getUserName() {return userName;}
 
-    public Timestamp getStart() {return start;}
+    public LocalDateTime getStart() {return start;}
 
-    public Timestamp getEnd() {return end;}
+    public LocalDateTime getEnd() {return end;}
 
     public int getCustomer_ID() {return Customer_ID;}
 
@@ -115,9 +119,9 @@ public class Appointment {
 
     public void setUserName(String userName) {this.userName = userName;}
 
-    public void setStart(Timestamp start) {this.start = start;}
+    public void setStart(LocalDateTime start) {this.start = start;}
 
-    public void setEnd(Timestamp end) {this.end = end;}
+    public void setEnd(LocalDateTime end) {this.end = end;}
 
     public void setCustomer_ID(int customer_ID) {this.Customer_ID = customer_ID;}
 

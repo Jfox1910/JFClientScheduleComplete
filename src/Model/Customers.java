@@ -1,5 +1,9 @@
 package Model;
 
+import Dao.CustomersDao;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.Timestamp;
 
 
@@ -19,7 +23,7 @@ import java.sql.Timestamp;
         private int customerCountry;
         private int customerDivision;
         private String divisionName;
-
+        private ObservableList<Appointment> appt = FXCollections.observableArrayList();
 
 
         public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, String customerCreatedDate, String customerCreated, Timestamp customerUpdatedOn, String customerUpdatedBy, int customerDivision, String divisionName) {
@@ -80,14 +84,12 @@ import java.sql.Timestamp;
 
         public String getDivisionName() {return divisionName;}
 
-    public static int getCustomerIDByName(String customerName)
-    {
+        public static int getCustomerIDByName(String customerName) {
         int customerID = Integer.parseInt(customerName.substring(0, customerName.indexOf(":")));
-
         return customerID;
-    }
+        }
 
-
+        public ObservableList<Appointment> getCustomerAppt(){return appt;}
 
 
     /**
@@ -129,6 +131,8 @@ import java.sql.Timestamp;
         public void setCustomerDivision(int customerDivision) {this.customerDivision = customerDivision;}
 
         public void setDivisionName(String customerDivisionName) {this.divisionName = customerDivisionName;}
+
+        public void setAppt(ObservableList<Appointment> appt){this.appt = appt;}
 
 
 }

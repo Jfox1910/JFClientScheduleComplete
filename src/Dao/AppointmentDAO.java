@@ -50,8 +50,14 @@ public final class AppointmentDAO {
      * @param appt
      */
     public static void newAppointment(Appointment appt){
-        Timestamp startTime;
-        Timestamp endTime;
+
+
+        Date date = new Date(new java.util.Date().getTime());
+
+       // Timestamp startTime;
+       // Timestamp endTime;
+        LocalDateTime startTime;
+        LocalDateTime endTime;
         startTime = appt.getStart();
         endTime = appt.getEnd();
 
@@ -63,8 +69,12 @@ public final class AppointmentDAO {
             ps.setString(2, appt.getDescription());
             ps.setString(3, appt.getLocation());
             ps.setString(4, appt.getType());
-            ps.setTimestamp(5, (startTime));
-            ps.setTimestamp(6, (endTime));
+
+            ps.setTimestamp(5, Timestamp.valueOf(startTime));
+            ps.setTimestamp(6, Timestamp.valueOf(endTime));
+
+            //ps.setTimestamp(5, (startTime));
+            //ps.setTimestamp(6, (endTime));
             ps.setString(7, UserDao.getLoggedinUser().getUserName());
             ps.setInt(8, appt.getCustomer_ID());
             ps.setInt(9, UserDao.getLoggedinUser().getUserId());
@@ -97,8 +107,8 @@ public final class AppointmentDAO {
             ps.setString(2,updateAppt.getDescription());
             ps.setString(3,updateAppt.getLocation());
             ps.setString(4,updateAppt.getType());
-            ps.setTimestamp(5, updateAppt.getStart());
-            ps.setTimestamp(6, updateAppt.getEnd());
+            ps.setTimestamp(5, Timestamp.valueOf(updateAppt.getStart()));
+            ps.setTimestamp(6, Timestamp.valueOf(updateAppt.getEnd()));
             ps.setInt(7, updateAppt.getCustomer_ID());
             ps.setInt(8, updateAppt.getUser_ID());
             ps.setInt(9, updateAppt.getContact_ID());
@@ -255,8 +265,12 @@ public final class AppointmentDAO {
                 rs.getString("Description"),
                 rs.getString("Location"),
                 rs.getString("Type"),
-                rs.getTimestamp("Start"),
-                rs.getTimestamp("End"),
+
+                rs.getTimestamp("Start").toLocalDateTime(),
+                rs.getTimestamp("End").toLocalDateTime(),
+
+                //rs.getTimestamp("Start"),
+                //rs.getTimestamp("End"),
                 rs.getInt("Customer_ID"),
                 rs.getInt("User_ID"),
                 rs.getInt("Contact_ID")

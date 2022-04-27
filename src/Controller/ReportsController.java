@@ -2,9 +2,11 @@ package Controller;
 
 import Dao.AppointmentDAO;
 import Dao.CustomersDao;
+import Dao.ReportsDAO;
 import Model.Appointment;
 import Model.Contacts;
 import Model.Customers;
+import Model.Reports;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,20 +32,19 @@ public class ReportsController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    @FXML private TableView<Customers> customerApptTable;
-    @FXML private TableColumn<Customers, String> customerCol;
-    @FXML private TableColumn<Customers, String> dateCol;
-    @FXML private TableColumn<Customers, Integer>totalCol;
+    @FXML private TableView<Reports> customerApptTable;
+    @FXML private TableColumn<Reports, String> customerCol;
+    @FXML private TableColumn<Reports, String> dateCol;
+    @FXML private TableColumn<Reports, Integer>totalCol;
 
-    @FXML private TableView<Contacts> contactApptTable;
+    @FXML private TableView<Reports> contactApptTable;
 
-    @FXML private TableView<Appointment> totalApptTable;
+    @FXML private TableView<Reports> totalApptTable;
 
-
-    private ObservableList<Appointment> appointments;
-    private ObservableList<Customers> customers;
+    private ObservableList<Reports> reports;
 
 
+    //TODO Contact and Customer Dropdowns accessing everything from the DB. MAX appts count for 3rd.
 
 
     public void onActionMainScreen(ActionEvent event) throws IOException {
@@ -65,8 +66,8 @@ public class ReportsController implements Initializable {
     }
 
     private void setApptTables(){
-        customers = CustomersDao.getCustomerReport();
-        customerApptTable.setItems(customers);
+        reports = ReportsDAO.getTotalAppointments();
+        customerApptTable.setItems(reports);
         customerCol.setCellValueFactory(new PropertyValueFactory<>("Customer_Name"));
         //apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
     }
