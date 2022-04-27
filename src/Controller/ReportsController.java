@@ -24,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -86,19 +87,25 @@ public class ReportsController implements Initializable {
     }
 
 
+    /**
+     * Generates the columns based on the Contact selected from the dropdown.
+     * @param event
+     */
     public void generateContactSchedule(Event event){
+        int contactID = getIdFromComboBox(contactCombobox);
         Contacts selectedContact = (Contacts) contactCombobox.getSelectionModel().getSelectedItem();
         if (selectedContact != null){
             contactApptTable.setItems(ReportsDAO.getAllAppointmentsForContact(selectedContact.getContactID()));
-            Appointment_ID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+            Appointment_ID.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            contactTypeCol.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
-            descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+            contactTypeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
+            descriptionCol.setCellValueFactory(new PropertyValueFactory<>("Description"));
             startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
             endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
-            Customer_ID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+            Customer_ID.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
         }
     }
+
 
     /**
      * Sets all of the table in the Appt. by type table.
@@ -125,12 +132,21 @@ public class ReportsController implements Initializable {
     }
 
 
+    /**
+     * Calls the getID to string method from Utils.
+     * @param comboBox
+     * @return
+     */
+    private int getIdFromComboBox(ComboBox comboBox) {
+        return Utils.getIdFromComboString((String) comboBox.getSelectionModel().getSelectedItem());
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         ObservableList<Contacts> contacts = ContactsDao.getAllContacts();
-        //contactCombobox.setItems(contactList());
-        contactCombobox.setItems(contacts);
+        contactCombobox.setItems(contactList());
+       // contactCombobox.setItems(contacts);
 
         setApptTables();
     }
