@@ -69,7 +69,7 @@
                                         </VBox>
                               <HBox alignment="CENTER" layoutX="-2.0" layoutY="1.0" prefHeight="58.0" prefWidth="640.0">
                                  <children>
-                                    <ComboBox fx:id="contactCombobox" prefWidth="150.0" promptText="Select Contact" />
+                                    <ComboBox fx:id="contactCombobox" onAction="#generateContactSchedule" prefWidth="150.0" promptText="Select Contact" />
                                  </children>
                               </HBox>
                                     </children></AnchorPane>

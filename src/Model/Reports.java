@@ -51,6 +51,17 @@ public class Reports {
         this.total = total;
     }
 
+    public Reports(int Appointment_ID, String title, String type, String description, LocalDateTime start, LocalDateTime end, int Customer_ID, int Contact_ID) {
+        this.Appointment_ID = Appointment_ID;
+        this.title = title;
+        this.type = type;
+        this.description = description;
+        this.start = start;
+        this.end = end;
+        this.Customer_ID = Customer_ID;
+        this.Contact_ID = Contact_ID;
+    }
+
 
     public String getMonth() {return month;}
 

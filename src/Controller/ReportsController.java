@@ -11,6 +11,7 @@ import Model.Reports;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,14 +44,14 @@ public class ReportsController implements Initializable {
     @FXML private TableColumn<Reports, Integer>totalCol;
     @FXML private ComboBox contactCombobox;
 
-    @FXML private TableView<Reports> contactApptTable;
-    @FXML private TableColumn<Reports, String> Appointment_ID;
-    @FXML private TableColumn<Reports, String> titleCol;
-    @FXML private TableColumn<Reports, String> contactTypeCol;
-    @FXML private TableColumn<Reports, String> descriptionCol;
-    @FXML private TableColumn<Reports, LocalDateTime> startCol;
-    @FXML private TableColumn<Reports, LocalDateTime> endCol;
-    @FXML private TableColumn<Reports, String> Customer_ID;
+    public TableView contactApptTable;
+    public TableColumn Appointment_ID;
+    public TableColumn titleCol;
+    public TableColumn contactTypeCol;
+    public TableColumn descriptionCol;
+    public TableColumn startCol;
+    public TableColumn endCol;
+    public TableColumn Customer_ID;
 
     @FXML private TableView<Reports> totalApptTable;
     @FXML private TableColumn<Reports, String> totalCustomersCol;
@@ -85,10 +86,17 @@ public class ReportsController implements Initializable {
     }
 
 
-    private void generateContactSchedule(ActionEvent actionEvent){
-        //Contacts selectedContact = (Contacts) contactCombobox.getSelectionModel().getSelectedItem();
-        if (contactCombobox.getSelectionModel().getSelectedItem() != null){
-
+    public void generateContactSchedule(Event event){
+        Contacts selectedContact = (Contacts) contactCombobox.getSelectionModel().getSelectedItem();
+        if (selectedContact != null){
+            contactApptTable.setItems(ReportsDAO.getAllAppointmentsForContact(selectedContact.getContactID()));
+            Appointment_ID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+            titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+            contactTypeCol.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
+            descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+            startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+            endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+            Customer_ID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         }
     }
 
@@ -120,7 +128,10 @@ public class ReportsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        contactCombobox.setItems(contactList());
+        ObservableList<Contacts> contacts = ContactsDao.getAllContacts();
+        //contactCombobox.setItems(contactList());
+        contactCombobox.setItems(contacts);
+
         setApptTables();
     }
 }

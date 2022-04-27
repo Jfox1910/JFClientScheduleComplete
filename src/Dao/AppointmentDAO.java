@@ -51,11 +51,8 @@ public final class AppointmentDAO {
      */
     public static void newAppointment(Appointment appt){
 
-
         Date date = new Date(new java.util.Date().getTime());
 
-       // Timestamp startTime;
-       // Timestamp endTime;
         LocalDateTime startTime;
         LocalDateTime endTime;
         startTime = appt.getStart();
@@ -69,12 +66,8 @@ public final class AppointmentDAO {
             ps.setString(2, appt.getDescription());
             ps.setString(3, appt.getLocation());
             ps.setString(4, appt.getType());
-
             ps.setTimestamp(5, Timestamp.valueOf(startTime));
             ps.setTimestamp(6, Timestamp.valueOf(endTime));
-
-            //ps.setTimestamp(5, (startTime));
-            //ps.setTimestamp(6, (endTime));
             ps.setString(7, UserDao.getLoggedinUser().getUserName());
             ps.setInt(8, appt.getCustomer_ID());
             ps.setInt(9, UserDao.getLoggedinUser().getUserId());
@@ -139,36 +132,6 @@ public final class AppointmentDAO {
         catch (SQLException exception){
             exception.printStackTrace();
         }
-    }
-
-
-    /**
-     * Pulls all customers by their ID. Used in the making of reports.
-     * @param id
-     * @return apptList
-     */
-    public ObservableList<Appointment> getAllByCustomerId(int id) {
-
-        String query = "SELECT * FROM appointments WHERE Customer_ID = ?;";
-        ObservableList<Appointment> apptList = FXCollections.observableArrayList();
-
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(query);
-            ps.setInt(1, id);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Appointment appointment = createAppointment(rs);
-                apptList.add(appointment);
-            }
-            return apptList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
     }
 
 
