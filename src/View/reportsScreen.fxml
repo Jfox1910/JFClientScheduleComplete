@@ -18,7 +18,7 @@
             <children>
                 <TabPane prefHeight="400.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                        <Tab text="Customer Appt. Totals">
+                        <Tab text="Appt. By Type">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0">
                                     <children>
@@ -38,7 +38,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="Contact Appt. Totals">
+                        <Tab text="Appt. By Contact">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
@@ -46,8 +46,13 @@
                                             <children>
                                                 <TableView fx:id="contactApptTable" prefHeight="353.0" prefWidth="640.0">
                                                     <columns>
-                                                        <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="Customer ID" />
-                                                        <TableColumn fx:id="customerNameCol" prefWidth="200.0" text="Customer Name" />
+                                                        <TableColumn fx:id="apptIdCol" prefWidth="54.199952721595764" text="Appt ID" />
+                                                        <TableColumn fx:id="titleCol" prefWidth="116.79998016357422" text="Title" />
+                                          <TableColumn prefWidth="75.0" text="Type" />
+                                          <TableColumn prefWidth="119.20002746582031" text="Description" />
+                                          <TableColumn prefWidth="100.79998779296875" text="Start Date/Time" />
+                                          <TableColumn prefWidth="92.5999755859375" text="End Date/Time" />
+                                          <TableColumn prefWidth="82.0" text="Customer_ID" />
                                                     </columns>
                                                     <VBox.margin>
                                                         <Insets top="10.0" />

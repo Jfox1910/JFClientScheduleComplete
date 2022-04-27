@@ -1,12 +1,14 @@
 package Controller;
 
 import Dao.AppointmentDAO;
+import Dao.ContactsDao;
 import Dao.CustomersDao;
 import Dao.ReportsDAO;
 import Model.Appointment;
 import Model.Contacts;
 import Model.Customers;
 import Model.Reports;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,6 +68,21 @@ public class ReportsController implements Initializable {
         }));
     }
 
+
+    /**
+     * An observable list holding contacts from the database. Used to initialize the "Contact" combobox.
+     * @return allContactNames
+     */
+    private ObservableList<String> contactList(){
+        ObservableList<String> allContactNames = FXCollections.observableArrayList();
+        for (Contacts contacts : ContactsDao.getAllContacts()){
+            allContactNames.add(String.valueOf(contacts.getContactID() + " : " + contacts.getContactName()));
+        }return allContactNames;
+    }
+
+    /**
+     * Sets all of the table in the Appt. by type table.
+     */
     private void setApptTables(){
         reports = ReportsDAO.getAppointmentsByType();
         customerApptTable.setItems(reports);
@@ -74,6 +91,7 @@ public class ReportsController implements Initializable {
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         totalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
