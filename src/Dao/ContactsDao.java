@@ -22,7 +22,7 @@ public class ContactsDao {
     public static ObservableList<Contacts> getAllContacts(){
         ObservableList<Contacts> allContacts = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT * FROM client_schedule.contacts";
+            String sql = "SELECT * FROM contacts";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -66,26 +66,4 @@ public class ContactsDao {
         return selectedCustomerName;
     }
 
-    /**
-     * Gets all contacts names from the DB using the ID provided in the dropdown.
-     * @param contactName
-     * @return contactID
-     */
-    public static int getContactByName(String contactName){
-        int contactID = 0;
-
-        try {
-            String sql = "SELECT Contact_ID FROM client_schedule.contacts WHERE Contact_Name = ?";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setString(1, contactName);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()){
-                contactID = rs.getInt("Contact_ID");
-            }
-
-        } catch (SQLException throwables){
-            throwables.printStackTrace();;
-        }
-        return contactID;
-    }
 }

@@ -86,7 +86,7 @@ public class UserDao {
         int userID = 0;
 
         try {
-            String sql = "SELECT User_ID FROM client_schedule.users WHERE User_Name = ?";
+            String sql = "SELECT User_ID FROM users WHERE User_Name = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, userName);
             ResultSet rs = ps.executeQuery();

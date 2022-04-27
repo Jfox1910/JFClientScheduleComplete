@@ -121,7 +121,7 @@ public class DivisionsDao {
         int divisionID = 0;
 
         try {
-            String sql = "SELECT Division_ID FROM client_schedule.first_level_divisions WHERE Division = ?";
+            String sql = "SELECT Division_ID FROM first_level_divisions WHERE Division = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, divisionName);
             ResultSet rs = ps.executeQuery();
