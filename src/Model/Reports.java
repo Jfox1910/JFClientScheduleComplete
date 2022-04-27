@@ -20,9 +20,9 @@ public class Reports {
     private int Customer_ID;
     private int Contact_ID;
     private int day;
-    private String totalAppointments;
+    private String total;
 
-    public Reports(String month, String totalNumberOfAppointments, String type, int Appointment_ID, String title, String appointmentType, String description, LocalDateTime start, LocalDateTime end, int Customer_ID, int Contact_ID, int day, String totalAppointments) {
+    public Reports(String month, String totalNumberOfAppointments, String type, int Appointment_ID, String title, String appointmentType, String description, LocalDateTime start, LocalDateTime end, int Customer_ID, int Contact_ID, int day, String total) {
         this.month = month;
         this.appointmentTotal = totalNumberOfAppointments;
         this.type = type;
@@ -35,14 +35,22 @@ public class Reports {
         this.Customer_ID = Customer_ID;
         this.Contact_ID = Contact_ID;
         this.day = day;
-        this.totalAppointments = totalAppointments;
+        this.total = total;
     }
 
-    public Reports(int day, int Customer_ID, String totalAppointments) {
+    public Reports(int day, int Customer_ID, String total) {
         this.day = day;
         this.Customer_ID = Customer_ID;
-        this.totalAppointments = totalAppointments;
+        this.total = total;
     }
+
+    public Reports(int Customer_ID, String month, String type, String total) {
+        this.Customer_ID = Customer_ID;
+        this.month = month;
+        this.type = type;
+        this.total = total;
+    }
+
 
     public String getMonth() {return month;}
 
@@ -92,7 +100,7 @@ public class Reports {
 
     public void setDay(int day) {this.day = day;}
 
-    public String getTotalAppointments() {return totalAppointments;}
+    public String getTotal() {return total;}
 
-    public void setTotalAppointments(String totalCustomerAppointments) {this.totalAppointments = totalCustomerAppointments;}
+    public void setTotal(String totalCustomerAppointments) {this.total = totalCustomerAppointments;}
 }

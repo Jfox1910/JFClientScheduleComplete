@@ -35,6 +35,7 @@ public class ReportsController implements Initializable {
     @FXML private TableView<Reports> customerApptTable;
     @FXML private TableColumn<Reports, String> customerCol;
     @FXML private TableColumn<Reports, String> dateCol;
+    @FXML private TableColumn<Reports, String> typeCol;
     @FXML private TableColumn<Reports, Integer>totalCol;
 
     @FXML private TableView<Reports> contactApptTable;
@@ -66,11 +67,12 @@ public class ReportsController implements Initializable {
     }
 
     private void setApptTables(){
-        reports = ReportsDAO.getTotalAppointments();
+        reports = ReportsDAO.getAppointmentsByType();
         customerApptTable.setItems(reports);
         customerCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
-        dateCol.setCellValueFactory(new PropertyValueFactory<>(""));
-        //apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("month"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        totalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
     }
 
     @Override

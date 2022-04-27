@@ -28,7 +28,7 @@
                                                     <columns>
                                                         <TableColumn fx:id="customerCol" prefWidth="114.4000244140625" text="Customer" />
                                                         <TableColumn fx:id="dateCol" prefWidth="146.4000244140625" text="Month" />
-                                                        <TableColumn fx:id="apptTypeCol" prefWidth="264.00006103515625" text="Type" />
+                                                        <TableColumn fx:id="typeCol" prefWidth="264.00006103515625" text="Type" />
                                           <TableColumn fx:id="totalCol" prefWidth="109.5999755859375" text="Total" />
                                                     </columns>
                                                 </TableView>
