@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -39,6 +40,7 @@ public class ReportsController implements Initializable {
     @FXML private TableColumn<Reports, String> dateCol;
     @FXML private TableColumn<Reports, String> typeCol;
     @FXML private TableColumn<Reports, Integer>totalCol;
+    @FXML private ComboBox contactCombobox;
 
     @FXML private TableView<Reports> contactApptTable;
 
@@ -49,7 +51,11 @@ public class ReportsController implements Initializable {
 
     //TODO Contact and Customer Dropdowns accessing everything from the DB. MAX appts count for 3rd.
 
-
+    /**
+     * Exits back to the main screen. Contains a confirmation.
+     * @param event
+     * @throws IOException
+     */
     public void onActionMainScreen(ActionEvent event) throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -70,17 +76,6 @@ public class ReportsController implements Initializable {
 
 
     /**
-     * An observable list holding contacts from the database. Used to initialize the "Contact" combobox.
-     * @return allContactNames
-     */
-    private ObservableList<String> contactList(){
-        ObservableList<String> allContactNames = FXCollections.observableArrayList();
-        for (Contacts contacts : ContactsDao.getAllContacts()){
-            allContactNames.add(String.valueOf(contacts.getContactID() + " : " + contacts.getContactName()));
-        }return allContactNames;
-    }
-
-    /**
      * Sets all of the table in the Appt. by type table.
      */
     private void setApptTables(){
@@ -93,9 +88,22 @@ public class ReportsController implements Initializable {
     }
 
 
+    /**
+     * An observable list holding contacts from the database. Used to initialize the "Contact" combobox.
+     * @return allContactNames
+     */
+    private ObservableList<String> contactList(){
+        ObservableList<String> allContactNames = FXCollections.observableArrayList();
+        for (Contacts contacts : ContactsDao.getAllContacts()){
+            allContactNames.add(String.valueOf(contacts.getContactID() + " : " + contacts.getContactName()));
+        }return allContactNames;
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        contactCombobox.setItems(contactList());
         setApptTables();
     }
 }

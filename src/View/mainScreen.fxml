@@ -18,7 +18,7 @@
                                             <children>
                                                 <TableView fx:id="apptTableview" minHeight="-Infinity" minWidth="-Infinity">
                                                     <columns>
-                                                        <TableColumn fx:id="apptIDCol" prefWidth="50.0" text="ApptID" />
+                                                        <TableColumn fx:id="apptIDCol" prefWidth="50.0" text="Appt ID" />
                                                         <TableColumn fx:id="apptTitleCol" prefWidth="100.0" text="Title" />
                                                         <TableColumn fx:id="apptDescriptionCol" prefWidth="175.0" text="Description" />
                                                         <TableColumn fx:id="apptLocationCol" minWidth="6.0" prefWidth="100.0" text="Location" />
@@ -80,7 +80,7 @@
                                              <HBox.margin>
                                                 <Insets right="10.0" />
                                              </HBox.margin></RadioButton>
-                                          <RadioButton fx:id="viewAllRadio" mnemonicParsing="false" onAction="#viewAll" text="View All" toggleGroup="$weekmonth"/>
+                                          <RadioButton fx:id="viewAllRadio" mnemonicParsing="false" onAction="#viewAll" text="View All" toggleGroup="$weekmonth" />
                                                     </children>
                                        <padding>
                                           <Insets top="20.0" />

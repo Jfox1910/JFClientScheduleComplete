@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ReportsController">
+<AnchorPane maxHeight="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ReportsController">
     <children>
       <HBox alignment="TOP_CENTER" layoutY="400.0" prefHeight="80.0" prefWidth="640.0">
          <children>
@@ -42,17 +49,17 @@
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
-                                        <VBox alignment="TOP_CENTER" prefHeight="462.0" prefWidth="640.0">
+                                        <VBox alignment="TOP_CENTER" layoutY="48.0" prefHeight="414.0" prefWidth="640.0">
                                             <children>
                                                 <TableView fx:id="contactApptTable" prefHeight="353.0" prefWidth="640.0">
                                                     <columns>
-                                                        <TableColumn fx:id="apptIdCol" prefWidth="54.199952721595764" text="Appt ID" />
+                                                        <TableColumn fx:id="Appointment_ID" prefWidth="54.199952721595764" text="Appt ID" />
                                                         <TableColumn fx:id="titleCol" prefWidth="116.79998016357422" text="Title" />
-                                          <TableColumn prefWidth="75.0" text="Type" />
-                                          <TableColumn prefWidth="119.20002746582031" text="Description" />
-                                          <TableColumn prefWidth="100.79998779296875" text="Start Date/Time" />
-                                          <TableColumn prefWidth="92.5999755859375" text="End Date/Time" />
-                                          <TableColumn prefWidth="82.0" text="Customer_ID" />
+                                          <TableColumn fx:id="typeCol" prefWidth="75.0" text="Type" />
+                                          <TableColumn fx:id="descCol" prefWidth="119.20002746582031" text="Description" />
+                                          <TableColumn fx:id="startCol" prefWidth="100.79998779296875" text="Start Date/Time" />
+                                          <TableColumn fx:id="endCol" prefWidth="92.5999755859375" text="End Date/Time" />
+                                          <TableColumn fx:id="Customer_ID" prefWidth="82.0" text="Customer_ID" />
                                                     </columns>
                                                     <VBox.margin>
                                                         <Insets top="10.0" />
@@ -60,12 +67,25 @@
                                                 </TableView>
                                             </children>
                                         </VBox>
+                              <HBox alignment="CENTER" layoutX="-2.0" layoutY="1.0" prefHeight="58.0" prefWidth="640.0">
+                                 <children>
+                                    <ComboBox fx:id="contactCombobox" prefWidth="150.0" promptText="Select Contact" />
+                                 </children>
+                              </HBox>
                                     </children></AnchorPane>
                             </content>
                         </Tab>
-                  <Tab text="Total Appointments">
+                  <Tab text="Appt/Customer Totals">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView layoutX="120.0" layoutY="86.0" prefHeight="200.0" prefWidth="400.0">
+                                <columns>
+                                  <TableColumn fx:id="totalCustomersCol" prefWidth="200.0" text="Total Customers" />
+                                  <TableColumn fx:id="totalApptCol" prefWidth="200.0" text="Total Appointments" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                     </tabs>
