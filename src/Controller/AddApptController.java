@@ -35,7 +35,6 @@ public class AddApptController implements Initializable {
 
     public static Customers customers;
     public static Appointment appointment;
-  //  private final Utils utils = Utils.getInstance();
     Appointment appt;
 
     private Stage stage;
@@ -103,8 +102,14 @@ public class AddApptController implements Initializable {
             alert.setTitle("Attention!");
             alert.setContentText("All fields must be filled before saving.");
             alert.showAndWait();
-        }else
-        {
+        } else if (start.equals(end) || start.isAfter(end)){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Attention!");
+            alert.setContentText("Start time must be before the end time.");
+            alert.showAndWait();
+        }
+
+        else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new appointment.");
             alert.setContentText("By clicking OK, you will be adding an appointment to the system. Are you sure you wish to continue?");
@@ -173,7 +178,32 @@ public class AddApptController implements Initializable {
      * Checks for overlapping appointments for the selected customer. Returns an alert if one is detected which prevents one from being scheduled.
      * @return
      */
-/*    private Boolean getAppointmentOverlap() {
+
+    /*private Boolean hasOverlappingAppointment() {
+
+        ObservableList<Appointment> appointments = Customers.(getIdFromComboBox(customerCombobox)).getAppointments();
+
+        int id = idField.getText().isEmpty() ? 0 : Integer.parseInt(idField.getText());
+
+        for (Appointment a : appointments) {
+
+            // Don't compare an appointment being edited to itself
+            if (id == a.getId()) {
+                continue;
+            }
+
+            if (a.getStart().isBefore(getEnd()) && getStart().isBefore(a.getEnd())) {
+                utils.doError("Appointment date/time", "The appointment overlaps with appointment " + a.getId());
+                return true;
+            }
+        };
+
+        return false;
+    }
+
+    private Boolean getAppointmentOverlap() {
+
+        ObservableList<Appointment> appointments = CustomersDao.getCustomerID(getIdFromComboBox(customerCombobox)).getAppointments();
         Customers scheduledCustomer = customerCombobox.getSelectionModel().getSelectedItem();
 
         if (scheduledCustomer.getCustomerAppt().isEmpty()) {
@@ -181,9 +211,10 @@ public class AddApptController implements Initializable {
         } else {
             int appointmentOverlap = 0;
             for (Appointment appt : scheduledCustomer.getCustomerAppt()) {
-                if ((appt.getStart().after(start) && appt.getStart().isBefore(this.end)) || (appt.getEnd().isAfter(this.start) && appt.getEnd().isBefore(this.end.plusMinutes(1)))){
-
-                }
+                //if ((appt.getStart().after(start) && appt.getStart().isBefore(this.end)) || (appt.getEnd().isAfter(this.start) && appt.getEnd().isBefore(this.end.plusMinutes(1)))){
+                if (appt.getStart().isBefore(appt.getEnd()) && appt.getStart().isBefore(appt.getEnd())){
+                    System.out.println("SUCCESS");
+            }
             }
             if (appointmentOverlap == 0) {
                 return true;

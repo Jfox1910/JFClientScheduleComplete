@@ -3,6 +3,7 @@ package Controller;
 import Dao.*;
 import Model.Appointment;
 import Model.Customers;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,7 +34,7 @@ public class MainScreenController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    @FXML private TableView<Appointment> apptTableview;
+/*    @FXML private TableView<Appointment> apptTableview;
     @FXML private TableColumn<Appointment, Integer> apptIDCol;
     @FXML private TableColumn<Appointment, String> apptTitleCol;
     @FXML private TableColumn<Appointment, String> apptDescriptionCol;
@@ -43,7 +44,19 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Appointment, LocalDateTime> apptStartTimeCol;
     @FXML private TableColumn<Appointment, LocalDateTime> apptEndTimeCol;
     @FXML private TableColumn<Appointment, Integer> apptCustomerIDCol;
-    @FXML private TableColumn<Appointment, Integer> apptUserIDCol;
+    @FXML private TableColumn<Appointment, Integer> apptUserIDCol;*/
+
+    @FXML private TableView<Appointment> apptTableview;
+    @FXML private TableColumn<Integer, Integer> apptIDCol;
+    @FXML private TableColumn<String, String> apptTitleCol;
+    @FXML private TableColumn<String, String> apptDescriptionCol;
+    @FXML private TableColumn<String, String> apptLocationCol;
+    @FXML private TableColumn<String, String> apptContactCol;
+    @FXML private TableColumn<String, String> apptTypeCol;
+    @FXML private TableColumn<String, LocalDateTime> apptStartTimeCol;
+    @FXML private TableColumn<String, LocalDateTime> apptEndTimeCol;
+    @FXML private TableColumn<String, Integer> apptCustomerIDCol;
+    @FXML private TableColumn<String, Integer> apptUserIDCol;
 
     @FXML private TableView<Customers> customersTableView;
     @FXML private TableColumn<Customers, Integer> customerIdCol;
@@ -68,7 +81,7 @@ public class MainScreenController implements Initializable {
     /*
     TODO LIST COMPLETE PROJECT
     Must haves----------
-    LAMBDAS
+    TIME OVERLAP
     ADD REPORTS
     JAVADOCS
      */

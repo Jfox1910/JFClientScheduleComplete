@@ -74,3 +74,6 @@ javafx.controls,javafx.fxml
 -> Upon loading to the Login screen use the following
 USERNAME: test
 PASSWORD: test
+
+LAMBDA FUNCTIONS in ReportsController line #
+and on AddCustomerController line # 77

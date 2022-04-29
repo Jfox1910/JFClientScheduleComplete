@@ -37,4 +37,7 @@ public class Contacts {
     public void setContactID(int contactID) {this.contactID = contactID;}
 
     public void setContactName(String contactName) {this.contactName = contactName;}
+
+    public int getContact_ID() {return contactID;
+    }
 }

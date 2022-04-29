@@ -41,14 +41,14 @@ public class ReportsDAO {
      * Used to pull all existing appointments from the database.
      * @return appointments
      */
-    public static ObservableList<Reports> getAllAppointmentsForContact(int contact){
+    public static ObservableList<Reports> getAllAppointmentsForContact( ){
 
         ObservableList<Reports> contactReport = FXCollections.observableArrayList();
 
         try {
             String sql = "SELECT Appointment_ID, Title, Type, Description, Start, End, Customer_ID, Contact_ID FROM appointments where Contact_ID = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setInt(1, contact);
+          // ps.setInt(1, contact);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
@@ -56,10 +56,8 @@ public class ReportsDAO {
                 String title = rs.getString("Title");
                 String description = rs.getString("Description");
                 String appointmentType = rs.getString("Type");
-                Timestamp startTime = rs.getTimestamp("start");
-                LocalDateTime start = startTime.toLocalDateTime();
-                Timestamp endTime = rs.getTimestamp("end");
-                LocalDateTime end = endTime.toLocalDateTime();
+                LocalDateTime start = rs.getTimestamp("start").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("end").toLocalDateTime();
                 int customerID = rs.getInt("Customer_ID");
                 int contactID = rs.getInt("Contact_ID");
 
@@ -94,10 +92,8 @@ public class ReportsDAO {
                 int appointmentID = rs.getInt("Appointment_ID");
                 String title = rs.getString("Title");
                 String description = rs.getString("Description");
-                Timestamp appointmentStart = rs.getTimestamp("start");
-                LocalDateTime start = appointmentStart.toLocalDateTime();
-                Timestamp appointmentEnd = rs.getTimestamp("end");
-                LocalDateTime end = appointmentEnd.toLocalDateTime();
+                LocalDateTime start = rs.getTimestamp("start").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("end").toLocalDateTime();
                 int customerID = rs.getInt("Customer_ID");
                 int contactID = rs.getInt("Contact_ID");
             }
@@ -110,18 +106,19 @@ public class ReportsDAO {
 
     }
 
-    public static ObservableList getTotalAppointments(){
+    public static ObservableList getTotalCustomers(){
         ObservableList<Reports> customerList = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT day(start) AS day, Customer_ID, COUNT(*) AS total FROM appointments GROUP BY day, type ORDER BY Customer_ID asc";
+            //SELECT sum(vote_count) AS vote_count_sum FROM votes
+            //String sql = "SELECT COUNT(Customer_ID, Appointment_ID) AS Customer_Total, SELECT COUNT(Appointment_ID) as Appointment_Total FROM appointments";
+            String sql = "SELECT COUNT(Customer_ID) AS Customer_Total FROM customers";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                int day = rs.getInt("day");
-                int customerID  = rs.getInt("Customer_ID");
-                String total = rs.getString("TotalCustomerAppointments");
-                Reports reports = new Reports(day, customerID, total);
+                int customerTotal = rs.getInt("Customer_Total");
+               // int appointmentTotal = rs.getInt("Appointment_Total");
+                Reports reports = new Reports(customerTotal);
                 customerList.add(reports);
             }
         } catch (SQLException throwables) {

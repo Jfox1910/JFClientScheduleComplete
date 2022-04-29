@@ -39,6 +39,7 @@ public class ContactsDao {
         return allContacts;
     }
 
+
     /**
      * Gets the contacts name based off the ID given.
      * @param contactID

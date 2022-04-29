@@ -21,6 +21,8 @@ public class Reports {
     private int Contact_ID;
     private int day;
     private String total;
+    private int customerTotals;
+    private int appointmentTotals;
 
     public Reports(String month, String totalNumberOfAppointments, String type, int Appointment_ID, String title, String appointmentType, String description, LocalDateTime start, LocalDateTime end, int Customer_ID, int Contact_ID, int day, String total) {
         this.month = month;
@@ -60,6 +62,11 @@ public class Reports {
         this.end = end;
         this.Customer_ID = Customer_ID;
         this.Contact_ID = Contact_ID;
+    }
+
+    public Reports(int customerTotals/*, int apointmentTotals*/) {
+        this.customerTotals = customerTotals;
+        //this.appointmentTotals = appointmentTotals;
     }
 
 
@@ -114,4 +121,12 @@ public class Reports {
     public String getTotal() {return total;}
 
     public void setTotal(String totalCustomerAppointments) {this.total = totalCustomerAppointments;}
+
+    public int getCustomerTotals() {return customerTotals;}
+
+    public void setCustomerTotals(int customerTotals) {this.customerTotals = customerTotals;}
+
+    public int getAppointmentTotals() {return appointmentTotals;}
+
+    public void setAppointmentTotals(int appointmentTotals) {this.appointmentTotals = appointmentTotals;}
 }

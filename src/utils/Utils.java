@@ -24,6 +24,7 @@ public class Utils {
         return 0;
     }
 
+
     private static final LocalTime hourStart = LocalTime.of(8,0);
     private static final LocalTime hourEnd = LocalTime.of(22,0);
 

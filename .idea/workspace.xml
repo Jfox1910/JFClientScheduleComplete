@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="67d07f8f-fda1-4fa4-b295-470d9e0feff4" name="Changes" comment="In Progress. Reports/1 lambda/readme still left.">
+    <list default="true" id="67d07f8f-fda1-4fa4-b295-470d9e0feff4" name="Changes" comment="In Progress. Reports/1 lambda/still left.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoginAttempts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LoginAttempts.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/AddApptController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AddApptController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/MainScreenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MainScreenController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ReportsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ReportsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dao/ContactsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/ContactsDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dao/CustomersDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/CustomersDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dao/ReportsDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/ReportsDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Contacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Contacts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Reports.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/README" beforeDir="false" afterPath="$PROJECT_DIR$/src/README" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/reportsScreen.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/reportsScreen.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Utils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,13 +100,6 @@
       <workItem from="1649040714052" duration="190187000" />
       <workItem from="1650118332991" duration="184833000" />
       <workItem from="1650836578362" duration="81856000" />
-    </task>
-    <task id="LOCAL-00051" summary="Current">
-      <created>1648170669808</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1648170669808</updated>
     </task>
     <task id="LOCAL-00052" summary="Current">
       <created>1648234361834</created>
@@ -432,7 +437,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651094670354</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="In Progress. Reports/1 lambda/still left.">
+      <created>1651102756831</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1651102756831</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -464,6 +476,7 @@
     <MESSAGE value="Update Appointment WORKING. Needs cleanup." />
     <MESSAGE value="In Progress." />
     <MESSAGE value="In Progress. Reports/1 lambda/readme still left." />
-    <option name="LAST_COMMIT_MESSAGE" value="In Progress. Reports/1 lambda/readme still left." />
+    <MESSAGE value="In Progress. Reports/1 lambda/still left." />
+    <option name="LAST_COMMIT_MESSAGE" value="In Progress. Reports/1 lambda/still left." />
   </component>
 </project>
