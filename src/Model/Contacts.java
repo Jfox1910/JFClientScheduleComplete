@@ -1,5 +1,8 @@
 package Model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  * Contact model object class.
  */
@@ -7,15 +10,18 @@ public class Contacts {
 
     private int contactID;
     private String contactName;
+    private String reportContactName;
+    private int reportContactID;
+    private Contacts contacts;
 
     public Contacts(int contactID, String contactName) {
         this.contactID = contactID;
         this.contactName = contactName;
     }
 
-    public static int getContactIDByName(String contactName) {
-        int contactID = Integer.parseInt(contactName.substring(0, contactName.indexOf(":")));
-        return contactID;
+    public Contacts(String reportContactName, int reportContactID){
+        this.contactName = reportContactName;
+        this.reportContactID = reportContactID;
     }
 
 
@@ -27,7 +33,21 @@ public class Contacts {
 
     public String getContactName() {return contactName;}
 
+    public String getReportContactName() {return reportContactName;}
+
+    public int getReportContactID() {return reportContactID;}
+
+    public Contacts getContacts() {return contacts;}
+
     public String getContactToString(){return "[" + contactID + "]" + contactName;}
+    public Contacts getContact(){return contacts;}
+
+    /**
+     * override for handling string issues in the comboboxes.
+     * @return coontactID
+     */
+    @Override
+    public String toString() {return (contactID + " : " + contactName);}
 
 
     /**
@@ -38,6 +58,11 @@ public class Contacts {
 
     public void setContactName(String contactName) {this.contactName = contactName;}
 
-    public int getContact_ID() {return contactID;
-    }
+    public int getContact_ID() {return contactID;}
+
+    public void setReportContactName(String reportContactName) {this.reportContactName = reportContactName;}
+
+    public void setReportContactID(int reportContactID) {this.reportContactID = reportContactID;}
+
+    public void setContacts(Contacts contacts){this.contacts = contacts;}
 }

@@ -3,12 +3,13 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane maxHeight="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ReportsController">
     <children>
       <HBox alignment="TOP_CENTER" layoutY="400.0" prefHeight="80.0" prefWidth="640.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#onActionMainScreen" text="Cancel">
+            <Button mnemonicParsing="false" onAction="#onActionMainScreen" text="Cancel" textFill="#0009ff">
                <HBox.margin>
                   <Insets top="20.0" />
                </HBox.margin></Button>
@@ -24,7 +25,7 @@
                                     <children>
                                         <VBox layoutY="8.0">
                                             <children>
-                                                <TableView fx:id="customerApptTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="640.0">
+                                                <TableView fx:id="typeApptTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="640.0">
                                                     <columns>
                                                         <TableColumn fx:id="customerCol" prefWidth="114.4000244140625" text="Customer" />
                                                         <TableColumn fx:id="dateCol" prefWidth="146.4000244140625" text="Month" />
@@ -62,7 +63,7 @@
                                         </VBox>
                               <HBox alignment="CENTER" layoutX="-2.0" layoutY="1.0" prefHeight="58.0" prefWidth="640.0">
                                  <children>
-                                    <ComboBox fx:id="contactCombobox" onAction="#generateContactSchedule" prefWidth="150.0" promptText="Select Contact" />
+                                    <ComboBox fx:id="contactCombobox" onAction="#selectContact" prefHeight="26.0" prefWidth="198.0" promptText="Select Contact" />
                                  </children>
                               </HBox>
                                     </children></AnchorPane>
@@ -72,12 +73,36 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="totalApptTable" layoutX="120.0" layoutY="86.0" prefHeight="200.0" prefWidth="400.0">
-                                <columns>
-                                  <TableColumn fx:id="totalCustomersCol" prefWidth="200.0" text="Total Customers" />
-                                  <TableColumn fx:id="totalApptCol" prefWidth="200.0" text="Total Appointments" />
-                                </columns>
-                              </TableView>
+                              <VBox alignment="CENTER" layoutX="244.0" layoutY="48.0" prefHeight="120.0" prefWidth="150.0">
+                                 <children>
+                                    <TextField fx:id="totalCustomers" alignment="CENTER" promptText="customer total" />
+                                    <TextField fx:id="totalAppointments" alignment="CENTER" promptText="appointment total">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER_RIGHT" layoutX="44.0" layoutY="48.0" prefHeight="120.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Total Customers:">
+                                       <VBox.margin>
+                                          <Insets right="20.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Total Appointments:">
+                                       <VBox.margin>
+                                          <Insets right="20.0" top="20.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
                            </children></AnchorPane>
                     </content>
                   </Tab>

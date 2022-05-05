@@ -46,9 +46,9 @@ public class ModApptController implements Initializable {
     @FXML private TextField locationField;
     @FXML private TextField descriptionField;
     @FXML private TextField typeField;
-    @FXML private ComboBox customerCombobox;
-    @FXML private ComboBox contactCombobox;
-    @FXML private ComboBox userComboBox;
+    @FXML private ComboBox<Customers> customerCombobox;
+    @FXML private ComboBox<Contacts> contactCombobox;
+    @FXML private ComboBox<User> userComboBox;
 
     @FXML private DatePicker appointmentDate;
     @FXML private ComboBox<LocalTime> startHourCombo;
@@ -69,7 +69,20 @@ public class ModApptController implements Initializable {
      */
     public void onActionUpdate(javafx.event.ActionEvent event) throws IOException, ParseException {
 
-        int Appointment_ID = selectedAppointment.getAppointment_ID();
+        //int appointmentID = selectedAppointment.getAppointment_ID();
+
+
+        /*selectedAppointment.setTitle(titleField.getText());
+        selectedAppointment.setDescription(descriptionField.getText());
+        selectedAppointment.setType(typeField.getText());
+        LocalDate date = appointmentDate.getValue();
+        selectedAppointment.setStart(LocalDateTime.of(date, startHourCombo.getValue()));
+        selectedAppointment.setEnd(LocalDateTime.of(date, endHourCombo.getValue()));
+        selectedAppointment.setUser_ID(User_ID);
+        selectedAppointment.setContact_ID(contactID);
+        selectedAppointment.setCustomer_ID(customerID);*/
+
+        int appointmentID = Integer.parseInt(Appointment_ID.getText());
         String title = titleField.getText();
         String location = locationField.getText();
         String description = descriptionField.getText();
@@ -77,11 +90,34 @@ public class ModApptController implements Initializable {
         LocalDate date = appointmentDate.getValue();
         LocalDateTime start = LocalDateTime.of(date, startHourCombo.getValue());
         LocalDateTime end = LocalDateTime.of(date, endHourCombo.getValue());
-        int customerID = Customers.getCustomerIDByName(customerCombobox.getValue().toString());
-        int User_ID = userComboBox.getSelectionModel().getSelectedIndex();
-        int contactID = Contacts.getContactIDByName(contactCombobox.getValue().toString());
+        Contacts contact = contactCombobox.getValue();
+        Customers customer = customerCombobox.getValue();
+        User user = userComboBox.getValue();
 
-       Appointment updateAppt = new Appointment(Appointment_ID,title,location,description,type,start,end,customerID,User_ID,contactID);
+        Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customer.getCustomerId(), user.getUserId(),contact.getContact_ID());
+
+
+        //int customerID = (int) customerCombobox.getSelectionModel().getSelectedIndex();
+        //int contactID = contactCombobox.getSelectionModel().getSelectedIndex() +1 ;
+        //int userID = (int) userComboBox.getSelectionModel().getSelectedItem();
+
+
+        //CLOSE TO WORKING> CHASE THIS TO GET AROUND ID ISSUES
+        //int customerID = Customers.getCustomerIDByName(customerCombobox.getValue().toString());
+        /*int customerID = getIdFromComboBox(customerCombobox);
+        int contactID = getIdFromComboBox(contactCombobox);
+        int User_ID = getIdFromComboBox(userComboBox);
+        selectedAppointment.setCustomer_ID(customerID);
+        selectedAppointment.setContact_ID(contactID);
+        selectedAppointment.setUser_ID(User_ID);*/
+
+
+        //int customerID = Customers.getCustomerIDByName(customerCombobox.getValue().toString());
+        //int contactID = Contacts.getContactIDByName(contactCombobox.getValue().toString());
+       // int contactID = contactCombobox.getSelectionModel().getSelectedIndex() +1;
+
+        //Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customerID,User_ID,contactID);
+
 
         if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() || userComboBox.getSelectionModel().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -91,10 +127,12 @@ public class ModApptController implements Initializable {
         }else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new appointment.");
-            alert.setContentText("By clicking OK, you will be updating the appointment. Are you sure you wish to continue?");
+            alert.setContentText("By clicking OK, you will be updating appointment # " + selectedAppointment.getAppointment_ID() + " Are you sure you wish to continue?");
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
 
+
+                   // AppointmentDAO.updateAppointment(title,location,description,type,start,end,customerID,User_ID,contactID, appointmentID);
                     AppointmentDAO.updateAppointment(updateAppt);
 
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
@@ -151,8 +189,28 @@ public class ModApptController implements Initializable {
         locationField.setText(String.valueOf(selectedAppointment.getLocation()));
         descriptionField.setText(String.valueOf(selectedAppointment.getDescription()));
         typeField.setText(String.valueOf(selectedAppointment.getType()));
-        customerCombobox.setValue(CustomersDao.setCustomerName(selectedAppointment.getCustomer_ID()));
-        contactCombobox.setValue(ContactsDao.setContactName(selectedAppointment.getContact_ID()));
+
+        //TESTING
+
+        for (Contacts c : contactCombobox.getItems()) {
+            if (selectedAppointment.getContact_ID() == c.getContact_ID()) {
+                contactCombobox.setValue(c);
+                break;
+            }
+        }
+        for (Customers customers : customerCombobox.getItems()) {
+            if (selectedAppointment.getCustomer_ID() == customers.getCustomerId()) {
+                customerCombobox.setValue(customers);
+                break;
+            }
+        }
+
+        //customerCombobox.setValue(CustomersDao.getCustomerNameByID(selectedAppointment.getCustomer_ID()));
+        //customerCombobox.setValue(selectedAppointment.getCustomer_ID() + " : " + selectedAppointment.getCustomer().getCustomerName());
+
+        //customerCombobox.setValue(CustomersDao.setCustomerName(selectedAppointment.getCustomer_ID()));
+
+       // contactCombobox.setValue(ContactsDao.setContactName(selectedAppointment.getContact_ID()));
         appointmentDate.setValue(selectedAppointment.getStart().toLocalDate());
         startHourCombo.setValue(LocalTime.from(selectedAppointment.getStart()));
         endHourCombo.setValue(LocalTime.from(selectedAppointment.getEnd()));
@@ -186,6 +244,7 @@ public class ModApptController implements Initializable {
     }
 
 
+
     /**
      * An observable list holding contacts from the database. Used to initialize the "Contact" combobox.
      * @return allContactNames
@@ -193,7 +252,7 @@ public class ModApptController implements Initializable {
     private ObservableList<String> contactList(){
         ObservableList<String> allContactNames = FXCollections.observableArrayList();
         for (Contacts contacts : ContactsDao.getAllContacts()){
-            allContactNames.add(String.valueOf(contacts.getContactID() + " : " + contacts.getContactName()));
+            allContactNames.add(String.valueOf(/*contacts.getContactID() + " : " + */contacts.getContactName()));
         }return allContactNames;
     }
 
@@ -214,6 +273,17 @@ public class ModApptController implements Initializable {
             appointmentDate.getEditor().clear();
         }
     }
+
+
+    /**
+     * Calls the getID to string method from Utils.
+     * @param comboBox
+     * @return
+     */
+    private int getIdFromComboBox(ComboBox comboBox) {
+        return Utils.getIdFromComboString((String) comboBox.getSelectionModel().getSelectedItem());
+    }
+
 
 /*    *//**
      * Prevents a previous time on the current day from being selected.
@@ -238,14 +308,24 @@ public class ModApptController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        //TESTING
+        //contactCombobox.setItems(ContactsDao.getAllContacts());
+        //customerCombobox.setItems(CustomersDao.getAllCustomers());
+       /* ObservableList<Customers> customers = CustomersDao.getCustomerNameList();
+        customerCombobox.setItems(customers);*/
+
         startHourCombo.setItems(Utils.getStartTimeList());
 
         endHourCombo.setItems(Utils.getEndTimeList());
-
         getAppointment(selectedAppointment);
-        customerCombobox.setItems(customerList());
+
+        customerCombobox.setItems(CustomersDao.getAllCustomers());
+        contactCombobox.setItems(ContactsDao.getAllContacts());
+        userComboBox.setItems(UserDao.getAllUsers());
+
+        /*customerCombobox.setItems(customerList());
         contactCombobox.setItems(contactList());
-        userComboBox.setItems(userList());
+        userComboBox.setItems(userList());*/
 
 
     }

@@ -19,12 +19,13 @@ public class Reports {
     private LocalDateTime end;
     private int Customer_ID;
     private int Contact_ID;
+    private String Contact_Name;
     private int day;
     private String total;
     private int customerTotals;
     private int appointmentTotals;
 
-    public Reports(String month, String totalNumberOfAppointments, String type, int Appointment_ID, String title, String appointmentType, String description, LocalDateTime start, LocalDateTime end, int Customer_ID, int Contact_ID, int day, String total) {
+    public Reports(String month, String totalNumberOfAppointments, String type, int Appointment_ID, String title, String appointmentType, String description, LocalDateTime start, LocalDateTime end, int Customer_ID, int Contact_ID, String Contact_Name, int day, String total) {
         this.month = month;
         this.appointmentTotal = totalNumberOfAppointments;
         this.type = type;
@@ -36,6 +37,7 @@ public class Reports {
         this.end = end;
         this.Customer_ID = Customer_ID;
         this.Contact_ID = Contact_ID;
+        this.Contact_Name = Contact_Name;
         this.day = day;
         this.total = total;
     }
@@ -69,6 +71,13 @@ public class Reports {
         //this.appointmentTotals = appointmentTotals;
     }
 
+    public String getContact_Name() {
+        return Contact_Name;
+    }
+
+    public void setContact_Name(String contact_Name) {
+        Contact_Name = contact_Name;
+    }
 
     public String getMonth() {return month;}
 

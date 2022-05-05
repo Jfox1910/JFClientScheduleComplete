@@ -89,12 +89,25 @@ public final class AppointmentDAO {
      * @param
      */
 
-    public static void updateAppointment(Appointment updateAppt){
+   public static void updateAppointment(Appointment updateAppt){
+   //public static void updateAppointment(String title, String  description, String location,String type,LocalDateTime start, LocalDateTime end, int customerID, int userID, int contactID, int appointmentID){
 
 
         try {
-            String sql = "UPDATE appointments SET Title=?, Description=?, Location=?, Type=?, Start= ?, End=?, Customer_ID=?, Last_Updated_By=?, Contact_ID=? WHERE Appointment_ID=?";
+            String sql = "UPDATE appointments SET Title=?, Description=?, Location=?, Type=?, Start=?, End=?, Last_Update=NOW(), Last_Updated_By = ?, Customer_ID=?, User_ID = ?, Contact_ID=? WHERE Appointment_ID=?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+            /*ps.setString(1,title);
+            ps.setString(2,description);
+            ps.setString(3,location);
+            ps.setString(4,type);
+            ps.setTimestamp(5, Timestamp.valueOf(start));
+            ps.setTimestamp(6, Timestamp.valueOf(end));
+            ps.setString(7, UserDao.getLoggedinUser().getUserName());
+            ps.setInt(8, customerID);
+            ps.setInt(9, userID);
+            ps.setInt(10, contactID);
+            ps.setInt(11, appointmentID);*/
 
             ps.setString(1,updateAppt.getTitle());
             ps.setString(2,updateAppt.getDescription());
@@ -102,10 +115,11 @@ public final class AppointmentDAO {
             ps.setString(4,updateAppt.getType());
             ps.setTimestamp(5, Timestamp.valueOf(updateAppt.getStart()));
             ps.setTimestamp(6, Timestamp.valueOf(updateAppt.getEnd()));
-            ps.setInt(7, updateAppt.getCustomer_ID());
-            ps.setInt(8, updateAppt.getUser_ID());
-            ps.setInt(9, updateAppt.getContact_ID());
-            ps.setInt(10, updateAppt.getAppointment_ID());
+            ps.setString(7, UserDao.getLoggedinUser().getUserName());
+            ps.setInt(8, updateAppt.getCustomer_ID());
+            ps.setInt(9, updateAppt.getUser_ID());
+            ps.setInt(10, updateAppt.getContact_ID());
+            ps.setInt(11, updateAppt.getAppointment_ID());
 
             ps.execute();
 
@@ -190,6 +204,40 @@ public final class AppointmentDAO {
     }
 
 
+    public static boolean checkForOverlap(Timestamp start, Timestamp end, int customerID, int appointmentID)  {
+
+        boolean overlap = false;
+
+        try {
+
+            String sql = "SELECT * FROM appointments WHERE Customer_ID = ? AND Appointment_ID <> ? AND (? = start OR ? = end) or ( ? < start and ? > end) or (? > start AND ? < end) or (? > start AND ? < end)";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerID);
+            ps.setInt(2, appointmentID);
+            ps.setTimestamp(3, start);
+            ps.setTimestamp(4, end);
+            ps.setTimestamp(5, start);
+            ps.setTimestamp(6, end);
+            ps.setTimestamp(7, start);
+            ps.setTimestamp(8, start);
+            ps.setTimestamp(9, end);
+            ps.setTimestamp(10, end);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                overlap = true;
+            }
+            else {
+                overlap = false;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return overlap;
+    }
+
+
     /**
      * Gets all customer names from the DB using the ID provided in the dropdown.
      * @param customerName
@@ -214,6 +262,7 @@ public final class AppointmentDAO {
     }
 
 
+
     /**
      * New appointment object.
      * @param rs
@@ -228,12 +277,8 @@ public final class AppointmentDAO {
                 rs.getString("Description"),
                 rs.getString("Location"),
                 rs.getString("Type"),
-
                 rs.getTimestamp("Start").toLocalDateTime(),
                 rs.getTimestamp("End").toLocalDateTime(),
-
-                //rs.getTimestamp("Start"),
-                //rs.getTimestamp("End"),
                 rs.getInt("Customer_ID"),
                 rs.getInt("User_ID"),
                 rs.getInt("Contact_ID")

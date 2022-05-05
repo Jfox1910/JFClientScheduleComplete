@@ -190,16 +190,10 @@ public class AddCustomerController implements Initializable {
     }
 
 
-    /**
-     * Initializes the country combobox which then sets the division combobox
-     * @param url
-     * @param resourceBundle
-     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         customerCountry.setItems(countryList());
-
 
     }
 }

@@ -89,7 +89,7 @@ public class ModCustomerController implements Initializable{
 if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty() || customerPhone.isEmpty() || customerCountry.getItems().isEmpty() || checkDivision <=0){
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setTitle("Attention!");
-    alert.setContentText("All customer fields must be filled before saving.");
+    alert.setContentText("All customer fields and comboboxes must be filled before saving.");
     alert.showAndWait();
     }else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -172,12 +172,11 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
 
 
     /**
-     * An observable list holding the divisions by country from the database..
+     * An observable list holding the divisions by country from the database.
      * @return divisions
      */
     public ObservableList divisionsByCountry(String modCustomerCountry){
         ObservableList<String> divisions = FXCollections.observableArrayList();
-
         for(String divisionName : DivisionsDao.getAllByCountry(modCustomerCountry)){
             divisions.add(divisionName);
         }

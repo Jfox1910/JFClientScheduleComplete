@@ -1,12 +1,8 @@
 package Model;
 
-
-import Dao.AppointmentDAO;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
+/**
+ * User model object class.
+ */
 public class User {
     private int userId;
     private String userName;
@@ -15,7 +11,6 @@ public class User {
     private String createdBy;
     private String lastUpdatedBy;
     private String lastUpdatedOn;
-    private String tzOffset;
 
     //Constructor
     public User(int userId, String userName, String password){
@@ -24,10 +19,10 @@ public class User {
         this.userPassword = password;
     }
 
+
     public User(String userName){
         this.userName = userName;
     }
-
     public User(int user_id) {this.userId = user_id; }
 
 
@@ -48,20 +43,14 @@ public class User {
 
     public String userNameString() {return this.userName;}
 
-    public String getTzOffset() { return tzOffset; }
 
-    public static String getCurrentTimezoneOffset() {
-        TimeZone tz = TimeZone.getDefault();
-        Calendar cal = GregorianCalendar.getInstance(tz);
-        int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
-        String offset = String.format("%02d:%02d", Math.abs(offsetInMillis / 3600000), Math.abs((offsetInMillis / 60000) % 60));
-        offset = (offsetInMillis >= 0 ? "+" : "-") + offset;
-        return offset;
-    }
+    /**
+     * override for handling string issues in the comboboxes.
+     * @return userId
+     */
+    @Override
+    public String toString() {return (userId + " : " + userName);}
 
-   /* public Appointment getImpendingAppointment() {
-        return new AppointmentDAO().getImpendingAppt(userId);
-    }*/
 
     //Setters
     public void setUserId(int userId) {this.userId = userId;}
@@ -77,8 +66,5 @@ public class User {
     public void setLastUpdatedBy(String lastUpdatedBy) {this.lastUpdatedBy = lastUpdatedBy;}
 
     public void setLastUpdatedOn(String lastUpdatedOn) {this.lastUpdatedOn = lastUpdatedOn;}
-
-
-    public void setTzOffset (String tzOffset) { this.tzOffset = tzOffset; }
 
 }

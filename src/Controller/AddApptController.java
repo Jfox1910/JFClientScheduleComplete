@@ -21,6 +21,7 @@ import utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -77,6 +78,7 @@ public class AddApptController implements Initializable {
 
     /**
      * new Appointment handler. Collects the information from the fields and adds them to the DB.
+     * Takes the inputs of date and selected hour combo and creates a LocalDateTime object.
      * Contains alerts for null fields, and 1 LAMBDA function confirming to an appointment being added, and a successful addition confirmation.
      * @param event
      * @throws IOException
@@ -94,6 +96,9 @@ public class AddApptController implements Initializable {
         int customerID = getIdFromComboBox(customerCombobox);
         int User_ID = UserDao.getLoggedinUser().getUserId();
         int contactID = getIdFromComboBox(contactCombobox);
+        Timestamp apptStart = Timestamp.valueOf(start);
+        Timestamp apptEnd = Timestamp.valueOf(end);
+        boolean overlap = AppointmentDAO.checkForOverlap(apptStart, apptEnd, customerID, -1);
 
         Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customerID, User_ID, contactID);
 
@@ -103,11 +108,19 @@ public class AddApptController implements Initializable {
             alert.setContentText("All fields must be filled before saving.");
             alert.showAndWait();
         } else if (start.equals(end) || start.isAfter(end)){
+
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Attention!");
+            alert.setTitle("ATTENTION!");
             alert.setContentText("Start time must be before the end time.");
             alert.showAndWait();
         }
+        if (overlap == true) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setContentText("You are attempting to schedule an appoint for " +customerCombobox.getValue() + " that conflicts with a previously scheduled appointment. Please change your times and try again.");
+            alert.showAndWait();
+        }
+
 
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -175,56 +188,6 @@ public class AddApptController implements Initializable {
 
 
     /**
-     * Checks for overlapping appointments for the selected customer. Returns an alert if one is detected which prevents one from being scheduled.
-     * @return
-     */
-
-    /*private Boolean hasOverlappingAppointment() {
-
-        ObservableList<Appointment> appointments = Customers.(getIdFromComboBox(customerCombobox)).getAppointments();
-
-        int id = idField.getText().isEmpty() ? 0 : Integer.parseInt(idField.getText());
-
-        for (Appointment a : appointments) {
-
-            // Don't compare an appointment being edited to itself
-            if (id == a.getId()) {
-                continue;
-            }
-
-            if (a.getStart().isBefore(getEnd()) && getStart().isBefore(a.getEnd())) {
-                utils.doError("Appointment date/time", "The appointment overlaps with appointment " + a.getId());
-                return true;
-            }
-        };
-
-        return false;
-    }
-
-    private Boolean getAppointmentOverlap() {
-
-        ObservableList<Appointment> appointments = CustomersDao.getCustomerID(getIdFromComboBox(customerCombobox)).getAppointments();
-        Customers scheduledCustomer = customerCombobox.getSelectionModel().getSelectedItem();
-
-        if (scheduledCustomer.getCustomerAppt().isEmpty()) {
-            return true;
-        } else {
-            int appointmentOverlap = 0;
-            for (Appointment appt : scheduledCustomer.getCustomerAppt()) {
-                //if ((appt.getStart().after(start) && appt.getStart().isBefore(this.end)) || (appt.getEnd().isAfter(this.start) && appt.getEnd().isBefore(this.end.plusMinutes(1)))){
-                if (appt.getStart().isBefore(appt.getEnd()) && appt.getStart().isBefore(appt.getEnd())){
-                    System.out.println("SUCCESS");
-            }
-            }
-            if (appointmentOverlap == 0) {
-                return true;
-            }
-            return false;
-        }
-    }*/
-
-
-    /**
      * Prevents a previous date from being selected for an appointment. Throws an alert and resets the datepicker.
      * @param actionEvent
      */
@@ -244,11 +207,11 @@ public class AddApptController implements Initializable {
     }
 
 
-/*    *//**
+     /**
      * Prevents a previous time on the current day from being selected.
      * @param actionEvent
-     *//*
-    public void handleTimeChoice() {
+     */
+/*    public void handleTimeChoice() {
         long days = ChronoUnit.DAYS.between(LocalDate.now(), appointmentDate.getValue());
         if (days == 0){
             long timer = ChronoUnit.MINUTES.between(LocalTime.now(), LocalTime.parse(startHourCombo.getSelectionModel().getSelectedItem()));

@@ -75,5 +75,9 @@ javafx.controls,javafx.fxml
 USERNAME: test
 PASSWORD: test
 
+There are several lambda functions including:
 LAMBDA FUNCTIONS in ReportsController line #
 and on AddCustomerController line # 77
+
+-> The 3rd report is a tally of all exisiting appointments and customers in the database. It consists of 2 textfields that self
+populate with the totals upon opening the report screen.

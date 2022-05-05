@@ -5,6 +5,7 @@ import Model.Appointment;
 import Model.Customers;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,17 +35,10 @@ public class MainScreenController implements Initializable {
     private Scene scene;
     private Parent root;
 
-/*    @FXML private TableView<Appointment> apptTableview;
-    @FXML private TableColumn<Appointment, Integer> apptIDCol;
-    @FXML private TableColumn<Appointment, String> apptTitleCol;
-    @FXML private TableColumn<Appointment, String> apptDescriptionCol;
-    @FXML private TableColumn<Appointment, String> apptLocationCol;
-    @FXML private TableColumn<Appointment, String> apptContactCol;
-    @FXML private TableColumn<Appointment, String> apptTypeCol;
-    @FXML private TableColumn<Appointment, LocalDateTime> apptStartTimeCol;
-    @FXML private TableColumn<Appointment, LocalDateTime> apptEndTimeCol;
-    @FXML private TableColumn<Appointment, Integer> apptCustomerIDCol;
-    @FXML private TableColumn<Appointment, Integer> apptUserIDCol;*/
+
+    @FXML private TabPane clientScheduleTabPane;
+
+    @FXML private MainScreenController appointmentController;
 
     @FXML private TableView<Appointment> apptTableview;
     @FXML private TableColumn<Integer, Integer> apptIDCol;
@@ -58,6 +52,7 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<String, Integer> apptCustomerIDCol;
     @FXML private TableColumn<String, Integer> apptUserIDCol;
 
+    @FXML private MainScreenController customerController;
     @FXML private TableView<Customers> customersTableView;
     @FXML private TableColumn<Customers, Integer> customerIdCol;
     @FXML private TableColumn<Customers, String> customerNameCol;
@@ -82,7 +77,8 @@ public class MainScreenController implements Initializable {
     TODO LIST COMPLETE PROJECT
     Must haves----------
     TIME OVERLAP
-    ADD REPORTS
+    BROKEN MOD CUSTOMER
+    Fix contact combo
     JAVADOCS
      */
 
@@ -139,7 +135,7 @@ public class MainScreenController implements Initializable {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("ATTENTION!");
-            alert.setHeaderText("Appointment # " + selectedAppointment.getAppointment_ID() + " will be cancelled!");
+            alert.setHeaderText("Appointment # " + selectedAppointment.getAppointment_ID() + " of type " + selectedAppointment.getType() + " will be cancelled!");
             alert.setContentText("This action cannot be undone. Are you sure you wish to continue?");
 
             Optional<ButtonType> result = alert.showAndWait();
@@ -147,7 +143,7 @@ public class MainScreenController implements Initializable {
 
                 Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                 alert2.setTitle("SUCCESS!");
-                alert2.setContentText("Appointment # " + selectedAppointment.getAppointment_ID() + " has been cancelled.");
+                alert2.setContentText("Appointment # " + selectedAppointment.getAppointment_ID() + " of Type " + selectedAppointment.getType() + " has been cancelled.");
                 alert2.showAndWait();
                 AppointmentDAO.deleteAppointment(selectedAppointment.getAppointment_ID());
                 apptTableview.setItems(AppointmentDAO.getAllAppointments());
@@ -320,6 +316,7 @@ public class MainScreenController implements Initializable {
      * Otherwise it alerts that no appointments are pending.
      */
     private void impendingAppointments() {
+
         LocalDateTime now = LocalDateTime.now();
         ObservableList<Appointment> pendingAppt = AppointmentDAO.getImpendingAppt(now);
         if (pendingAppt.isEmpty()) {
@@ -338,10 +335,12 @@ public class MainScreenController implements Initializable {
     }
 
 
+
     /**
      * Appointment table initialization. Loads the columns with the information from the DB appointment table.
      */
     private void setApptTables(){
+
         appointments = AppointmentDAO.getAllAppointments();
         apptTableview.setItems(appointments);
         apptIDCol.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
@@ -374,7 +373,6 @@ public class MainScreenController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         setApptTables();
         setCustomerTable();
         impendingAppointments();

@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import utils.JDBC;
 
 import java.sql.*;
+import java.util.Optional;
 
 /**
  * Customer DB access class
@@ -23,9 +24,9 @@ public class CustomersDao {
         ObservableList<Customers> customerList = FXCollections.observableArrayList();
 
         try {
-            String sql = "SELECT * from customers";
-            PreparedStatement psgetCustomers = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = psgetCustomers.executeQuery();
+            String sql = "SELECT * FROM customers";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
                 int customerId = rs.getInt("Customer_ID");
@@ -73,6 +74,7 @@ public class CustomersDao {
         }
         return divisionID;
     }
+
 
 
     /**
@@ -135,18 +137,18 @@ public class CustomersDao {
 
         try {
             String sqlModifyCustomer = "UPDATE customers SET Customer_Name=?, Address=?, Postal_Code=?, Last_Update=NOW(),Phone=?, Last_Updated_By=?, Division_ID=? WHERE Customer_ID=? ";
-            PreparedStatement psmodifyCustomer = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sqlModifyCustomer);
 
-            psmodifyCustomer.setString(1,customerName);
-            psmodifyCustomer.setString(2,customerAddy);
-            psmodifyCustomer.setString(3,customerZipCode);
-            psmodifyCustomer.setString(4,customerPhone);
-            psmodifyCustomer.setString(5, UserDao.getLoggedinUser().getUserName());
-            psmodifyCustomer.setString(5, UserDao.getLoggedinUser().getUserName());
-            psmodifyCustomer.setInt(6,customerDivision);
-            psmodifyCustomer.setInt(7,customerId);
+            ps.setString(1,customerName);
+            ps.setString(2,customerAddy);
+            ps.setString(3,customerZipCode);
+            ps.setString(4,customerPhone);
+            ps.setString(5, UserDao.getLoggedinUser().getUserName());
+            ps.setString(5, UserDao.getLoggedinUser().getUserName());
+            ps.setInt(6,customerDivision);
+            ps.setInt(7,customerId);
 
-            psmodifyCustomer.execute();
+            ps.execute();
 
         }catch (SQLException throwables){
             throwables.printStackTrace();
@@ -197,7 +199,57 @@ public class CustomersDao {
     }
 
 
-    public static void getCustomerID (int customerID){
+    public static ObservableList<Customers> getCustomerNameList(){
+        ObservableList<Customers> customersName = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT (Customer_ID || ' ' || Customer_Name) FROM client_schedule.customers";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                int customerId = rs.getInt("Customer_ID");
+                String customerName = rs.getString("Customer_Name");
+
+                Customers customers = new Customers(customerId,customerName);
+                customersName.add(customers);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return customersName;
+    }
+
+    public static String getCustomerNameByID(int customerID)
+    {
+        String customerName = null;
+
+        try
+        {
+            String sql = "SELECT Customer_Name FROM customers WHERE Customer_ID = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerID);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next())
+            {
+                customerName = rs.getString("Customer_Name");
+            }
+        }
+        catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+
+        String customerNameWithID = String.valueOf(customerID) + ": " + customerName;
+
+        return customerNameWithID;
+    }
+
+
+    public static Optional<Customers> getCustomerID (int customerID){
 
         String sql = "SELECT * from customers WHERE Customer_ID = ?";
 
@@ -225,6 +277,7 @@ public class CustomersDao {
         }catch (SQLException throwables){
             throwables.printStackTrace();
         }
+        return null;
     }
 
 
@@ -254,6 +307,8 @@ public class CustomersDao {
         String selectedCustomerName = String.valueOf(customerID) + ": " + customerName;
         return selectedCustomerName;
     }
+
+
 
 
     /**

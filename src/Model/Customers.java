@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * Customer model object class.
  */
     public class Customers {
-        private int customerId;
+        private int customerId = 0;
         private String customerName;
         private String customerAddy;
         private String customerZip;
@@ -52,13 +52,17 @@ import java.sql.Timestamp;
             this.divisionName = divisionName;
         }
 
+    public Customers(int customerId, String customerName) {
+            this.customerId = customerId;
+            this.customerName = customerName;
+    }
+
 
     /**
      *Customer Getters
      * @return customerId, customerName, customerAddy, customerZip, customerPhone, customerCreatedDate,
      * customerCreated, customerUpdatedOn, customerUpdatedBy, customerCountry, divisionNam, divisionName
      */
-    public String customerToString(){return "[" + customerId + "]" + customerName;}
 
         public int getCustomerId() {return customerId;}
 
@@ -84,12 +88,13 @@ import java.sql.Timestamp;
 
         public String getDivisionName() {return divisionName;}
 
-        public static int getCustomerIDByName(String customerName) {
-        int customerID = Integer.parseInt(customerName.substring(0, customerName.indexOf(":")));
-        return customerID;
-        }
+    /**
+     * override for handling string issues in the comboboxes.
+     * @return customerId
+     */
+    @Override
+    public String toString() {return (customerId + " : " + customerName);}
 
-        public ObservableList<Appointment> getCustomerAppt(){return appt;}
 
 
     /**

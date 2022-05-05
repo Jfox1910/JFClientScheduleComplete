@@ -1,39 +1,26 @@
 package Controller;
 
-import Dao.AppointmentDAO;
-import Dao.ContactsDao;
-import Dao.CustomersDao;
-import Dao.ReportsDAO;
-import Model.Appointment;
-import Model.Contacts;
-import Model.Customers;
-import Model.Reports;
-import javafx.beans.property.ReadOnlyStringWrapper;
+import Dao.*;
+import Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import utils.JDBC;
 import utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -43,32 +30,40 @@ public class ReportsController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    @FXML private TableView customerApptTable;
-    @FXML private TableColumn<String,String>  customerCol;
+    @FXML private TableView typeApptTable;
+    @FXML private TableColumn<Customers,String>  customerCol;
     @FXML private TableColumn<String,String>  dateCol;
     @FXML private TableColumn<String,String>  typeCol;
     @FXML private TableColumn<String,String> totalCol;
-    @FXML private ComboBox <Contacts>contactCombobox;
 
-    public TableView contactApptTable;
+    @FXML private ComboBox<Contacts> contactCombobox;
+    @FXML private TableView <Appointment> contactApptTable;
+    @FXML private TableColumn<Appointment, Integer> Appointment_ID;
+    @FXML private TableColumn<Appointment, String> titleCol;
+    @FXML private TableColumn<Appointment, String> contactTypeCol;
+    @FXML private TableColumn<Appointment, String> descriptionCol;
+    @FXML private TableColumn<Appointment, LocalDateTime> startCol;
+    @FXML private TableColumn<Appointment, LocalDateTime> endCol;
+    @FXML private TableColumn<Customers, Integer> Customer_ID;
+
+/*    public TableView contactApptTable;
     public TableColumn Appointment_ID;
     public TableColumn titleCol;
     public TableColumn contactTypeCol;
     public TableColumn descriptionCol;
     public TableColumn startCol;
     public TableColumn endCol;
-    public TableColumn Customer_ID;
+    public TableColumn Customer_ID;*/
 
-    @FXML private TableView totalApptTable;
-    @FXML private TableColumn totalCustomersCol;
-    @FXML private TableColumn totalApptCol;
+    @FXML private TextField totalCustomers;
+    @FXML private TextField totalAppointments;
 
+    private static ObservableList<Contacts> allContacts = FXCollections.observableArrayList();
+    private ObservableList<Appointment> allAppointments;
     private ObservableList<Reports> reports;
-    private ObservableList<Reports> customerTotal;
+
     Contacts selectedContact;
 
-
-    //TODO Contact and Customer Dropdowns accessing everything from the DB. MAX appts count for 3rd.
 
     /**
      * Exits back to the main screen. Contains a confirmation.
@@ -94,14 +89,21 @@ public class ReportsController implements Initializable {
     }
 
 
+    public void selectContact(){
+       selectedContact = contactCombobox.getSelectionModel().getSelectedItem();
+       generateContactSchedule();
+    }
+
     /**
      * Generates the columns based on the Contact selected from the dropdown.
      * @param
      */
     public void generateContactSchedule(){
 
-        Contacts selectedContact = contactCombobox.getSelectionModel().getSelectedItem();
-        if (selectedContact != null) {
+        //String selectedContact = contactCombobox.getValue();
+/*         selectedContact = contactCombobox.getSelectionModel().getSelectedItem();
+        if (selectedContact != null) {*/
+
             contactApptTable.setItems(contactFilter());
             Appointment_ID.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
             titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -111,10 +113,9 @@ public class ReportsController implements Initializable {
             endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
             Customer_ID.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
 
-        }
+       // }
 
       }
-
 
 
     /**
@@ -122,24 +123,26 @@ public class ReportsController implements Initializable {
      */
         private void setApptTables(){
         reports = ReportsDAO.getAppointmentsByType();
-        customerApptTable.setItems(reports);
+        typeApptTable.setItems(reports);
         customerCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
         dateCol.setCellValueFactory(new PropertyValueFactory<>("month"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         totalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
 
+
     }
 
 
+    /**
+     * Sets the Total Table up. This is the 3rd Report requirement
+     * It gives a total count for the Appointments in the DB as well as the individual Customers.
+     */
     private void setTotalTables(){
-        customerTotal = ReportsDAO.getTotalCustomers();
-        totalApptTable.setItems(customerTotal);
-        totalCustomersCol.setCellValueFactory(new PropertyValueFactory<>("Customer_Total"));
-        System.out.println( customerTotal.toString());
+        List<Appointment> apptTotalList = AppointmentDAO.getAllAppointments();
+        totalAppointments.setText(String.valueOf(apptTotalList.size()));
 
-        /*totalApptTable.setItems(ReportsDAO.getTotalCustomers());
-        totalCustomersCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
-        totalApptTable.refresh();*/
+        List<Customers> customerTotalList = CustomersDao.getAllCustomers();
+        totalCustomers.setText(String.valueOf(customerTotalList.size()));
     }
 
 
@@ -147,46 +150,33 @@ public class ReportsController implements Initializable {
      * An observable list holding contacts from the database. Used to initialize the "Contact" combobox.
      * @return allContactNames
      */
+
     private ObservableList<String> contactList(){
         ObservableList<String> allContactNames = FXCollections.observableArrayList();
         for (Contacts contacts : ContactsDao.getAllContacts()){
-            allContactNames.add(contacts.getContactID() + " : " + contacts.getContactName());
+            allContactNames.add(contacts.getReportContactID() + " : " + contacts.getReportContactName());
         }return allContactNames;
     }
 
 
     /**
-     * Calls the getID to string method from Utils.
-     * @param comboBox
-     * @return
-     */
-    private int getIdFromComboBox(ComboBox comboBox) {
-        return Utils.getIdFromComboString((String) comboBox.getSelectionModel().getSelectedItem());
-    }
-
-
-    /**
-     * 2nd LAMBDA function that filters contact appointments upon combobox selection. Simplified the code and brought it down 1 line from the original method.
+     * 2nd LAMBDA function that filters contact appointments upon combobox selection. Simplified the code quite a bit and brought it down several lines from the original method.
      * @return contactFilteredList
      */
     public ObservableList<Appointment> contactFilter() {
         ObservableList<Appointment> allAppointments = AppointmentDAO.getAllAppointments();
-        FilteredList<Appointment> contactFilteredList = new FilteredList<>(allAppointments, i -> i.getContact_ID() == contactCombobox.getSelectionModel().getSelectedItem().getContact_ID());
-
-        return contactFilteredList;
+        return new FilteredList<>(allAppointments, i -> i.getContact_ID() == contactCombobox.getSelectionModel().getSelectedItem().getContact_ID());
     }
-
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        contactCombobox.setItems(ContactsDao.getAllContacts());
+       contactCombobox.getItems().setAll(ContactsDao.getAllContacts());
 
-        //contactList();
-        //contactCombobox.setItems(contactList());
+       //contactCombobox.setItems(contactList());
 
-      // setTotalTables();
        setApptTables();
+       setTotalTables();
     }
 }
