@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * Utility class that holds various utilities and methods.
  */
 public class Utils {
-    //not needed private User user;
 
 
     /**
@@ -35,7 +34,6 @@ public class Utils {
      * They set to EST to be in sync with the office hours.
      * Only business hours are available to use and are added in 15 minute increments.
      */
-
     private static final ObservableList<LocalTime> startTimeList = FXCollections.observableArrayList();
     private static final ObservableList<LocalTime> endTimeList = FXCollections.observableArrayList();
 

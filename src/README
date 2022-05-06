@@ -76,7 +76,7 @@ USERNAME: test
 PASSWORD: test
 
 There are several lambda functions including:
-LAMBDA FUNCTIONS in ReportsController line #
+LAMBDA FUNCTIONS in ReportsController line #138
 and on AddCustomerController line # 77
 
 -> The 3rd report is a tally of all exisiting appointments and customers in the database. It consists of 2 textfields that self

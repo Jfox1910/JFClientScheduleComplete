@@ -1,7 +1,5 @@
 package Model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 /**
  * Contact model object class.
@@ -42,9 +40,10 @@ public class Contacts {
     public String getContactToString(){return "[" + contactID + "]" + contactName;}
     public Contacts getContact(){return contacts;}
 
+
     /**
-     * override for handling string issues in the comboboxes.
-     * @return coontactID
+     * override for handling strings in the comboboxes.
+     * @return contactID
      */
     @Override
     public String toString() {return (contactID + " : " + contactName);}

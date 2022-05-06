@@ -21,6 +21,7 @@ import utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -29,13 +30,10 @@ import java.util.*;
 
 import java.util.ResourceBundle;
 
-
 public class ModApptController implements Initializable {
 
     public static Customers customers;
     public static Appointment appointment;
-
-   // private final Utils utils = Utils.getInstance();
 
     private Stage stage;
     private Scene scene;
@@ -81,20 +79,39 @@ public class ModApptController implements Initializable {
         Customers customer = customerCombobox.getValue();
         User user = userComboBox.getValue();
 
-        Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customer.getCustomerId(), user.getUserId(),contact.getContact_ID());
+        int customerID = customerCombobox.getSelectionModel().getSelectedIndex();
+        Timestamp apptStart = Timestamp.valueOf(start);
+        Timestamp apptEnd = Timestamp.valueOf(end);
+        int checkUser = userComboBox.getSelectionModel().getSelectedIndex() +1;
 
-        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() || userComboBox.getSelectionModel().isEmpty()){
+         boolean overlap = AppointmentDAO.checkForOverlap(apptStart, apptEnd, customerID, -1);
+
+        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() || checkUser <=0){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
             alert.setContentText("All fields and dropdown menus must be filled before saving.");
             alert.showAndWait();
-        }else {
+        }else if (start.equals(end) || start.isAfter(end)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setContentText("Start time must be before the end time.");
+            alert.showAndWait();
+        }else if (overlap == true) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setContentText(customerCombobox.getValue() + "\n"
+                    + "has a conflicting appointment previously scheduled." + "\n"
+                    + "Please choose a different time and try again.");
+            alert.showAndWait();
+        }
+        else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new appointment.");
             alert.setContentText("By clicking OK, you will be updating appointment # " + selectedAppointment.getAppointment_ID() + " Are you sure you wish to continue?");
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
 
+                    Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customer.getCustomerId(), user.getUserId(),contact.getContact_ID());
                     AppointmentDAO.updateAppointment(updateAppt);
 
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
@@ -154,7 +171,6 @@ public class ModApptController implements Initializable {
         descriptionField.setText(String.valueOf(selectedAppointment.getDescription()));
         typeField.setText(String.valueOf(selectedAppointment.getType()));
 
-
         Contacts selectedContact = null;
         for(Contacts contact : contactList){
             if(contact.getContactID() == selectedAppointment.getContact_ID()){
@@ -195,26 +211,6 @@ public class ModApptController implements Initializable {
             appointmentDate.getEditor().clear();
         }
     }
-
-
-/*    *//**
-     * Prevents a previous time on the current day from being selected.
-     * @param
-     */
-/*    public void handleTimeChoice(ActionEvent actionEvent) {
-        long days = ChronoUnit.DAYS.between(LocalDate.now(), appointmentDate.getValue());
-        if (days == 0){
-            long timer = ChronoUnit.MINUTES.between(LocalTime.now(), LocalTime.parse(startHourCombo.getValue()));
-            if (timer < 60){
-                Alert eAlert = new Alert(Alert.AlertType.NONE);
-                eAlert.setTitle("ERROR!");
-                eAlert.getDialogPane().getButtonTypes().add(ButtonType.OK);
-                eAlert.setContentText("You are selecting a time in the past. A time on or after " + LocalTime.now().plusMinutes(60).format(DateTimeFormatter.ofPattern("HH:mm")) + " must be selected.");
-                eAlert.showAndWait();
-                appointmentDate.getEditor().clear();
-            }
-        }
-    }*/
 
 
     @Override

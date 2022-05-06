@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+
 /**
  * Main class. Launches the program and establishes the DB connection.
  */
@@ -29,8 +30,8 @@ public class Main extends Application {
         }}
 
     public static void main(String[] args) {
+        //Uncomment the following to bypass language settings and load the login screen in French.
        // Locale.setDefault(new Locale("fr"));
-
 
         JDBC.startConnection();
         launch(args);

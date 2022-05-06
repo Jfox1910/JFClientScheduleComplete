@@ -1,6 +1,5 @@
 package Model;
 
-import Dao.CustomersDao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -88,13 +87,13 @@ import java.sql.Timestamp;
 
         public String getDivisionName() {return divisionName;}
 
+
     /**
-     * override for handling string issues in the comboboxes.
+     * override for handling strings in the comboboxes.
      * @return customerId
      */
     @Override
     public String toString() {return (customerId + " : " + customerName);}
-
 
 
     /**
@@ -138,6 +137,5 @@ import java.sql.Timestamp;
         public void setDivisionName(String customerDivisionName) {this.divisionName = customerDivisionName;}
 
         public void setAppt(ObservableList<Appointment> appt){this.appt = appt;}
-
 
 }

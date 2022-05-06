@@ -1,12 +1,7 @@
 package Model;
 
-
-import Dao.ContactsDao;
 import Dao.CustomersDao;
-
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * Appointment model object class. Used in appointments.
@@ -52,13 +47,7 @@ public class Appointment {
         this.User_ID = User_ID;
         this.Contact_ID = Contact_ID;
 
-       // Optional<Customers> optional = new CustomersDao().getCustomerID(Customer_ID);
-      //  this.customer = optional.get();
     }
-
-
-
-
 
 
     /**
@@ -108,7 +97,11 @@ public class Appointment {
 
     public Customers getCustomer() {return new CustomersDao().getCustomerID(Customer_ID).get();}
 
-    //Setters
+
+    /**
+     * Appointment Setters
+     * @param appointment_ID
+     */
     public void setAppointment_ID(int appointment_ID) {Appointment_ID = appointment_ID;}
 
     public static void setCustomers(Customers customers) {Appointment.customers = customers;}

@@ -17,8 +17,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
@@ -47,9 +45,6 @@ public class AddCustomerController implements Initializable {
      */
     public void onActionSaveCustomer(ActionEvent event) throws IOException {
 
-    /**
-    * Retrieves the customer's info from the fields.
-    */
         String customerName = CustomerName.getText();
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
@@ -67,20 +62,14 @@ public class AddCustomerController implements Initializable {
         }else
         {
 
-    /**
-    *Popup confirmation using a LAMBDA EXPRESSION confirming that a customer is about to be added.
-    * The use of the lambda expression simplified the method and minimized the amount of code.
-    */
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new customer.");
             alert.setContentText("By clicking OK, you will be adding " + CustomerName.getText() + " to the system. Are you sure you wish to continue?");
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
+
                     CustomersDao.newCustomer(userID, customerName, customerAddress, customerZip, customerPhone, divisionID);
 
-    /**
-    * Confirmation that the customer has been added.
-    */
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("Success!");
                     alert2.setContentText(CustomerName.getText() + " has been added.");
@@ -194,6 +183,5 @@ public class AddCustomerController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         customerCountry.setItems(countryList());
-
     }
 }

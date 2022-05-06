@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 /**
  *This is the USER class that checks the user table for the correct login credentials and stores it in an OL.
  */
@@ -72,23 +73,5 @@ public class UserDao {
         else {
             return Boolean.FALSE;
         }
-    }
-
-    public static int getUserByName(String userName){
-        int userID = 0;
-
-        try {
-            String sql = "SELECT User_ID FROM users WHERE User_Name = ?";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setString(1, userName);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()){
-                userID = rs.getInt("User_ID");
-            }
-
-        } catch (SQLException throwables){
-            throwables.printStackTrace();;
-        }
-        return userID;
     }
 }

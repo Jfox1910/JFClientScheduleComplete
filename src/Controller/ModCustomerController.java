@@ -28,7 +28,6 @@ import java.util.ResourceBundle;
  */
 public class ModCustomerController implements Initializable{
 
-
     @FXML private TextField CustomerID;
     @FXML private TextField CustomerName;
     @FXML private TextField CustomerAddress;

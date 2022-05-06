@@ -1,8 +1,6 @@
 package Dao;
 
 import Model.Appointment;
-import Model.Customers;
-import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.JDBC;
@@ -10,7 +8,6 @@ import utils.JDBC;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Locale;
 
 /**
  Appointment table database access
@@ -90,24 +87,10 @@ public final class AppointmentDAO {
      */
 
    public static void updateAppointment(Appointment updateAppt){
-   //public static void updateAppointment(String title, String  description, String location,String type,LocalDateTime start, LocalDateTime end, int customerID, int userID, int contactID, int appointmentID){
-
 
         try {
             String sql = "UPDATE appointments SET Title=?, Description=?, Location=?, Type=?, Start=?, End=?, Last_Update=NOW(), Last_Updated_By = ?, Customer_ID=?, User_ID = ?, Contact_ID=? WHERE Appointment_ID=?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            /*ps.setString(1,title);
-            ps.setString(2,description);
-            ps.setString(3,location);
-            ps.setString(4,type);
-            ps.setTimestamp(5, Timestamp.valueOf(start));
-            ps.setTimestamp(6, Timestamp.valueOf(end));
-            ps.setString(7, UserDao.getLoggedinUser().getUserName());
-            ps.setInt(8, customerID);
-            ps.setInt(9, userID);
-            ps.setInt(10, contactID);
-            ps.setInt(11, appointmentID);*/
 
             ps.setString(1,updateAppt.getTitle());
             ps.setString(2,updateAppt.getDescription());
@@ -203,9 +186,15 @@ public final class AppointmentDAO {
         return selectAppointmentDates;
     }
 
-
+    /**
+     * Used in checking for overlapping appointments.
+     * @param start
+     * @param end
+     * @param customerID
+     * @param appointmentID
+     * @return
+     */
     public static boolean checkForOverlap(Timestamp start, Timestamp end, int customerID, int appointmentID)  {
-
         boolean overlap = false;
 
         try {
@@ -236,31 +225,6 @@ public final class AppointmentDAO {
         }
         return overlap;
     }
-
-
-    /**
-     * Gets all customer names from the DB using the ID provided in the dropdown.
-     * @param customerName
-     * @return customerID
-     */
-    public static int getCustomerByName(String customerName){
-        int customerID = 0;
-
-        try {
-            String sql = "SELECT Customer_ID FROM client_schedule.customers WHERE Customer_Name = ?";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setString(1, customerName);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()){
-                customerID = rs.getInt("Customer_ID");
-            }
-
-        } catch (SQLException throwables){
-            throwables.printStackTrace();;
-        }
-        return customerID;
-    }
-
 
 
     /**

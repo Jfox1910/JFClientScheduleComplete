@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Gets all the countries from the db
+ */
 public class CountriesDao {
     public static ObservableList<Countries> getAllCountries(){
         ObservableList<Countries> countries = FXCollections.observableArrayList();
@@ -32,6 +35,11 @@ public class CountriesDao {
         return countries;
     }
 
+    /**
+     * Selectes countries by ID. Used to display names.
+     * @param countryName
+     * @return
+     */
     public static int getCountryName(String countryName){
         int countryID = 0;
         try {
@@ -48,6 +56,11 @@ public class CountriesDao {
     return countryID;
 }
 
+    /**
+     * Gets country IDs. Used to assign a country to a customer.
+     * @param countryID
+     * @return
+     */
     public static String getCountryID(int countryID){
         String countryName = null;
         try {

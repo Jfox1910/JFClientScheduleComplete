@@ -46,15 +46,6 @@ public class ReportsController implements Initializable {
     @FXML private TableColumn<Appointment, LocalDateTime> endCol;
     @FXML private TableColumn<Customers, Integer> Customer_ID;
 
-/*    public TableView contactApptTable;
-    public TableColumn Appointment_ID;
-    public TableColumn titleCol;
-    public TableColumn contactTypeCol;
-    public TableColumn descriptionCol;
-    public TableColumn startCol;
-    public TableColumn endCol;
-    public TableColumn Customer_ID;*/
-
     @FXML private TextField totalCustomers;
     @FXML private TextField totalAppointments;
 
@@ -88,21 +79,20 @@ public class ReportsController implements Initializable {
         }));
     }
 
-
+    /**
+     * Selects the contact from the combobox
+     */
     public void selectContact(){
        selectedContact = contactCombobox.getSelectionModel().getSelectedItem();
        generateContactSchedule();
     }
+
 
     /**
      * Generates the columns based on the Contact selected from the dropdown.
      * @param
      */
     public void generateContactSchedule(){
-
-        //String selectedContact = contactCombobox.getValue();
-/*         selectedContact = contactCombobox.getSelectionModel().getSelectedItem();
-        if (selectedContact != null) {*/
 
             contactApptTable.setItems(contactFilter());
             Appointment_ID.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
@@ -112,10 +102,7 @@ public class ReportsController implements Initializable {
             startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
             endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
             Customer_ID.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
-
-       // }
-
-      }
+    }
 
 
     /**
@@ -128,8 +115,6 @@ public class ReportsController implements Initializable {
         dateCol.setCellValueFactory(new PropertyValueFactory<>("month"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         totalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
-
-
     }
 
 
@@ -147,19 +132,6 @@ public class ReportsController implements Initializable {
 
 
     /**
-     * An observable list holding contacts from the database. Used to initialize the "Contact" combobox.
-     * @return allContactNames
-     */
-
-    private ObservableList<String> contactList(){
-        ObservableList<String> allContactNames = FXCollections.observableArrayList();
-        for (Contacts contacts : ContactsDao.getAllContacts()){
-            allContactNames.add(contacts.getReportContactID() + " : " + contacts.getReportContactName());
-        }return allContactNames;
-    }
-
-
-    /**
      * 2nd LAMBDA function that filters contact appointments upon combobox selection. Simplified the code quite a bit and brought it down several lines from the original method.
      * @return contactFilteredList
      */
@@ -173,8 +145,6 @@ public class ReportsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
        contactCombobox.getItems().setAll(ContactsDao.getAllContacts());
-
-       //contactCombobox.setItems(contactList());
 
        setApptTables();
        setTotalTables();

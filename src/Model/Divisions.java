@@ -14,9 +14,10 @@ public class Divisions {
 
     }
 
+
     /**
-     * Getters
-     * @return
+     * Division Getters
+     * @return divisionID, divisionName
      */
     public int getDivisionID() {return divisionID;}
 
@@ -24,7 +25,7 @@ public class Divisions {
 
 
     /**
-     * Setters
+     * Division Setters
      * @param divisionID
      */
     public void setDivisionID(int divisionID) {this.divisionID = divisionID;}

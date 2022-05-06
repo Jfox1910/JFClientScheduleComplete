@@ -36,10 +36,6 @@ public class MainScreenController implements Initializable {
     private Parent root;
 
 
-    @FXML private TabPane clientScheduleTabPane;
-
-    @FXML private MainScreenController appointmentController;
-
     @FXML private TableView<Appointment> apptTableview;
     @FXML private TableColumn<Integer, Integer> apptIDCol;
     @FXML private TableColumn<String, String> apptTitleCol;
@@ -52,7 +48,6 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<String, Integer> apptCustomerIDCol;
     @FXML private TableColumn<String, Integer> apptUserIDCol;
 
-    @FXML private MainScreenController customerController;
     @FXML private TableView<Customers> customersTableView;
     @FXML private TableColumn<Customers, Integer> customerIdCol;
     @FXML private TableColumn<Customers, String> customerNameCol;
@@ -76,9 +71,10 @@ public class MainScreenController implements Initializable {
     /*
     TODO LIST COMPLETE PROJECT
     Must haves----------
-    TIME OVERLAP TESTING
-    POPULATE MODAPPT COMBOS
+    CHECK FOR NULL FIELDS
     JAVADOCS
+    CLEANUP
+    finished cleanup on: Model classes, Utils, DAO, Main, Controllers
      */
 
 
@@ -175,7 +171,6 @@ public class MainScreenController implements Initializable {
 
     /**
      * Add a customer screen/controller load method (Contained within the customer tab).
-     *
      * @param event
      * @throws IOException
      */
@@ -248,7 +243,7 @@ public class MainScreenController implements Initializable {
                 } else {
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setTitle("ERROR!");
-                    a.setHeaderText("The selected customer has an appointment scheduled. Please cancel all appointments for the selected customer and try again.");
+                    a.setHeaderText(selectedCustomer.getCustomerName() + " has an appointment scheduled. Please cancel all appointments for " + selectedCustomer.getCustomerName() + " and try again.");
                     a.showAndWait();
                 }
             }
@@ -301,7 +296,7 @@ public class MainScreenController implements Initializable {
 
 
     /**
-     * Shows all the scheduled appointments.
+     * Shows all the scheduled appointments in the database.
      */
     private void showAll() {
         appointments = AppointmentDAO.getAllAppointments();

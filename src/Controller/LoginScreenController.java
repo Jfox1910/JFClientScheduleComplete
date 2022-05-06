@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.time.ZoneId;
 
+
 /**
  * Login screen controller class. Accepts the users name and password, connects to the DB and verifies if they exist. If they do then it opens the application.
  * If not an error message alerts the user to the problem. Displays in French if needed.

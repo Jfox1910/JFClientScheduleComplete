@@ -66,18 +66,16 @@ public class Reports {
         this.Contact_ID = Contact_ID;
     }
 
-    public Reports(int customerTotals/*, int apointmentTotals*/) {
-        this.customerTotals = customerTotals;
-        //this.appointmentTotals = appointmentTotals;
-    }
 
-    public String getContact_Name() {
-        return Contact_Name;
-    }
+    /**
+     * Reports getters and setters
+     * @param customerTotals
+     */
+    public Reports(int customerTotals) {this.customerTotals = customerTotals;}
 
-    public void setContact_Name(String contact_Name) {
-        Contact_Name = contact_Name;
-    }
+    public String getContact_Name() {return Contact_Name;}
+
+    public void setContact_Name(String contact_Name) {Contact_Name = contact_Name;}
 
     public String getMonth() {return month;}
 

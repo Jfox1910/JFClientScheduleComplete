@@ -1,6 +1,5 @@
 package Dao;
 
-import Model.Contacts;
 import Model.Customers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,7 +74,6 @@ public class CustomersDao {
         }
         return divisionID;
     }
-
 
 
     /**
@@ -199,7 +197,10 @@ public class CustomersDao {
         }
     }
 
-
+    /**
+     * Gets the customer for the appointment modification
+     * @return
+     */
     public static ObservableList<Customers> getCustomerList() {
 
         ObservableList<Customers> listOfCustomers = FXCollections.observableArrayList();
@@ -221,34 +222,6 @@ public class CustomersDao {
         catch(Exception e) {
         }
         return listOfCustomers;
-    }
-
-    public static String getCustomerNameByID(int customerID)
-    {
-        String customerName = null;
-
-        try
-        {
-            String sql = "SELECT Customer_Name FROM customers WHERE Customer_ID = ?";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setInt(1, customerID);
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
-            {
-                customerName = rs.getString("Customer_Name");
-            }
-        }
-        catch (SQLException throwables)
-        {
-            throwables.printStackTrace();
-        }
-
-        String customerNameWithID = String.valueOf(customerID) + ": " + customerName;
-
-        return customerNameWithID;
     }
 
 
@@ -282,36 +255,6 @@ public class CustomersDao {
         }
         return null;
     }
-
-
-    /**
-     * Gets the customers name based off the ID given.
-     * @param customerID
-     * @return selectedCustomerName
-     */
-    public static String setCustomerName(int customerID) {
-        String customerName = null;
-
-        try {
-            String sql = "SELECT Customer_Name FROM customers WHERE Customer_ID = ?";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setInt(1, customerID);
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()) {
-                customerName = rs.getString("Customer_Name");
-            }
-        }
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String selectedCustomerName = String.valueOf(customerID) + ": " + customerName;
-        return selectedCustomerName;
-    }
-
-
 
 
     /**

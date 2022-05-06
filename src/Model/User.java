@@ -26,7 +26,10 @@ public class User {
     public User(int user_id) {this.userId = user_id; }
 
 
-    //Getters
+    /**
+     * user Getters
+     * @return userID, userName, userPassword, createdOn, createdBy, lastUpdatedBy, lastUpdatedOn
+     */
     public int getUserId() {return userId;}
 
     public String getUserName() {return userName;}
@@ -45,14 +48,17 @@ public class User {
 
 
     /**
-     * override for handling string issues in the comboboxes.
+     * override for handling strings in the comboboxes.
      * @return userId
      */
     @Override
     public String toString() {return (userId + " : " + userName);}
 
 
-    //Setters
+    /**
+     * User Setters
+     * @param userId
+     */
     public void setUserId(int userId) {this.userId = userId;}
 
     public void setUserName(String userName) {this.userName = userName;}
