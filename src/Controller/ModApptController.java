@@ -69,19 +69,6 @@ public class ModApptController implements Initializable {
      */
     public void onActionUpdate(javafx.event.ActionEvent event) throws IOException, ParseException {
 
-        //int appointmentID = selectedAppointment.getAppointment_ID();
-
-
-        /*selectedAppointment.setTitle(titleField.getText());
-        selectedAppointment.setDescription(descriptionField.getText());
-        selectedAppointment.setType(typeField.getText());
-        LocalDate date = appointmentDate.getValue();
-        selectedAppointment.setStart(LocalDateTime.of(date, startHourCombo.getValue()));
-        selectedAppointment.setEnd(LocalDateTime.of(date, endHourCombo.getValue()));
-        selectedAppointment.setUser_ID(User_ID);
-        selectedAppointment.setContact_ID(contactID);
-        selectedAppointment.setCustomer_ID(customerID);*/
-
         int appointmentID = Integer.parseInt(Appointment_ID.getText());
         String title = titleField.getText();
         String location = locationField.getText();
@@ -96,29 +83,6 @@ public class ModApptController implements Initializable {
 
         Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customer.getCustomerId(), user.getUserId(),contact.getContact_ID());
 
-
-        //int customerID = (int) customerCombobox.getSelectionModel().getSelectedIndex();
-        //int contactID = contactCombobox.getSelectionModel().getSelectedIndex() +1 ;
-        //int userID = (int) userComboBox.getSelectionModel().getSelectedItem();
-
-
-        //CLOSE TO WORKING> CHASE THIS TO GET AROUND ID ISSUES
-        //int customerID = Customers.getCustomerIDByName(customerCombobox.getValue().toString());
-        /*int customerID = getIdFromComboBox(customerCombobox);
-        int contactID = getIdFromComboBox(contactCombobox);
-        int User_ID = getIdFromComboBox(userComboBox);
-        selectedAppointment.setCustomer_ID(customerID);
-        selectedAppointment.setContact_ID(contactID);
-        selectedAppointment.setUser_ID(User_ID);*/
-
-
-        //int customerID = Customers.getCustomerIDByName(customerCombobox.getValue().toString());
-        //int contactID = Contacts.getContactIDByName(contactCombobox.getValue().toString());
-       // int contactID = contactCombobox.getSelectionModel().getSelectedIndex() +1;
-
-        //Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customerID,User_ID,contactID);
-
-
         if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() || userComboBox.getSelectionModel().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
@@ -131,8 +95,6 @@ public class ModApptController implements Initializable {
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
 
-
-                   // AppointmentDAO.updateAppointment(title,location,description,type,start,end,customerID,User_ID,contactID, appointmentID);
                     AppointmentDAO.updateAppointment(updateAppt);
 
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
@@ -177,12 +139,14 @@ public class ModApptController implements Initializable {
     }
 
 
-
     /**
      * Loads the modify appointment screen fields with the information of the selected appointment.
      * @param
      */
     public void getAppointment(Appointment selectedAppointment){
+
+        ObservableList<Contacts> contactList = ContactsDao.getContactList();
+        ObservableList<Customers> customerList = CustomersDao.getCustomerList();
 
         Appointment_ID.setText(String.valueOf(selectedAppointment.getAppointment_ID()));
         titleField.setText(String.valueOf(selectedAppointment.getTitle()));
@@ -190,70 +154,28 @@ public class ModApptController implements Initializable {
         descriptionField.setText(String.valueOf(selectedAppointment.getDescription()));
         typeField.setText(String.valueOf(selectedAppointment.getType()));
 
-        //TESTING
 
-        for (Contacts c : contactCombobox.getItems()) {
-            if (selectedAppointment.getContact_ID() == c.getContact_ID()) {
-                contactCombobox.setValue(c);
-                break;
-            }
-        }
-        for (Customers customers : customerCombobox.getItems()) {
-            if (selectedAppointment.getCustomer_ID() == customers.getCustomerId()) {
-                customerCombobox.setValue(customers);
+        Contacts selectedContact = null;
+        for(Contacts contact : contactList){
+            if(contact.getContactID() == selectedAppointment.getContact_ID()){
+                selectedContact = contact;
                 break;
             }
         }
 
-        //customerCombobox.setValue(CustomersDao.getCustomerNameByID(selectedAppointment.getCustomer_ID()));
-        //customerCombobox.setValue(selectedAppointment.getCustomer_ID() + " : " + selectedAppointment.getCustomer().getCustomerName());
+        Customers customer = null;
+        for(Customers selectedCustomer : customerList){
+            if(selectedCustomer.getCustomerId() == selectedAppointment.getCustomer_ID()){
+                customer = selectedCustomer;
+                break;
+            }
+        }
 
-        //customerCombobox.setValue(CustomersDao.setCustomerName(selectedAppointment.getCustomer_ID()));
-
-       // contactCombobox.setValue(ContactsDao.setContactName(selectedAppointment.getContact_ID()));
+        customerCombobox.setValue(customer);
+        contactCombobox.setValue(selectedContact);
         appointmentDate.setValue(selectedAppointment.getStart().toLocalDate());
         startHourCombo.setValue(LocalTime.from(selectedAppointment.getStart()));
         endHourCombo.setValue(LocalTime.from(selectedAppointment.getEnd()));
-    }
-
-
-    /**
-     * An observable list holding the users from the database. Used to initialize the "User" combobox.
-     * @return allUserNames
-     */
-    private ObservableList<String> userList(){
-        ObservableList<String> allUserNames = FXCollections.observableArrayList();
-        for (User allUsers : UserDao.getAllUsers()){
-            String loginName;
-            loginName = allUsers.getUserName();
-            allUserNames.add(loginName);
-        }return allUserNames;
-    }
-
-
-    /**
-     * An observable list holding customers from the database. Used to initialize the "Customer" combobox.
-     * @return customers
-     */
-    private ObservableList customerList(){
-        ObservableList<String> customers = FXCollections.observableArrayList();
-        for(Customers customer : CustomersDao.getAllCustomers()){
-            customers.add(String.valueOf(customer.getCustomerId()) + " : " + customer.getCustomerName());
-        }
-        return customers;
-    }
-
-
-
-    /**
-     * An observable list holding contacts from the database. Used to initialize the "Contact" combobox.
-     * @return allContactNames
-     */
-    private ObservableList<String> contactList(){
-        ObservableList<String> allContactNames = FXCollections.observableArrayList();
-        for (Contacts contacts : ContactsDao.getAllContacts()){
-            allContactNames.add(String.valueOf(/*contacts.getContactID() + " : " + */contacts.getContactName()));
-        }return allContactNames;
     }
 
 
@@ -272,16 +194,6 @@ public class ModApptController implements Initializable {
             alert.showAndWait();
             appointmentDate.getEditor().clear();
         }
-    }
-
-
-    /**
-     * Calls the getID to string method from Utils.
-     * @param comboBox
-     * @return
-     */
-    private int getIdFromComboBox(ComboBox comboBox) {
-        return Utils.getIdFromComboString((String) comboBox.getSelectionModel().getSelectedItem());
     }
 
 
@@ -308,25 +220,13 @@ public class ModApptController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //TESTING
-        //contactCombobox.setItems(ContactsDao.getAllContacts());
-        //customerCombobox.setItems(CustomersDao.getAllCustomers());
-       /* ObservableList<Customers> customers = CustomersDao.getCustomerNameList();
-        customerCombobox.setItems(customers);*/
 
-        startHourCombo.setItems(Utils.getStartTimeList());
-
-        endHourCombo.setItems(Utils.getEndTimeList());
         getAppointment(selectedAppointment);
-
+        startHourCombo.setItems(Utils.getStartTimeList());
+        endHourCombo.setItems(Utils.getEndTimeList());
         customerCombobox.setItems(CustomersDao.getAllCustomers());
         contactCombobox.setItems(ContactsDao.getAllContacts());
         userComboBox.setItems(UserDao.getAllUsers());
-
-        /*customerCombobox.setItems(customerList());
-        contactCombobox.setItems(contactList());
-        userComboBox.setItems(userList());*/
-
 
     }
 }

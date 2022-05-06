@@ -1,5 +1,6 @@
 package Dao;
 
+import Model.Contacts;
 import Model.Customers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -199,25 +200,27 @@ public class CustomersDao {
     }
 
 
-    public static ObservableList<Customers> getCustomerNameList(){
-        ObservableList<Customers> customersName = FXCollections.observableArrayList();
+    public static ObservableList<Customers> getCustomerList() {
+
+        ObservableList<Customers> listOfCustomers = FXCollections.observableArrayList();
 
         try {
-            String sql = "SELECT (Customer_ID || ' ' || Customer_Name) FROM client_schedule.customers";
+
+            String sql = "SELECT Customer_ID, Customer_Name from customers";
+
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()){
-                int customerId = rs.getInt("Customer_ID");
-                String customerName = rs.getString("Customer_Name");
+            while(rs.next()) {
 
-                Customers customers = new Customers(customerId,customerName);
-                customersName.add(customers);
+                int customerID = rs.getInt("Customer_ID");
+                String customerName = rs.getString("Customer_Name");
+                listOfCustomers.add(new Customers(customerID, customerName));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
-        return customersName;
+        catch(Exception e) {
+        }
+        return listOfCustomers;
     }
 
     public static String getCustomerNameByID(int customerID)

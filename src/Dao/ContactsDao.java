@@ -95,6 +95,30 @@ public class ContactsDao {
         return contactID;
     }
 
+    public static ObservableList<Contacts> getContactList() {
+
+        ObservableList<Contacts> listOfContacts = FXCollections.observableArrayList();
+
+        try {
+
+            String sql = "SELECT Contact_Name, Contact_ID from contacts";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+
+                int contactID = rs.getInt("Contact_ID");
+                String contactName = rs.getString("contact_Name");
+                listOfContacts.add(new Contacts(contactID, contactName));
+            }
+        }
+        catch(Exception e) {
+        }
+        return listOfContacts;
+    }
+
+
     public static Optional<Contacts> getContact(int Contact_ID) {
 
         String sql = "SELECT * FROM contacts WHERE Contact_ID = ?;";

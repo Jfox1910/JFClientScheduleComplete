@@ -76,9 +76,8 @@ public class MainScreenController implements Initializable {
     /*
     TODO LIST COMPLETE PROJECT
     Must haves----------
-    TIME OVERLAP
-    BROKEN MOD CUSTOMER
-    Fix contact combo
+    TIME OVERLAP TESTING
+    POPULATE MODAPPT COMBOS
     JAVADOCS
      */
 
@@ -267,7 +266,6 @@ public class MainScreenController implements Initializable {
      * @return modifyCustomers
      */
     public static Customers getSelectedCustomer() {return modifyCustomers;}
-
     public static Appointment getSelectedAppointment() {return modifyAppointment;}
 
 

@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -122,6 +121,7 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
      * @param customers
      */
     public void getCustomer(Customers customers){
+
         CustomerID.setText(String.valueOf(customers.getCustomerId()));
         CustomerName.setText(String.valueOf(customers.getCustomerName()));
         CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
@@ -129,7 +129,6 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
         CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
         customerCountry.setValue(CustomersDao.getCountry(customers));
         customerDivision.setValue(customers.getDivisionName());
-
     }
 
 
@@ -148,8 +147,8 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
      * @return countries
      */
     public ObservableList countryList(){
-        ObservableList<String> countries = FXCollections.observableArrayList();
 
+        ObservableList<String> countries = FXCollections.observableArrayList();
         for(Countries country : CountriesDao.getAllCountries()){
             countries.add(country.getName());
         }
@@ -162,8 +161,8 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
      * @return divisions
      */
     public ObservableList divisionList(){
-        ObservableList<String> divisions = FXCollections.observableArrayList();
 
+        ObservableList<String> divisions = FXCollections.observableArrayList();
         for(Divisions division : DivisionsDao.getAllDivisions()){
             divisions.add(division.getDivisionName());
         }
@@ -176,6 +175,7 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
      * @return divisions
      */
     public ObservableList divisionsByCountry(String modCustomerCountry){
+
         ObservableList<String> divisions = FXCollections.observableArrayList();
         for(String divisionName : DivisionsDao.getAllByCountry(modCustomerCountry)){
             divisions.add(divisionName);
