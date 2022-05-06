@@ -205,7 +205,6 @@ public final class AppointmentDAO {
 
 
     public static boolean checkForOverlap(Timestamp start, Timestamp end, int customerID, int appointmentID)  {
-
         boolean overlap = false;
 
         try {

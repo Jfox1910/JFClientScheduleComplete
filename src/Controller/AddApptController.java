@@ -107,25 +107,25 @@ public class AddApptController implements Initializable {
             alert.setTitle("Attention!");
             alert.setContentText("All fields must be filled before saving.");
             alert.showAndWait();
-        } else if (start.equals(end) || start.isAfter(end)){
-
+        }else if (start.equals(end) || start.isAfter(end)){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setContentText("Start time must be before the end time.");
             alert.showAndWait();
-        }
-        if (overlap == true) {
+        }else if (overlap == true) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
-            alert.setContentText("You are attempting to schedule an appoint for " +customerCombobox.getValue() + " that conflicts with a previously scheduled appointment. Please change your times and try again.");
+            alert.setContentText(customerCombobox.getValue() + "\n"
+                    + "has a conflicting appointment previously scheduled." + "\n"
+                    + "Please choose a different time and try again.");
             alert.showAndWait();
         }
-
 
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new appointment.");
-            alert.setContentText("By clicking OK, you will be adding an appointment to the system. Are you sure you wish to continue?");
+            alert.setContentText("By clicking OK, you will be scheduling an appointment for " + "\n"
+                    + customerCombobox.getValue() + ". Are you sure you wish to continue?");
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
 
@@ -133,7 +133,7 @@ public class AddApptController implements Initializable {
 
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                     alert2.setTitle("Success!");
-                    alert2.setContentText("Appointment has been added.");
+                    alert2.setContentText("Appointment for " +customerCombobox.getValue() + " has been added.");
                     alert2.showAndWait();
 
                     Parent root = null;

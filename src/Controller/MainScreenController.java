@@ -76,8 +76,7 @@ public class MainScreenController implements Initializable {
     /*
     TODO LIST COMPLETE PROJECT
     Must haves----------
-    TIME OVERLAP TESTING
-    POPULATE MODAPPT COMBOS
+    CHECK FOR NULL FIELDS
     JAVADOCS
      */
 
