@@ -30,8 +30,8 @@ public class Main extends Application {
         }}
 
     public static void main(String[] args) {
-        //Uncomment the following to bypass language settings and load the login screen in French.
-       // Locale.setDefault(new Locale("fr"));
+        //Uncomment the following line to bypass language settings and load the login screen in French:
+        // Locale.setDefault(new Locale("fr"));
 
         JDBC.startConnection();
         launch(args);

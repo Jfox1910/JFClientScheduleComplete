@@ -1,33 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="67d07f8f-fda1-4fa4-b295-470d9e0feff4" name="Changes" comment="In Progress. Javadoc todo. Some cleanup, testing needed.">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+    <list default="true" id="67d07f8f-fda1-4fa4-b295-470d9e0feff4" name="Changes" comment="In Progress. Javadoc todo. Some cleanup needed. TERM BREAK">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoginAttempts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LoginAttempts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/AddApptController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AddApptController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/AddCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AddCustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/LoginScreenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LoginScreenController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/MainScreenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MainScreenController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ModApptController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ModApptController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ModCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ModCustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ReportsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ReportsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dao/AppointmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/AppointmentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dao/ContactsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/ContactsDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dao/CountriesDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/CountriesDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dao/CustomersDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/CustomersDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/UserDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Appointment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Contacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Contacts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Countries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Countries.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Customers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Customers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Divisions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Divisions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Reports.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/README" beforeDir="false" afterPath="$PROJECT_DIR$/src/README" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/JDBC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/JDBC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Utils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,17 +35,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.4275862" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jfox1\Desktop\JFC195WGU\JFClientSchedule-master\JFClientSchedule-master\src\View" />
@@ -115,13 +86,10 @@
       <workItem from="1650836578362" duration="81856000" />
       <workItem from="1651877162797" duration="2903000" />
       <workItem from="1654029237069" duration="85000" />
-    </task>
-    <task id="LOCAL-00056" summary="Current">
-      <created>1648408497471</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1648408497471</updated>
+      <workItem from="1654029390849" duration="1243000" />
+      <workItem from="1654030713462" duration="1247000" />
+      <workItem from="1656703856943" duration="711000" />
+      <workItem from="1656705271965" duration="991000" />
     </task>
     <task id="LOCAL-00057" summary="Current">
       <created>1648408743871</created>
@@ -459,7 +427,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651876104113</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL-00105" summary="In Progress. Javadoc todo. Some cleanup needed. TERM BREAK">
+      <created>1654029705800</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1654029705800</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -495,6 +470,11 @@
     <MESSAGE value="In Progress. Reports/Javadoc todo." />
     <MESSAGE value="In Progress. Reports Done. ModAPPT Fixed, Comboboxes fixed./Javadoc and overlaps todo. Some cleanup needed and debugging." />
     <MESSAGE value="In Progress. Javadoc todo. Some cleanup, testing needed." />
-    <option name="LAST_COMMIT_MESSAGE" value="In Progress. Javadoc todo. Some cleanup, testing needed." />
+    <MESSAGE value="In Progress. Javadoc todo. Some cleanup needed. TERM BREAK" />
+    <option name="LAST_COMMIT_MESSAGE" value="In Progress. Javadoc todo. Some cleanup needed. TERM BREAK" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
