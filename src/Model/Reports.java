@@ -2,6 +2,7 @@ package Model;
 
 import java.time.LocalDateTime;
 
+
 /**
  * Reports model object class. Used in reports.
  */

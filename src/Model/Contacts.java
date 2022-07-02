@@ -26,6 +26,7 @@ public class Contacts {
     /**
      * Contacts Getters
      * @return contactID, contactName, contactEmail
+     * needs to be cleaned out. Lots of old stuff I don't need anymore.
      */
     public int getContactID() {return contactID;}
 

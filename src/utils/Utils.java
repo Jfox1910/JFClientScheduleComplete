@@ -1,6 +1,5 @@
 
 package utils;
-import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

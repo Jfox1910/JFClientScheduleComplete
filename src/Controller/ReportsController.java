@@ -15,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,7 +49,6 @@ public class ReportsController implements Initializable {
     @FXML private TextField totalAppointments;
 
     private static ObservableList<Contacts> allContacts = FXCollections.observableArrayList();
-    private ObservableList<Appointment> allAppointments;
     private ObservableList<Reports> reports;
 
     Contacts selectedContact;
@@ -79,6 +77,7 @@ public class ReportsController implements Initializable {
         }));
     }
 
+
     /**
      * Selects the contact from the combobox
      */
@@ -90,7 +89,6 @@ public class ReportsController implements Initializable {
 
     /**
      * Generates the columns based on the Contact selected from the dropdown.
-     * @param
      */
     public void generateContactSchedule(){
 
@@ -106,7 +104,7 @@ public class ReportsController implements Initializable {
 
 
     /**
-     * Sets all of the table in the Appt. by type table.
+     * Sets all of the table in the Appt. report by type table.
      */
         private void setApptTables(){
         reports = ReportsDAO.getAppointmentsByType();
@@ -132,7 +130,8 @@ public class ReportsController implements Initializable {
 
 
     /**
-     * 2nd LAMBDA function that filters contact appointments upon combobox selection. Simplified the code quite a bit and brought it down several lines from the original method.
+     * 2nd LAMBDA function that filters contact appointments upon combobox selection. I used this because it simplified the code and brought it down several lines from the original method.
+     * It also allowed me to delete an entire DB request from the ReportsDAO class that was using a lot of code.
      * @return contactFilteredList
      */
     public ObservableList<Appointment> contactFilter() {

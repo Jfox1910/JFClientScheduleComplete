@@ -2,7 +2,6 @@ package Controller;
 
 import Dao.*;
 import Model.*;
-import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +26,6 @@ public class AddCustomerController implements Initializable {
     @FXML private TextField CustomerPhone;
     @FXML private ComboBox customerCountry;
     @FXML private ComboBox customerDivision;
-    User loginuser;
 
     int retrieveDivisionID = 0;
     int retrieveUserID = 0;

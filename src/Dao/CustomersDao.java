@@ -8,11 +8,11 @@ import utils.JDBC;
 import java.sql.*;
 import java.util.Optional;
 
+
 /**
  * Customer DB access class
  */
 public class CustomersDao {
-
     private static final Connection connection = JDBC.getConnection();
 
 
@@ -188,7 +188,6 @@ public class CustomersDao {
         try {
             String sqldeleteCustomer = "DELETE from customers WHERE Customer_ID = ?";
             PreparedStatement psdeleteCustomer = JDBC.getConnection().prepareStatement(sqldeleteCustomer);
-
             psdeleteCustomer.setInt(1, customerID);
 
             psdeleteCustomer.execute();
@@ -196,6 +195,7 @@ public class CustomersDao {
             throwables.printStackTrace();
         }
     }
+
 
     /**
      * Gets the customer for the appointment modification
@@ -206,9 +206,7 @@ public class CustomersDao {
         ObservableList<Customers> listOfCustomers = FXCollections.observableArrayList();
 
         try {
-
             String sql = "SELECT Customer_ID, Customer_Name from customers";
-
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -228,12 +226,11 @@ public class CustomersDao {
     public static Optional<Customers> getCustomerID (int customerID){
 
         String sql = "SELECT * from customers WHERE Customer_ID = ?";
-
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, customerID);
-
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 int customerId = rs.getInt("Customer_ID");
                 String customerName = rs.getString("Customer_Name");

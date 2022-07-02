@@ -37,7 +37,6 @@ public final class AppointmentDAO {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
         return appointments;
     }
 
@@ -83,7 +82,6 @@ public final class AppointmentDAO {
 
     /**
      * DB access used in the modify customer method.
-     * @param
      */
 
    public static void updateAppointment(Appointment updateAppt){
@@ -120,10 +118,10 @@ public final class AppointmentDAO {
 
         String sql = "DELETE from appointments where Appointment_ID = ?";
         try {
-            PreparedStatement psdc = JDBC.getConnection().prepareStatement(sql);
-            psdc.setInt(1, appointmentID);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, appointmentID);
 
-            psdc.execute();
+            ps.execute();
 
         }
         catch (SQLException exception){
@@ -138,8 +136,10 @@ public final class AppointmentDAO {
      * @return impendingAppointments
      */
     public static ObservableList<Appointment> getImpendingAppt(LocalDateTime now) {
+
         ObservableList<Appointment> impendingAppointment = FXCollections.observableArrayList();
         LocalDateTime plusFifteen = now.plusMinutes(15);
+
         String query = "SELECT * FROM appointments WHERE Start BETWEEN ? AND ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(query );

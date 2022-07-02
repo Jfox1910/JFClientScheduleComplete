@@ -2,7 +2,6 @@ package Controller;
 
 import Dao.*;
 import Model.*;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -158,7 +157,6 @@ public class ModApptController implements Initializable {
 
     /**
      * Loads the modify appointment screen fields with the information of the selected appointment.
-     * @param
      */
     public void getAppointment(Appointment selectedAppointment){
 

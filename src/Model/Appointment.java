@@ -3,6 +3,7 @@ package Model;
 import Dao.CustomersDao;
 import java.time.LocalDateTime;
 
+
 /**
  * Appointment model object class. Used in appointments.
  */
@@ -10,14 +11,12 @@ public class Appointment {
 
     public static Customers customers;
     public static Appointment appointment;
-
     private int Appointment_ID;
     private String title;
     private String description;
     private String location;
     private String type;
     private String userName;
-
     private LocalDateTime start;
     private LocalDateTime end;
     private int Customer_ID;
@@ -29,6 +28,7 @@ public class Appointment {
 
 
     public Appointment(int customerID) {this.Customer_ID = customerID;}
+
 
     public Appointment(String userName, String contactName){
         this.userName = userName;

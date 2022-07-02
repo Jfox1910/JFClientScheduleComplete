@@ -3,7 +3,7 @@ Josh Fox
 Student ID: #001053580
 jfox76@wgu.edu
 
-2/28/2022 to 4/29/22
+2/28/2022 to 5/3/22
 
 TITLE:
 Appointment Scheduling System.
@@ -27,6 +27,7 @@ however, administrative functions such as adding users are beyond the scope of t
 Your application should be organized logically using one or more design patterns and generously commented using Javadoc so your code can be read and maintained by other programmers.
 
 VERSION: 1.0
+OpenJDK Version 17.0.2
 
 Built with:
 IntelliJ IDEA 2021.3.3 (Ultimate Edition)
@@ -51,7 +52,6 @@ Non-Bundled Plugins:
     com.intellij.javafx (1.0.4)
     org.jetbrains.kotlin (213-1.6.10-release-961-IJ6777.52)
 
-Kotlin: 213-1.6.10-release-961-IJ6777.52
 
 INSTRUCTIONS FOR USE:
 This version of the program must be run from within Intellij using the following libraries and jar files:
@@ -67,13 +67,15 @@ your javafx "lib" folder. For example C:\Program Files\Java\openjfx-17.0.1_windo
 Using the following path edited to your local installation folder:
 
 --module-path
-"C:\openjfx-17.0.1_windows-x64_bin-sdk\javafx-sdk-17.0.1\lib"
+"C:\openjfx-17.0.1_windows-x64_bin-sdk\javafx-sdk-17.0.1\lib" (YOUR PATH MAY BE DIFFERENT)
 --add-modules
 javafx.controls,javafx.fxml
 
 -> Upon loading to the Login screen use the following
 USERNAME: test
 PASSWORD: test
+Note the user "test" must already be in the database. This assumes that you are using the pre-existing DB that was given
+in the class. Additionally a "user" with different credentials may be added to the user table in the DB and would have similar access.
 
 There are several lambda functions including:
 LAMBDA FUNCTIONS in ReportsController line #138

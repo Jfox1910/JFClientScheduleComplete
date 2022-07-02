@@ -41,7 +41,4 @@ public abstract class JDBC {
         {
         }
     }
-    //delete. found a better method.
-    public static String getLoginUser() {return userName;}
-
 }
