@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="67d07f8f-fda1-4fa4-b295-470d9e0feff4" name="Changes" comment="In Progress. Some cleanup needed.">
+    <list default="true" id="67d07f8f-fda1-4fa4-b295-470d9e0feff4" name="Changes" comment="Final">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoginAttempts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LoginAttempts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/AddCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AddCustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/MainScreenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MainScreenController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoginAttempts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/login_activity.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/LoginScreenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LoginScreenController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ModApptController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ModApptController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ReportsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ReportsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dao/AppointmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/AppointmentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dao/ContactsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/ContactsDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dao/CustomersDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/CustomersDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ModCustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ModCustomerController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Dao/DivisionsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/DivisionsDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dao/ReportsDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dao/ReportsDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Appointment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Contacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Contacts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Countries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Countries.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Reports.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/README" beforeDir="false" afterPath="$PROJECT_DIR$/src/README" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/JDBC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/JDBC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Divisions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Divisions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/README" beforeDir="false" afterPath="$PROJECT_DIR$/src/readme.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +43,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/jfox1/Desktop/JFC195WGU/JFClientSchedule-master/JFClientSchedule-master",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
@@ -108,14 +99,9 @@
       <workItem from="1654029390849" duration="1243000" />
       <workItem from="1654030713462" duration="1247000" />
       <workItem from="1656703856943" duration="711000" />
-      <workItem from="1656705271965" duration="4524000" />
-    </task>
-    <task id="LOCAL-00058" summary="Current">
-      <created>1648411012850</created>
-      <option name="number" value="00058" />
-      <option name="presentableId" value="LOCAL-00058" />
-      <option name="project" value="LOCAL" />
-      <updated>1648411012850</updated>
+      <workItem from="1656705271965" duration="4982000" />
+      <workItem from="1656721759491" duration="156000" />
+      <workItem from="1656963168612" duration="15117000" />
     </task>
     <task id="LOCAL-00059" summary="Current">
       <created>1648518264270</created>
@@ -453,7 +439,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656717746448</updated>
     </task>
-    <option name="localTasksCounter" value="107" />
+    <task id="LOCAL-00107" summary="Final">
+      <created>1656721193379</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1656721193379</updated>
+    </task>
+    <option name="localTasksCounter" value="108" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -491,7 +484,8 @@
     <MESSAGE value="In Progress. Javadoc todo. Some cleanup, testing needed." />
     <MESSAGE value="In Progress. Javadoc todo. Some cleanup needed. TERM BREAK" />
     <MESSAGE value="In Progress. Some cleanup needed." />
-    <option name="LAST_COMMIT_MESSAGE" value="In Progress. Some cleanup needed." />
+    <MESSAGE value="Final" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

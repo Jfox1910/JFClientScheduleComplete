@@ -23,6 +23,29 @@ public class DivisionsDao {
     public static ObservableList<Divisions> getAllDivisions(){
         ObservableList<Divisions> allDivisions = FXCollections.observableArrayList();
         try {
+            String sql = "SELECT * FROM client_schedule.first_level_divisions";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Divisions newDivision = new Divisions(
+                rs.getInt("Division_ID"),
+                rs.getString("Division"),
+                rs.getInt("Country_ID")
+                );
+
+                allDivisions.add(newDivision);
+            }
+            ps.close();
+        } catch (SQLException throwables){
+            throwables.printStackTrace();;
+        }
+        return allDivisions;
+    }
+
+/*    public static ObservableList<Divisions> getAllDivisions(){
+        ObservableList<Divisions> allDivisions = FXCollections.observableArrayList();
+        try {
             String sql = "SELECT Division_ID, Division FROM client_schedule.first_level_divisions";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -38,7 +61,7 @@ public class DivisionsDao {
             throwables.printStackTrace();;
         }
         return allDivisions;
-    }
+    }*/
 
 
     /**

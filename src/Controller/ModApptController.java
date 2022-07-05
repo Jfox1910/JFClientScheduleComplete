@@ -95,14 +95,14 @@ public class ModApptController implements Initializable {
             alert.setTitle("ATTENTION!");
             alert.setContentText("Start time must be before the end time.");
             alert.showAndWait();
-        }else if (overlap == true) {
+        }/*else if (overlap == true) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setContentText(customerCombobox.getValue() + "\n"
                     + "has a conflicting appointment previously scheduled." + "\n"
                     + "Please choose a different time and try again.");
             alert.showAndWait();
-        }
+        }*/
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new appointment.");

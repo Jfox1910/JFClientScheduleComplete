@@ -8,9 +8,13 @@ public class Divisions {
     private int divisionID;
     private String divisionName;
 
-    public Divisions(int divisionID, String divisionName) {
+    private int countryID;
+
+    public Divisions(int divisionID, String divisionName, int countryID) {
         this.divisionID = divisionID;
         this.divisionName = divisionName;
+
+        this.countryID = countryID;
 
     }
 
@@ -23,6 +27,7 @@ public class Divisions {
 
     public String getDivisionName() {return divisionName;}
 
+    public int getCountryID() {return countryID;}
 
     /**
      * Division Setters
@@ -33,6 +38,8 @@ public class Divisions {
     public String divisionToString(){return "[" + divisionID + "]" + divisionName;}
 
     public void setDivisionName(String divisionName) {this.divisionName = divisionName;}
+
+    public void setCountryID(int countryID) {this.countryID = countryID;}
 }
 
 

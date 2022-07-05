@@ -25,7 +25,7 @@ import java.time.ZoneId;
 /**
  * Login screen controller class. Accepts the users name and password, connects to the DB and verifies if they exist. If they do then it opens the application.
  * If not an error message alerts the user to the problem. Displays in French if needed.
- * Logs the username, password and time to a textfile called LoginAttempts.txt stored in the SRC folder
+ * Logs the username, password and time to a textfile called login_activity.txt stored in the SRC folder
  */
 
 public class LoginScreenController implements Initializable {
@@ -38,7 +38,7 @@ public class LoginScreenController implements Initializable {
     public Button cancelButton;
     public Label userLocale;
 
-    private static final String reportsFile = "LoginAttempts.txt";
+    private static final String reportsFile = "login_activity.txt";
     boolean loginSuccess = false;
     private final String userLocation = ZoneId.systemDefault().getId();
     private ResourceBundle rb;
@@ -89,7 +89,7 @@ public class LoginScreenController implements Initializable {
 
 
     /**
-     * Writes a log of login attempts to a textfile LoginAttempts.txt.
+     * Writes a log of login attempts to a textfile login_activity.txt.
      * @param userName
      * @param password
      * @param successfulLogin

@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 
@@ -119,6 +120,7 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
      * Loads the modify customer screen fields with the information of the selected customer.
      * @param customers
      */
+/*
     public void getCustomer(Customers customers){
 
         CustomerID.setText(String.valueOf(customers.getCustomerId()));
@@ -126,9 +128,16 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
         CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
         CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
         CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
+
+        //customerCountry.getSelectionModel().select(customers.getCustomerCountry());
+        customerDivision.getSelectionModel().select(customers.getCustomerDivision());
+
+        //customerDivision.getSelectionModel().select(customers.getDivisionName());
         customerCountry.setValue(CustomersDao.getCountry(customers));
-        customerDivision.setValue(customers.getDivisionName());
+        //customerDivision.setValue(customers.getDivisionName());
+        //customerDivision.setValue(customers.getCustomerDivision());
     }
+*/
 
 
     /**
@@ -140,6 +149,19 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
         customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
     }
 
+/*    public void handleCountryComboBox(ActionEvent actionevent){
+        ObservableList<String> divisionList = FXCollections.observableArrayList();
+        try {
+            ObservableList<Divisions> divisions = DivisionsDao.getAllDivisions();
+            if (divisions != null) {
+                for (Divisions division: divisions) {
+                    divisionList.add(division.getDivisionName());
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }*/
 
     /**
      * An observable list holding the countries from the database. Used to initialize the "Country" combobox.
@@ -154,6 +176,37 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
         return countries;
     }
 
+    //TESTING
+
+/*    private void countryCombo(){
+        ObservableList<String> countryList = FXCollections.observableArrayList();
+
+        try {
+            ObservableList<Countries> countries = CountriesDao.getAllCountries();;
+            if (countries != null) {
+                for (Countries country: countries) {
+                    countryList.add(country.getName());
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        customerCountry.setItems(countryList);
+    }
+
+    private void divisionCombo(){
+        ObservableList<String> divisionList = FXCollections.observableArrayList();
+
+        ObservableList<Divisions> divisions = DivisionsDao.getAllDivisions();;
+        if (divisions != null) {
+            for (Divisions division: divisions) {
+                divisionList.add(division.getDivisionName());
+            }
+        }
+        customerDivision.setItems(divisionList);
+    }*/
+
 
     /**
      * An observable list holding the divisions from the database.
@@ -162,8 +215,10 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
     public ObservableList divisionList(){
 
         ObservableList<String> divisions = FXCollections.observableArrayList();
-        for(Divisions division : DivisionsDao.getAllDivisions()){
-            divisions.add(division.getDivisionName());
+        if (divisions != null) {
+            for (Divisions division : DivisionsDao.getAllDivisions()) {
+                divisions.add(division.getDivisionName());
+            }
         }
         return divisions;
     }
@@ -175,20 +230,42 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
      */
     public ObservableList divisionsByCountry(String modCustomerCountry){
 
-        ObservableList<String> divisions = FXCollections.observableArrayList();
+        ObservableList<String> divisionByCountry = FXCollections.observableArrayList();
         for(String divisionName : DivisionsDao.getAllByCountry(modCustomerCountry)){
-            divisions.add(divisionName);
+            divisionByCountry.add(divisionName);
         }
-        return divisions;
+        return divisionByCountry;
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        getCustomer(customers);
         customerCountry.setItems(countryList());
         customerDivision.setItems(divisionList());
+
+        CustomerID.setText(String.valueOf(customers.getCustomerId()));
+        CustomerName.setText(String.valueOf(customers.getCustomerName()));
+        CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
+        CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
+        CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
+        //customerCountry.setValue(CustomersDao.getCountry(customers));
+        customerCountry.getSelectionModel().select(CustomersDao.getCountry(customers));
+        customerDivision.getSelectionModel().select(customers.getDivisionName());
+
+        //customerCountry.getSelectionModel().select(customers.getCustomerCountry());
+        //customerDivision.getSelectionModel().select(customers.getCustomerDivision());
+
+        //customerDivision.getSelectionModel().select(customers.getDivisionName());
+        //customerCountry.setValue(CustomersDao.getCountry(customers));
+        //customerDivision.setValue(customers.getDivisionName());
+        //customerDivision.setValue(customers.getCustomerDivision());
+
+        //getCustomer(customers);
+        //divisionCombo();
+        //countryCombo();
+
+        //setCustomerDivision();
 
     }
 }
