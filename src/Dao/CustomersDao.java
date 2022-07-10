@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import utils.JDBC;
 
 import java.sql.*;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -259,7 +260,7 @@ public class CustomersDao {
      * @param customers
      * @return
      */
-    public static String getCountry(Customers customers){
-        return CountriesDao.getCountryID(DivisionsDao.getCountryDivision(CustomersDao.getCustomerDivision(customers)));
-    }
+    /*public static String getCountry(Customers customers){
+        return CountriesDao.getCountryID(DivisionsDao.test(CustomersDao.getCustomerDivision(customers)));
+    }*/
 }

@@ -40,6 +40,29 @@ public final class AppointmentDAO {
         return appointments;
     }
 
+    public static ObservableList<Appointment> getAppointmentsByCustomer(int customerID){
+
+        ObservableList<Appointment> customerAppointment = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * FROM appointments WHERE Customer_ID = ?;";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerID);
+
+            ResultSet results = ps.executeQuery();
+
+            while (results.next()) {
+                customerAppointment.add(createAppointment(results));
+            }
+
+            return customerAppointment;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return customerAppointment;
+    }
+
 
     /**
      * Used to add a new appointment to the database.
@@ -87,7 +110,7 @@ public final class AppointmentDAO {
    public static void updateAppointment(Appointment updateAppt){
 
         try {
-            String sql = "UPDATE appointments SET Title=?, Description=?, Location=?, Type=?, Start=?, End=?, Last_Update=NOW(), Last_Updated_By = ?, Customer_ID=?, User_ID = ?, Contact_ID=? WHERE Appointment_ID=?";
+            String sql = "UPDATE appointments SET Title=?, Description=?, Location=?, Type=?, Start=?, End=?, Last_Update=NOW(), Last_Updated_By = ?, Customer_ID=?, Contact_ID=? WHERE Appointment_ID=?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setString(1,updateAppt.getTitle());
@@ -96,11 +119,10 @@ public final class AppointmentDAO {
             ps.setString(4,updateAppt.getType());
             ps.setTimestamp(5, Timestamp.valueOf(updateAppt.getStart()));
             ps.setTimestamp(6, Timestamp.valueOf(updateAppt.getEnd()));
-            ps.setString(7, UserDao.getLoggedinUser().getUserName());
+            ps.setInt(7, updateAppt.getUser_ID());
             ps.setInt(8, updateAppt.getCustomer_ID());
-            ps.setInt(9, updateAppt.getUser_ID());
-            ps.setInt(10, updateAppt.getContact_ID());
-            ps.setInt(11, updateAppt.getAppointment_ID());
+            ps.setInt(9, updateAppt.getContact_ID());
+            ps.setInt(10, updateAppt.getAppointment_ID());
 
             ps.execute();
 
@@ -117,6 +139,21 @@ public final class AppointmentDAO {
     public static void deleteAppointment(int appointmentID) {
 
         String sql = "DELETE from appointments where Appointment_ID = ?";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, appointmentID);
+
+            ps.execute();
+
+        }
+        catch (SQLException exception){
+            exception.printStackTrace();
+        }
+    }
+
+    public static void deleteCustomerSpecificAppointments(int appointmentID) {
+
+        String sql = "DELETE from appointments where Appointment_ID = ? AND Customer_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, appointmentID);

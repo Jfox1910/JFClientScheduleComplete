@@ -1,6 +1,9 @@
 package Controller;
 
 import Dao.CountriesDao;
+import static Dao.CountriesDao.getAllCountries;
+import static Dao.DivisionsDao.getAllDivisions;
+import static Dao.DivisionsDao.getCountryDivision;
 import Dao.CustomersDao;
 import Dao.DivisionsDao;
 import Model.Countries;
@@ -34,14 +37,53 @@ public class ModCustomerController implements Initializable{
     @FXML private TextField CustomerAddress;
     @FXML private TextField CustomerZip;
     @FXML private TextField CustomerPhone;
-    @FXML private ComboBox customerCountry;
-    @FXML private ComboBox customerDivision;
+    @FXML private ComboBox <Countries> customerCountry;
+    @FXML private ComboBox <Divisions> customerDivision;
 
     private Stage stage;
     private Scene scene;
     private Parent root;
+    int retrieveDivisionID = 0;
 
     private Customers customers = MainScreenController.getSelectedCustomer();
+
+
+    /**
+     * Loads the modify customer screen fields with the information of the selected customer.
+     * @param customers
+     */
+    public void getCustomer(Customers customers){
+
+        int thisCustomerDivision = customers.getCustomerDivision();
+        int thisCustomerCountry = customers.getCustomerCountry();
+        CustomerID.setText(String.valueOf(customers.getCustomerId()));
+        CustomerName.setText(String.valueOf(customers.getCustomerName()));
+        CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
+        CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
+        CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
+        System.out.println(thisCustomerCountry);
+
+
+        customerCountry.getSelectionModel().select(thisCustomerCountry);
+        System.out.println(thisCustomerCountry);
+
+        handleCountryComboBox(null);
+        System.out.println(thisCustomerCountry);
+        customerDivision.setValue(Divisions.divisionByCountry(thisCustomerDivision));
+        System.out.println(thisCustomerCountry);
+
+        //customerCountry.setValue(Countries.countryByDivision(thisCustomerCountry));
+
+        //customerCountry.setValue(Countries.countryByDivision(thisCustomerCountry));
+
+        //customerCountry.getSelectionModel().select(thisCustomerCountry);
+
+        //customerDivision.getSelectionModel().select(thisCustomerDivision);
+
+
+
+
+    }
 
 
     /**
@@ -81,7 +123,9 @@ public class ModCustomerController implements Initializable{
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
-        int modCustomerDivision = DivisionsDao.getAllDivisionsByName(customerDivision.getValue().toString());
+        Divisions getCustomerDivision = customerDivision.getSelectionModel().getSelectedItem();
+        int modCustomerDivision = getCustomerDivision.getDivisionID();
+        //int modCustomerDivision = DivisionsDao.getAllDivisionsByName(customerDivision.getValue().toString());
         //Used to verify a division has been selected
         int checkDivision = customerDivision.getSelectionModel().getSelectedIndex() +1;
 
@@ -117,110 +161,20 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
 
 
     /**
-     * Loads the modify customer screen fields with the information of the selected customer.
-     * @param customers
-     */
-/*
-    public void getCustomer(Customers customers){
-
-        CustomerID.setText(String.valueOf(customers.getCustomerId()));
-        CustomerName.setText(String.valueOf(customers.getCustomerName()));
-        CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
-        CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
-        CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
-
-        //customerCountry.getSelectionModel().select(customers.getCustomerCountry());
-        customerDivision.getSelectionModel().select(customers.getCustomerDivision());
-
-        //customerDivision.getSelectionModel().select(customers.getDivisionName());
-        customerCountry.setValue(CustomersDao.getCountry(customers));
-        //customerDivision.setValue(customers.getDivisionName());
-        //customerDivision.setValue(customers.getCustomerDivision());
-    }
-*/
-
-
-    /**
      * Handles populating the COUNTRY combobox
      */
-    public void handleCountryComboBox(){
+  /*  public void handleCountryComboBox(){
 
         String selectedCustomerCountry = customerCountry.getValue().toString();
         customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
-    }
-
-/*    public void handleCountryComboBox(ActionEvent actionevent){
-        ObservableList<String> divisionList = FXCollections.observableArrayList();
-        try {
-            ObservableList<Divisions> divisions = DivisionsDao.getAllDivisions();
-            if (divisions != null) {
-                for (Divisions division: divisions) {
-                    divisionList.add(division.getDivisionName());
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }*/
 
-    /**
-     * An observable list holding the countries from the database. Used to initialize the "Country" combobox.
-     * @return countries
-     */
-    public ObservableList countryList(){
+    public void handleCountryComboBox(ActionEvent actionEvent){
+        Countries countries = customerCountry.getSelectionModel().getSelectedItem();
+        int countryID = countries.getCountryID();
+        customerDivision.setValue(null);
+        customerDivision.setItems(getCountryDivision(countryID));
 
-        ObservableList<String> countries = FXCollections.observableArrayList();
-        for(Countries country : CountriesDao.getAllCountries()){
-            countries.add(country.getName());
-        }
-        return countries;
-    }
-
-    //TESTING
-
-/*    private void countryCombo(){
-        ObservableList<String> countryList = FXCollections.observableArrayList();
-
-        try {
-            ObservableList<Countries> countries = CountriesDao.getAllCountries();;
-            if (countries != null) {
-                for (Countries country: countries) {
-                    countryList.add(country.getName());
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        customerCountry.setItems(countryList);
-    }
-
-    private void divisionCombo(){
-        ObservableList<String> divisionList = FXCollections.observableArrayList();
-
-        ObservableList<Divisions> divisions = DivisionsDao.getAllDivisions();;
-        if (divisions != null) {
-            for (Divisions division: divisions) {
-                divisionList.add(division.getDivisionName());
-            }
-        }
-        customerDivision.setItems(divisionList);
-    }*/
-
-
-    /**
-     * An observable list holding the divisions from the database.
-     * @return divisions
-     */
-    public ObservableList divisionList(){
-
-        ObservableList<String> divisions = FXCollections.observableArrayList();
-        if (divisions != null) {
-            for (Divisions division : DivisionsDao.getAllDivisions()) {
-                divisions.add(division.getDivisionName());
-            }
-        }
-        return divisions;
     }
 
 
@@ -238,34 +192,73 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
     }
 
 
+    /**
+     * Handler for the division combobox.
+     * @param actionEvent
+     * @return retrieveDivisionID
+     */
+    public int handleDivisionComboBox(ActionEvent actionEvent){
+        if(customerDivision.getSelectionModel().getSelectedItem() != null) {
+
+            Object selectedDivision = customerDivision.getSelectionModel().getSelectedItem();
+
+            String division = selectedDivision.toString();
+            for (int i = 0; i < DivisionsDao.getAllDivisions().size(); i++) {
+                if (division.equalsIgnoreCase(DivisionsDao.getAllDivisions().get(i).getDivisionName())) {
+                    retrieveDivisionID = DivisionsDao.getAllDivisions().get(i).getDivisionID();
+                    break;
+                }
+            }
+        }
+        return retrieveDivisionID;
+    }
+
+
+    /**
+     * An observable list holding the divisions from the database.
+     * @return divisions
+     */
+    public ObservableList divisionList(){
+
+        ObservableList<String> divisions = FXCollections.observableArrayList();
+
+        if (divisions != null) {
+            for (Divisions division : DivisionsDao.getAllDivisions()) {
+                divisions.add(division.getDivisionName());
+            }
+        }
+        return divisions;
+    }
+
+
+    /**
+     * An observable list holding the countries from the database. Used to initialize the "Country" combobox.
+     * @return countries
+     */
+    public ObservableList countryList(){
+
+        ObservableList<String> countries = FXCollections.observableArrayList();
+        for(Countries country : CountriesDao.getAllCountries()){
+            countries.add(country.getName());
+        }
+        return countries;
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        customerCountry.setItems(countryList());
-        customerDivision.setItems(divisionList());
+        customerDivision.setItems(getAllDivisions());
+        customerCountry.setItems(getAllCountries());
+        getCustomer(customers);
+        System.out.println(customers.getCustomerCountryName());
 
-        CustomerID.setText(String.valueOf(customers.getCustomerId()));
-        CustomerName.setText(String.valueOf(customers.getCustomerName()));
-        CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
-        CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
-        CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
-        //customerCountry.setValue(CustomersDao.getCountry(customers));
-        customerCountry.getSelectionModel().select(CustomersDao.getCountry(customers));
-        customerDivision.getSelectionModel().select(customers.getDivisionName());
 
-        //customerCountry.getSelectionModel().select(customers.getCustomerCountry());
-        //customerDivision.getSelectionModel().select(customers.getCustomerDivision());
+        //customerDivision.setItems(divisionList());
+        //customerCountry.setItems(countryList());
 
-        //customerDivision.getSelectionModel().select(customers.getDivisionName());
-        //customerCountry.setValue(CustomersDao.getCountry(customers));
-        //customerDivision.setValue(customers.getDivisionName());
-        //customerDivision.setValue(customers.getCustomerDivision());
+        //divisionList();
 
-        //getCustomer(customers);
-        //divisionCombo();
-        //countryCombo();
-
-        //setCustomerDivision();
 
     }
 }

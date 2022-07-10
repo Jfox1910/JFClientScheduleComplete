@@ -66,24 +66,33 @@ public class DivisionsDao {
 
     /**
      * Used in parsing divisions by their respective country.
-     * @param divisionID
-     * @return countryID
+     *
+    // * @param countryID
+     * @return divisionsByCountry
      */
-    public static Integer getCountryDivision(int divisionID){
-        int countryID = 0;
+    public static ObservableList<Divisions> getCountryDivision(int countryID){
+        ObservableList<Divisions> divisionsByCountry = FXCollections.observableArrayList();
 
-        try {
-            String sql = "SELECT Country_ID from first_level_divisions WHERE Division_ID = ?";
+        try{
+            String sql = "SELECT * FROM first_level_divisions WHERE COUNTRY_ID = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setInt(1, divisionID);
+            ps.setInt(1, countryID);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                countryID = rs.getInt("Country_ID");
+
+            while (rs.next()) {
+
+                int divisionID = rs.getInt("Division_ID");
+                String divisionName = rs.getString("Division");
+                Divisions division = new Divisions(divisionID, divisionName);
+                divisionsByCountry.add(division);
+
             }
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return countryID;
+
+        return divisionsByCountry;
     }
 
 
@@ -157,5 +166,27 @@ public class DivisionsDao {
             throwables.printStackTrace();;
         }
         return divisionID;
+    }
+
+    /**
+     * Used in parsing divisions by their respective country.
+     * @param divisionID
+     * @return countryID
+     */
+    public static Integer test(int divisionID){
+        int countryID = 0;
+
+        try {
+            String sql = "SELECT Country_ID from first_level_divisions WHERE Division_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, divisionID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                countryID = rs.getInt("Country_ID");
+            }
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return countryID;
     }
 }

@@ -1,5 +1,6 @@
 package Model;
 
+import Dao.AppointmentDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -20,6 +21,7 @@ import java.sql.Timestamp;
         private Timestamp customerUpdatedOn;
         private String customerUpdatedBy;
         private int customerCountry;
+        private String customerCountryName;
         private int customerDivision;
         private String divisionName;
         private ObservableList<Appointment> appt = FXCollections.observableArrayList();
@@ -40,13 +42,14 @@ import java.sql.Timestamp;
         }
 
 
-        public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, int customerCountry, int customerDivision, String divisionName){
+        public Customers(int customerId, String customerName, String customerAddy, String customerZip, String customerPhone, int customerCountry, String customerCountryName, int customerDivision, String divisionName){
             this.customerId = customerId;
             this.customerName = customerName;
             this.customerAddy = customerAddy;
             this.customerZip = customerZip;
             this.customerPhone = customerPhone;
             this.customerCountry = customerCountry;
+            this.customerCountryName = customerCountryName;
             this.customerDivision = customerDivision;
             this.divisionName = divisionName;
         }
@@ -60,32 +63,42 @@ import java.sql.Timestamp;
     /**
      *Customer Getters
      * @return customerId, customerName, customerAddy, customerZip, customerPhone, customerCreatedDate,
-     * customerCreated, customerUpdatedOn, customerUpdatedBy, customerCountry, divisionNam, divisionName
+     * customerCreated, customerUpdatedOn, customerUpdatedBy, customerCountry, divisionName
      */
 
-        public int getCustomerId() {return customerId;}
+    public int getCustomerId() {return customerId;}
 
-        public String getCustomerName() {return customerName;}
+    public String getCustomerName() {return customerName;}
 
-        public String getCustomerAddy() {return customerAddy;}
+    public String getCustomerAddy() {return customerAddy;}
 
-        public String getCustomerZip() {return customerZip;}
+    public String getCustomerZip() {return customerZip;}
 
-        public String getCustomerPhone() {return customerPhone;}
+    public String getCustomerPhone() {return customerPhone;}
 
-        public String getCustomerCreatedDate() {return customerCreatedDate;}
+    public String getCustomerCreatedDate() {return customerCreatedDate;}
 
-        public String getCustomerCreated() {return customerCreated;}
+    public String getCustomerCreated() {return customerCreated;}
 
-        public Timestamp getCustomerUpdatedOn() {return customerUpdatedOn;}
+    public Timestamp getCustomerUpdatedOn() {return customerUpdatedOn;}
 
-        public String getCustomerUpdatedBy() {return customerUpdatedBy;}
+    public String getCustomerUpdatedBy() {return customerUpdatedBy;}
 
-        public int getCustomerCountry() {return customerCountry;}
+    public int getCustomerCountry() {return customerCountry;}
 
-        public String getCustomerDivision() {return divisionName;}
+    public String getCustomerCountryName() {return customerCountryName;}
 
-        public String getDivisionName() {return divisionName;}
+    public ObservableList<Appointment> getAppt() {return appt;}
+
+    public int getCustomerDivision() {return customerDivision;}
+
+    //public String getCustomerDivision() {return divisionName;}
+
+    public String getDivisionName() {return divisionName;}
+
+    public ObservableList<Appointment> getCustomerAppointments() {return new AppointmentDAO().getAppointmentsByCustomer(customerId);}
+
+
 
 
     /**
@@ -94,6 +107,8 @@ import java.sql.Timestamp;
      */
     @Override
     public String toString() {return (customerId + " : " + customerName);}
+
+    public String countryToString() {return (customerCountry + " : " + customerCountryName);}
 
 
     /**
@@ -131,6 +146,8 @@ import java.sql.Timestamp;
         public void setCustomerUpdatedBy(String customerUpdatedBy) {this.customerUpdatedBy = customerUpdatedBy;}
 
         public void setCustomerCountry(int customerCountry) {this.customerCountry = customerCountry;}
+
+        public void setCustomerCountryName(String customerCountryName) {this.customerCountryName = customerCountryName;}
 
         public void setCustomerDivision(int customerDivision) {this.customerDivision = customerDivision;}
 

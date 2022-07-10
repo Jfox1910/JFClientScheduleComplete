@@ -34,6 +34,7 @@ public class ModApptController implements Initializable {
     public static Customers customers;
     public static Appointment appointment;
 
+
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -50,109 +51,17 @@ public class ModApptController implements Initializable {
     @FXML private DatePicker appointmentDate;
     @FXML private ComboBox<LocalTime> startHourCombo;
     @FXML private ComboBox<LocalTime> endHourCombo;
+    private LocalDateTime start;
+    private LocalDateTime end;
 
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy");
-
+    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm ");
 
     private Appointment selectedAppointment = MainScreenController.getSelectedAppointment();
 
-
-    /**
-     * Collects the information from the fields and updates the appointment in the database. Checks for and alerts the user if the fields aren't filled and when a customer is being updated.
-     * Additional alert for a successful update. LAMBDA function that eliminates a bit of code.
-     * @param event
-     * @throws IOException
-     * @throws ParseException
-     */
-    public void onActionUpdate(javafx.event.ActionEvent event) throws IOException, ParseException {
-
-        int appointmentID = Integer.parseInt(Appointment_ID.getText());
-        String title = titleField.getText();
-        String location = locationField.getText();
-        String description = descriptionField.getText();
-        String type = typeField.getText();
-        LocalDate date = appointmentDate.getValue();
-        LocalDateTime start = LocalDateTime.of(date, startHourCombo.getValue());
-        LocalDateTime end = LocalDateTime.of(date, endHourCombo.getValue());
-        Contacts contact = contactCombobox.getValue();
-        Customers customer = customerCombobox.getValue();
-        User user = userComboBox.getValue();
-
-        int customerID = customerCombobox.getSelectionModel().getSelectedIndex();
-        Timestamp apptStart = Timestamp.valueOf(start);
-        Timestamp apptEnd = Timestamp.valueOf(end);
-        int checkUser = userComboBox.getSelectionModel().getSelectedIndex() +1;
-
-         boolean overlap = AppointmentDAO.checkForOverlap(apptStart, apptEnd, customerID, -1);
-
-        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() || checkUser <=0){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Attention!");
-            alert.setContentText("All fields and dropdown menus must be filled before saving.");
-            alert.showAndWait();
-        }else if (start.equals(end) || start.isAfter(end)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ATTENTION!");
-            alert.setContentText("Start time must be before the end time.");
-            alert.showAndWait();
-        }/*else if (overlap == true) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ATTENTION!");
-            alert.setContentText(customerCombobox.getValue() + "\n"
-                    + "has a conflicting appointment previously scheduled." + "\n"
-                    + "Please choose a different time and try again.");
-            alert.showAndWait();
-        }*/
-        else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Adding a new appointment.");
-            alert.setContentText("By clicking OK, you will be updating appointment # " + selectedAppointment.getAppointment_ID() + " Are you sure you wish to continue?");
-            alert.showAndWait().ifPresent((response -> {
-                if (response == ButtonType.OK) {
-
-                    Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customer.getCustomerId(), user.getUserId(),contact.getContact_ID());
-                    AppointmentDAO.updateAppointment(updateAppt);
-
-                    Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert2.setTitle("Success!");
-                    alert2.setContentText("Appointment has been updated.");
-                    alert2.showAndWait();
-
-                    Parent root = null;
-                    try {
-                        root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                }
-            }));
-        }
-    }
+    int apptID = selectedAppointment.getAppointment_ID();
+    private int customerID;
 
 
-    /**
-     * Handles exiting back to the main screen.
-     * @param event
-     * @throws IOException
-     */
-    public void onActionMainScreen(javafx.event.ActionEvent event) throws IOException{
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("All unsaved information will be lost. Are you sure you wish to continue?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
-    }
 
 
     /**
@@ -160,6 +69,7 @@ public class ModApptController implements Initializable {
      */
     public void getAppointment(Appointment selectedAppointment){
 
+        System.out.println(customerID);
         ObservableList<Contacts> contactList = ContactsDao.getContactList();
         ObservableList<Customers> customerList = CustomersDao.getCustomerList();
 
@@ -168,6 +78,7 @@ public class ModApptController implements Initializable {
         locationField.setText(String.valueOf(selectedAppointment.getLocation()));
         descriptionField.setText(String.valueOf(selectedAppointment.getDescription()));
         typeField.setText(String.valueOf(selectedAppointment.getType()));
+        userComboBox.getSelectionModel().select(UserDao.getLoggedinUser().getUserId() -1);
 
         Contacts selectedContact = null;
         for(Contacts contact : contactList){
@@ -194,6 +105,154 @@ public class ModApptController implements Initializable {
 
 
     /**
+     * Collects the information from the fields and updates the appointment in the database. Checks for and alerts the user if the fields aren't filled and when a customer is being updated.
+     * Additional alert for a successful update. LAMBDA function that eliminates a bit of code.
+     * @param event
+     * @throws IOException
+     * @throws ParseException
+     */
+    public void onActionUpdate(javafx.event.ActionEvent event) throws IOException, ParseException {
+
+        int appointmentID = Integer.parseInt(Appointment_ID.getText());
+        String title = titleField.getText();
+        String location = locationField.getText();
+        String description = descriptionField.getText();
+        String type = typeField.getText();
+        LocalDate date = appointmentDate.getValue();
+        start = LocalDateTime.of(date, startHourCombo.getValue());
+        end = LocalDateTime.of(date, endHourCombo.getValue());
+        Contacts contact = contactCombobox.getValue();
+        Customers customer = customerCombobox.getValue();
+        User updatedBy = userComboBox.getValue();
+        customerID = customerCombobox.getSelectionModel().getSelectedItem().getCustomerId();
+        Timestamp apptStart = Timestamp.valueOf(start);
+        Timestamp apptEnd = Timestamp.valueOf(end);
+        int checkUser = userComboBox.getSelectionModel().getSelectedIndex() +1;
+
+        System.out.println(customerID);
+
+
+        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() || checkUser <=0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Attention!");
+            alert.setContentText("All fields and dropdown menus must be filled before saving.");
+            alert.showAndWait();
+        }else if (start.equals(end) || start.isAfter(end)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setContentText("Start time must be before the end time.");
+            alert.showAndWait();
+        }
+        else if (overlap()) {
+            System.out.println("overlap error");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setContentText(customerCombobox.getValue() + "\n"
+                    + "has a conflicting appointment previously scheduled." + "\n"
+                    + "Please choose a different time and try again.");
+            alert.showAndWait();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Updating an appointment.");
+            alert.setContentText("By clicking OK, you will be updating appointment # " + selectedAppointment.getAppointment_ID() + " Are you sure you wish to continue?");
+            alert.showAndWait().ifPresent((response -> {
+                if (response == ButtonType.OK) {
+
+                    Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customer.getCustomerId(), updatedBy.getUserId(),contact.getContact_ID());
+                    AppointmentDAO.updateAppointment(updateAppt);
+
+                    Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert2.setTitle("Success!");
+                    alert2.setContentText("Appointment has been updated.");
+                    alert2.showAndWait();
+
+                    Parent root = null;
+                    try {
+                        root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            }));
+        }
+    }
+
+
+    /**
+     * Overlap method that pulls verifies if there is an appointment overlap. It took a while to figure out how to not check against
+     * the current appointment and the logic behind stepping through the times. Tried a lot of different approaches before it worked.
+     * @return overlap true or false for the update method
+     */
+    private boolean overlap() {
+        System.out.println("overlap checking");
+        ObservableList<Appointment> thisCustomersAppts = AppointmentDAO.getAppointmentsByCustomer(customerID);
+        boolean overlap = false;
+
+        for (Appointment thisCustomersAppt : thisCustomersAppts) {
+
+            Appointment thisAppt = thisCustomersAppt;
+            int appointmentId = thisAppt.getAppointment_ID();
+            LocalDateTime overlapStart = thisAppt.getStart();
+            LocalDateTime overlapEnd = thisAppt.getEnd();
+            int apptID = Integer.parseInt(Appointment_ID.getText());
+
+            if (appointmentId == apptID) {
+                System.out.println("ID MATCH" + " " + thisAppt.getAppointment_ID());
+                break;
+            }
+            if (start.isAfter(overlapStart.minusMinutes(1)) && start.isBefore(overlapStart.plusMinutes(1))) {
+                System.out.println("Overlap True 1 " + start + " " + overlapStart + " " + end + " " + overlapStart);
+                overlap = true;
+                break;
+            } else if (overlapEnd.isAfter(start.minusMinutes(0)) && overlapEnd.isBefore(end.plusMinutes(1))) {
+                System.out.println("Overlap True 2");
+
+                overlap = true;
+                break;
+            } else if (overlapStart.isBefore(start.plusMinutes(1)) && overlapEnd.isAfter(end.minusMinutes(1))) {
+                System.out.println("Overlap True 3");
+
+                overlap = true;
+                break;
+            } else {
+                System.out.println("Overlap false");
+
+                overlap = false;
+                continue;
+            }
+        }
+        return overlap;
+
+    }
+
+
+    /**
+     * Handles exiting back to the main screen.
+     * @param event
+     * @throws IOException
+     */
+    public void onActionMainScreen(javafx.event.ActionEvent event) throws IOException{
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("All unsaved information will be lost. Are you sure you wish to continue?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("View/mainScreen.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+    }
+
+
+    /**
      * Prevents a previous date from being selected for an appointment. Throws an alert and resets the datepicker.
      * @param actionEvent
      */
@@ -214,13 +273,12 @@ public class ModApptController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
-        getAppointment(selectedAppointment);
         startHourCombo.setItems(Utils.getStartTimeList());
         endHourCombo.setItems(Utils.getEndTimeList());
         customerCombobox.setItems(CustomersDao.getAllCustomers());
         contactCombobox.setItems(ContactsDao.getAllContacts());
         userComboBox.setItems(UserDao.getAllUsers());
+        getAppointment(selectedAppointment);
 
     }
 }

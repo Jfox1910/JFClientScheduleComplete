@@ -48,7 +48,6 @@ public class AddApptController implements Initializable {
     @FXML private TextField typeField;
     @FXML private ComboBox<Customers> customerCombobox;
     @FXML private ComboBox contactCombobox;
-
     @FXML private DatePicker appointmentDate;
     @FXML private ComboBox<LocalTime> startHourCombo;
     @FXML private ComboBox<LocalTime> endHourCombo;
@@ -98,6 +97,7 @@ public class AddApptController implements Initializable {
         int contactID = getIdFromComboBox(contactCombobox);
         Timestamp apptStart = Timestamp.valueOf(start);
         Timestamp apptEnd = Timestamp.valueOf(end);
+
         boolean overlap = AppointmentDAO.checkForOverlap(apptStart, apptEnd, customerID, -1);
 
         Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customerID, User_ID, contactID);

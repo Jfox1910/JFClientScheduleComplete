@@ -20,6 +20,7 @@ import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Objects;
 import java.util.Optional;
@@ -65,15 +66,7 @@ public class MainScreenController implements Initializable {
     private ObservableList<Customers> customers;
     private ObservableList<Appointment> appointments;
 
-
-    /*
-    TODO LIST COMPLETE PROJECT
-    Must haves----------
-    CHECK FOR NULL FIELDS
-    JAVADOCS
-    CLEANUP
-    finished cleanup on: Model classes, Utils, DAO, Main, Controllers
-     */
+    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm ");
 
 
     /**
@@ -111,7 +104,6 @@ public class MainScreenController implements Initializable {
             alert.setHeaderText("An appointment has not been selected. Please click on the correct appointment and try again.");
             alert.showAndWait();
         }
-
 
     }
 
@@ -239,10 +231,22 @@ public class MainScreenController implements Initializable {
                         customersTableView.setItems(CustomersDao.getAllCustomers());
                 }
                 } else {
-                    Alert a = new Alert(Alert.AlertType.ERROR);
-                    a.setTitle("ERROR!");
-                    a.setHeaderText(selectedCustomer.getCustomerName() + " has an appointment scheduled. Please cancel all appointments for " + selectedCustomer.getCustomerName() + " and try again.");
+                    Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                    a.setTitle("ATTENTION!");
+                    a.setHeaderText(selectedCustomer.getCustomerName() + " has an appointment scheduled. This action will also cancel all associated appointments. Are you sure you wish to continue?");
                     a.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert2.setTitle("SUCCESS!");
+                        alert2.setContentText(selectedCustomer.getCustomerName() + " has been deleted from the system.");
+                        alert2.showAndWait();
+
+                        AppointmentDAO.deleteAppointment(selectedCustomer.getCustomerId());
+                        CustomersDao.deleteCustomer(selectedCustomer.getCustomerId());
+                        apptTableview.setItems(AppointmentDAO.getAllAppointments());
+                        customersTableView.setItems(CustomersDao.getAllCustomers());
+
+                    }
                 }
             }
         }else {
@@ -324,7 +328,6 @@ public class MainScreenController implements Initializable {
             }
         }
     }
-
 
 
     /**

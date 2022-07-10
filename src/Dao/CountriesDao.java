@@ -13,6 +13,7 @@ import java.sql.SQLException;
  * Gets all the countries from the db
  */
 public class CountriesDao {
+
     public static ObservableList<Countries> getAllCountries(){
         ObservableList<Countries> countries = FXCollections.observableArrayList();
 
@@ -28,12 +29,13 @@ public class CountriesDao {
                 countries.add(country);
             }
             ps.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
 
         return countries;
     }
+
 
     /**
      * Selectes countries by ID. Used to display names.
@@ -76,6 +78,5 @@ public class CountriesDao {
         }
         return countryName;
     }
-
 
 }
