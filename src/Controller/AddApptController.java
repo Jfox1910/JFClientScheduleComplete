@@ -53,6 +53,11 @@ public class AddApptController implements Initializable {
     @FXML private ComboBox<LocalTime> endHourCombo;
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy");
 
+    //TESTING
+    private int customerID;
+    private LocalDateTime start;
+    private LocalDateTime end;
+
 
     /**
      * Exits back to the main screen
@@ -90,19 +95,24 @@ public class AddApptController implements Initializable {
         String description = descriptionField.getText();
         String type = typeField.getText();
         LocalDate date = appointmentDate.getValue();
-        LocalDateTime start = LocalDateTime.of(date, startHourCombo.getValue());
-        LocalDateTime end = LocalDateTime.of(date, endHourCombo.getValue());
+        start = LocalDateTime.of(date, startHourCombo.getValue());
+        end = LocalDateTime.of(date, endHourCombo.getValue());
+        //LocalDateTime start = LocalDateTime.of(date, startHourCombo.getValue());
+        //LocalDateTime end = LocalDateTime.of(date, endHourCombo.getValue());
         int customerID = getIdFromComboBox(customerCombobox);
         int User_ID = UserDao.getLoggedinUser().getUserId();
         int contactID = getIdFromComboBox(contactCombobox);
         Timestamp apptStart = Timestamp.valueOf(start);
         Timestamp apptEnd = Timestamp.valueOf(end);
+        int checkContact = contactID +1;
 
-        boolean overlap = AppointmentDAO.checkForOverlap(apptStart, apptEnd, customerID, -1);
+        overlap();
+
+        //boolean overlap = AppointmentDAO.checkForOverlap(apptStart, apptEnd, customerID, -1);
 
         Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customerID, User_ID, contactID);
 
-        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty()){
+        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() && checkContact <=0){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
             alert.setContentText("All fields must be filled before saving.");
@@ -112,7 +122,7 @@ public class AddApptController implements Initializable {
             alert.setTitle("ATTENTION!");
             alert.setContentText("Start time must be before the end time.");
             alert.showAndWait();
-        }else if (overlap == true) {
+        }else if (overlap() == true) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setContentText(customerCombobox.getValue() + "\n"
@@ -151,6 +161,47 @@ public class AddApptController implements Initializable {
         }
     }
 
+    /**
+     * Overlap method that pulls verifies if there is an appointment overlap. It took a while to figure out how to not check against
+     * the current appointment and the logic behind stepping through the times. Tried a lot of different approaches before it worked.
+     * @return overlap true or false for the update method
+     */
+    private boolean overlap() {
+        System.out.println("overlap checking");
+        ObservableList<Appointment> thisCustomersAppts = AppointmentDAO.getAppointmentsByCustomer(customerID);
+        boolean overlap = false;
+
+        for (Appointment thisCustomersAppt : thisCustomersAppts) {
+
+            Appointment thisAppt = thisCustomersAppt;
+            Customers customerID = customerCombobox.getValue();
+            int appointmentId = thisAppt.getAppointment_ID();
+            LocalDateTime overlapStart = thisAppt.getStart();
+            LocalDateTime overlapEnd = thisAppt.getEnd();
+
+            if (start.isAfter(overlapStart.minusMinutes(0)) && start.isBefore(overlapEnd.plusMinutes(0))) {
+                System.out.println("Overlap True 1 " + start + " " + overlapStart + " " + end + " " + overlapEnd);
+                overlap = true;
+                break;
+            } else if (overlapEnd.isAfter(start.minusMinutes(0)) && overlapEnd.isBefore(end.plusMinutes(0))) {
+                System.out.println("Overlap True 2 " + overlapEnd + " " + start + " " + overlapEnd + " " + end);
+
+                overlap = true;
+                break;
+            } else if (overlapStart.isBefore(start.plusMinutes(0)) && overlapEnd.isAfter(end.minusMinutes(0))) {
+                System.out.println("Overlap True 3");
+
+                overlap = true;
+                break;
+            } else {
+                System.out.println("Overlap false");
+
+                overlap = false;
+                continue;
+            }
+        }
+        return overlap;
+    }
 
     /**
      * Calls the getID to string method from Utils.

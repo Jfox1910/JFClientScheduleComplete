@@ -194,31 +194,33 @@ public class ModApptController implements Initializable {
 
         for (Appointment thisCustomersAppt : thisCustomersAppts) {
 
-            Appointment thisAppt = thisCustomersAppt;
-            Customers customerID = customerCombobox.getValue();
-            int appointmentId = thisAppt.getAppointment_ID();
-            LocalDateTime overlapStart = thisAppt.getStart();
-            LocalDateTime overlapEnd = thisAppt.getEnd();
+            Appointment customersAppts = thisCustomersAppt;
+            int appointmentId = customersAppts.getAppointment_ID();
+            LocalDateTime overlapStart = customersAppts.getStart();
+            LocalDateTime overlapEnd = customersAppts.getEnd();
             int apptID = Integer.parseInt(Appointment_ID.getText());
 
             if (appointmentId == apptID) {
-                System.out.println("ID MATCH" + " " + thisAppt.getAppointment_ID());
+                System.out.println("ID MATCH" + " " + customersAppts.getAppointment_ID());
                 continue;
-            }
-            if (start.isAfter(overlapStart.minusMinutes(1)) && start.isBefore(overlapStart.plusMinutes(1))) {
-                System.out.println("Overlap True 1 " + start + " " + overlapStart + " " + end + " " + overlapStart);
+            }if (overlapStart.isBefore(end) && start.isBefore(overlapEnd)){
+                System.out.println("Overlap True 1 " + start + " " + overlapStart + " " + end + " " + overlapEnd);
                 overlap = true;
                 break;
-            } else if (overlapEnd.isAfter(start.minusMinutes(0)) && overlapEnd.isBefore(end.plusMinutes(1))) {
+            /*if (start.isAfter(overlapStart) && start.isBefore(overlapEnd)) {
+                System.out.println("Overlap True 1 " + start + " " + overlapStart + " " + end + " " + overlapEnd);
+                overlap = true;
+                break;
+            } else if (overlapEnd.isAfter(start) && overlapEnd.isBefore(end)) {
                 System.out.println("Overlap True 2 " + overlapEnd + " " + start + " " + overlapEnd + " " + end);
 
                 overlap = true;
                 break;
-            } else if (overlapStart.isBefore(start.plusMinutes(1)) && overlapEnd.isAfter(end.minusMinutes(1))) {
+            } else if (overlapStart.isBefore(start) && overlapEnd.isAfter(end)) {
                 System.out.println("Overlap True 3");
 
                 overlap = true;
-                break;
+                break;*/
             } else {
                 System.out.println("Overlap false");
 
@@ -227,7 +229,6 @@ public class ModApptController implements Initializable {
             }
         }
         return overlap;
-
     }
 
 

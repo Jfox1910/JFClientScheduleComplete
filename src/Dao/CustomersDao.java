@@ -53,31 +53,6 @@ public class CustomersDao {
 
 
     /**
-     * Select customer by division.
-     * @param customers
-     * @return divisionID
-     */
-    public static Integer getCustomerDivision(Customers customers){
-        int customerID = customers.getCustomerId();
-        int divisionID = 0;
-
-        try {
-            String sql = "SELECT Division_ID from customers WHERE Customer_ID = ?";
-            PreparedStatement psgetCustomerDiv = JDBC.getConnection().prepareStatement(sql);
-            psgetCustomerDiv.setInt(1, customerID);
-            ResultSet rs = psgetCustomerDiv.executeQuery();
-            if (rs.next()) {
-                divisionID = rs.getInt("Division_ID");
-            }
-
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return divisionID;
-    }
-
-
-    /**
      * Adds a new customer to the database.
      * @param userID
      * @param customerName
@@ -252,15 +227,5 @@ public class CustomersDao {
             throwables.printStackTrace();
         }
         return null;
-    }
-
-
-    /**
-     * Gets the customers country by division.
-     * @param customers
-     * @return
-     */
-    public static String getCountry(Customers customers){
-        return CountriesDao.getCountryID(DivisionsDao.test(CustomersDao.getCustomerDivision(customers)));
     }
 }
