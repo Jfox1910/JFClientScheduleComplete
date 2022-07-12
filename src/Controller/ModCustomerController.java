@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 
@@ -37,15 +36,16 @@ public class ModCustomerController implements Initializable{
     @FXML private TextField CustomerAddress;
     @FXML private TextField CustomerZip;
     @FXML private TextField CustomerPhone;
-    @FXML private ComboBox <Countries> customerCountry;
-    @FXML private ComboBox <Divisions> customerDivision;
+    @FXML private ComboBox /*<Divisions>*/ customerDivision;
+    @FXML private ComboBox /*<Countries>*/ customerCountry;
+
 
     private Stage stage;
     private Scene scene;
     private Parent root;
     int retrieveDivisionID = 0;
 
-    private Customers customers = MainScreenController.getSelectedCustomer();
+    private Customers selectedCustomer = MainScreenController.getSelectedCustomer();
 
 
     /**
@@ -53,24 +53,47 @@ public class ModCustomerController implements Initializable{
      * @param customers
      */
     public void getCustomer(Customers customers){
-
-        int thisCustomerDivision = customers.getCustomerDivision();
-        int thisCustomerCountry = customers.getCustomerCountry();
         CustomerID.setText(String.valueOf(customers.getCustomerId()));
         CustomerName.setText(String.valueOf(customers.getCustomerName()));
         CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
         CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
         CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
-        System.out.println(thisCustomerCountry);
+
+        //customerDivision.setValue(Divisions.divisionByCountry(thisCustomerDivision));
+        //handleCountryComboBox(null);
+         selectCountry();
+
+/*        ObservableList<Countries> allCountries = CountriesDao.getAllCountries();
+        ObservableList<Divisions> allFirstLevelDivisions = DivisionsDao.getAllDivisions();
+        ObservableList<String> firstLevelDivisionAllNames = FXCollections.observableArrayList();
+        for (Divisions divisions : allFirstLevelDivisions) {
+            firstLevelDivisionAllNames.add(divisions.getDivisionName());
+        }
+        int divisionID = selectedCustomer.getCustomerDivision();
+        String divisionName = selectedCustomer.getDivisionName();
+        int countryID;
+        String countryName = "";
+        for (Divisions divisions : getAllDivisions()) {
+            if (divisionID == divisions.getDivisionID()) {
+                divisionName = divisions.getDivisionName();
+                countryID = divisions.getCountryID();
+                for (Countries countries : allCountries) {
+                    if (countryID == countries.getCountryID()) {
+                        countryName = countries.getCountryName();
+                    }
+                }
+            }
+        }
+        customerCountry.setValue(countryName);
+        handleCountryComboBox();
+        customerDivision.setValue(divisionName);*/
 
 
-        customerCountry.getSelectionModel().select(thisCustomerCountry);
-        System.out.println(thisCustomerCountry);
+        //int thisCustomerDivision = customers.getCustomerDivision();
+        int thisCustomerCountry = customers.getCustomerCountry();
+        int thisCustomerDivision = customers.getCustomerDivision();
 
-        handleCountryComboBox(null);
-        System.out.println(thisCustomerCountry);
-        customerDivision.setValue(Divisions.divisionByCountry(thisCustomerDivision));
-        System.out.println(thisCustomerCountry);
+        //customerCountry.getSelectionModel().select(customers.getCustomerCountry());
 
         //customerCountry.setValue(Countries.countryByDivision(thisCustomerCountry));
 
@@ -80,9 +103,39 @@ public class ModCustomerController implements Initializable{
 
         //customerDivision.getSelectionModel().select(thisCustomerDivision);
 
+    }
 
 
-
+    /**
+     * Used to setup the division and country comboboxes for the customer.
+     * Gets the selected customers division and assigns the correct country.
+     * Then populates the comboboxes.
+     */
+    public void selectCountry(){
+        ObservableList<Countries> allCountries = CountriesDao.getAllCountries();
+        ObservableList<Divisions> allFirstLevelDivisions = DivisionsDao.getAllDivisions();
+        ObservableList<String> firstLevelDivisionAllNames = FXCollections.observableArrayList();
+        for (Divisions divisions : allFirstLevelDivisions) {
+            firstLevelDivisionAllNames.add(divisions.getDivisionName());
+        }
+        int divisionID = selectedCustomer.getCustomerDivision();
+        String divisionName = selectedCustomer.getDivisionName();
+        int countryID;
+        String countryName = "";
+        for (Divisions divisions : getAllDivisions()) {
+            if (divisionID == divisions.getDivisionID()) {
+                divisionName = divisions.getDivisionName();
+                countryID = divisions.getCountryID();
+                for (Countries countries : allCountries) {
+                    if (countryID == countries.getCountryID()) {
+                        countryName = countries.getCountryName();
+                    }
+                }
+            }
+        }
+        customerCountry.setValue(countryName);
+        handleCountryComboBox();
+        customerDivision.setValue(divisionName);
     }
 
 
@@ -123,9 +176,19 @@ public class ModCustomerController implements Initializable{
         String customerAddress = CustomerAddress.getText();
         String customerZip = CustomerZip.getText();
         String customerPhone = CustomerPhone.getText();
-        Divisions getCustomerDivision = customerDivision.getSelectionModel().getSelectedItem();
-        int modCustomerDivision = getCustomerDivision.getDivisionID();
-        //int modCustomerDivision = DivisionsDao.getAllDivisionsByName(customerDivision.getValue().toString());
+        String getCustomerDivision = String.valueOf(customerDivision.getValue());
+        //Divisions getCustomerDivision = (Divisions) customerDivision.getSelectionModel().getSelectedItem();
+        //int modCustomerDivision = getCustomerDivision.getDivisionID();
+
+        int customerDivisionID = 0;
+        ObservableList<Divisions> allFirstLevelDivisions = DivisionsDao.getAllDivisions();
+        for (Divisions firstLevelDivision : allFirstLevelDivisions) {
+            if (getCustomerDivision.equals(firstLevelDivision.getDivisionName())) {
+                customerDivisionID = firstLevelDivision.getDivisionID();
+            }
+        }
+        int modCustomerDivision = customerDivisionID;
+
         //Used to verify a division has been selected
         int checkDivision = customerDivision.getSelectionModel().getSelectedIndex() +1;
 
@@ -163,19 +226,24 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
     /**
      * Handles populating the COUNTRY combobox
      */
-  /*  public void handleCountryComboBox(){
+    public void handleCountryComboBox(){
 
         String selectedCustomerCountry = customerCountry.getValue().toString();
         customerDivision.setItems(divisionsByCountry(selectedCustomerCountry));
+    }
+
+/*    public void handleCountryComboBox(){
+        Countries countries = (Countries) customerCountry.getSelectionModel().getSelectedItem();
+        int countryID = countries.getCountryID();
+        customerDivision.setItems(getCountryDivision(countryID));
     }*/
 
-    public void handleCountryComboBox(ActionEvent actionEvent){
-        Countries countries = customerCountry.getSelectionModel().getSelectedItem();
+/*    public void handleCountryComboBox(){
+        Countries countries = (Countries) customerCountry.getSelectionModel().getSelectedItem();
         int countryID = countries.getCountryID();
         customerDivision.setValue(null);
         customerDivision.setItems(getCountryDivision(countryID));
-
-    }
+    }*/
 
 
     /**
@@ -188,6 +256,7 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
         for(String divisionName : DivisionsDao.getAllByCountry(modCustomerCountry)){
             divisionByCountry.add(divisionName);
         }
+        System.out.println(customerCountry);
         return divisionByCountry;
     }
 
@@ -249,14 +318,23 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         customerDivision.setItems(getAllDivisions());
-        customerCountry.setItems(getAllCountries());
-        getCustomer(customers);
-        System.out.println(customers.getCustomerCountryName());
+        getCustomer(selectedCustomer);
 
 
+        ObservableList<Countries> allCountries = CountriesDao.getAllCountries();
+        ObservableList<String> countryNames = FXCollections.observableArrayList();
+        for (Countries country : allCountries) {
+            countryNames.add(country.getCountryName());
+        }
+        customerCountry.setItems(countryNames);
+
+
+
+
+
+        //selectedCustomer.getCustomerCountry()
         //customerDivision.setItems(divisionList());
         //customerCountry.setItems(countryList());
-
         //divisionList();
 
 

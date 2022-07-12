@@ -151,21 +151,6 @@ public final class AppointmentDAO {
         }
     }
 
-    public static void deleteCustomerSpecificAppointments(int appointmentID) {
-
-        String sql = "DELETE from appointments where Appointment_ID = ? AND Customer_ID = ?";
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setInt(1, appointmentID);
-
-            ps.execute();
-
-        }
-        catch (SQLException exception){
-            exception.printStackTrace();
-        }
-    }
-
 
     /**
      * Used to check for impeding appointments within the next 15 minutes of login.

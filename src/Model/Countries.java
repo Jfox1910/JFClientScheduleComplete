@@ -43,19 +43,12 @@ public class Countries {
 
     public void setDivisionName(String divisionName) {this.divisionName = divisionName;}
 
-    /**
-     * override for handling strings in the comboboxes.
-     * @return countryID : countryName
-     */
-    @Override
-    public String toString() {return (countryID + " : " + countryName);}
-
     public static Countries countryByDivision(int customerCountryID) {
-        ObservableList<Countries> divisions =  getAllCountries();
+        ObservableList<Countries> division =  getAllCountries();
 
         Countries country = null;
 
-        for (Countries selectCountry : divisions) {
+        for (Countries selectCountry : division) {
             if (selectCountry.getCountryID() != customerCountryID) {
                 continue;
             } else {
@@ -66,7 +59,14 @@ public class Countries {
         }
 
         return country;
-
-
     }
+
+
+    /**
+     * override for handling strings in the comboboxes.
+     * @return countryID : countryName
+     */
+    @Override
+    public String toString() {return (countryName);}
+
 }

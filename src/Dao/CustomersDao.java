@@ -260,7 +260,7 @@ public class CustomersDao {
      * @param customers
      * @return
      */
-    /*public static String getCountry(Customers customers){
+    public static String getCountry(Customers customers){
         return CountriesDao.getCountryID(DivisionsDao.test(CustomersDao.getCustomerDivision(customers)));
-    }*/
+    }
 }

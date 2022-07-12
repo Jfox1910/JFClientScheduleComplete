@@ -66,6 +66,7 @@ public class ModApptController implements Initializable {
 
     /**
      * Loads the modify appointment screen fields with the information of the selected appointment.
+     * Populates the updated screen with the currently logged in user.
      */
     public void getAppointment(Appointment selectedAppointment){
 
@@ -125,8 +126,6 @@ public class ModApptController implements Initializable {
         Customers customer = customerCombobox.getValue();
         User updatedBy = userComboBox.getValue();
         customerID = customerCombobox.getSelectionModel().getSelectedItem().getCustomerId();
-        Timestamp apptStart = Timestamp.valueOf(start);
-        Timestamp apptEnd = Timestamp.valueOf(end);
         int checkUser = userComboBox.getSelectionModel().getSelectedIndex() +1;
 
         System.out.println(customerID);
@@ -196,6 +195,7 @@ public class ModApptController implements Initializable {
         for (Appointment thisCustomersAppt : thisCustomersAppts) {
 
             Appointment thisAppt = thisCustomersAppt;
+            Customers customerID = customerCombobox.getValue();
             int appointmentId = thisAppt.getAppointment_ID();
             LocalDateTime overlapStart = thisAppt.getStart();
             LocalDateTime overlapEnd = thisAppt.getEnd();
@@ -203,14 +203,14 @@ public class ModApptController implements Initializable {
 
             if (appointmentId == apptID) {
                 System.out.println("ID MATCH" + " " + thisAppt.getAppointment_ID());
-                break;
+                continue;
             }
             if (start.isAfter(overlapStart.minusMinutes(1)) && start.isBefore(overlapStart.plusMinutes(1))) {
                 System.out.println("Overlap True 1 " + start + " " + overlapStart + " " + end + " " + overlapStart);
                 overlap = true;
                 break;
             } else if (overlapEnd.isAfter(start.minusMinutes(0)) && overlapEnd.isBefore(end.plusMinutes(1))) {
-                System.out.println("Overlap True 2");
+                System.out.println("Overlap True 2 " + overlapEnd + " " + start + " " + overlapEnd + " " + end);
 
                 overlap = true;
                 break;

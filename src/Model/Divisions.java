@@ -67,7 +67,7 @@ public class Divisions {
      * @return divisionID : divisionName
      */
     @Override
-    public String toString() {return (divisionID + " : " + divisionName);}
+    public String toString() {return (divisionName);}
 
 }
 

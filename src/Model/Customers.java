@@ -92,8 +92,6 @@ import java.sql.Timestamp;
 
     public int getCustomerDivision() {return customerDivision;}
 
-    //public String getCustomerDivision() {return divisionName;}
-
     public String getDivisionName() {return divisionName;}
 
     public ObservableList<Appointment> getCustomerAppointments() {return new AppointmentDAO().getAppointmentsByCustomer(customerId);}
@@ -107,8 +105,6 @@ import java.sql.Timestamp;
      */
     @Override
     public String toString() {return (customerId + " : " + customerName);}
-
-    public String countryToString() {return (customerCountry + " : " + customerCountryName);}
 
 
     /**

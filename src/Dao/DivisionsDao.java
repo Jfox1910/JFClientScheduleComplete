@@ -43,30 +43,9 @@ public class DivisionsDao {
         return allDivisions;
     }
 
-/*    public static ObservableList<Divisions> getAllDivisions(){
-        ObservableList<Divisions> allDivisions = FXCollections.observableArrayList();
-        try {
-            String sql = "SELECT Division_ID, Division FROM client_schedule.first_level_divisions";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()){
-                int divisionID = rs.getInt("Division_ID");
-                String divisionName = rs.getString("Division");
-                Divisions divisions = new Divisions(divisionID, divisionName);
-                allDivisions.add(divisions);
-            }
-            ps.close();
-        } catch (SQLException throwables){
-            throwables.printStackTrace();;
-        }
-        return allDivisions;
-    }*/
-
 
     /**
      * Used in parsing divisions by their respective country.
-     *
     // * @param countryID
      * @return divisionsByCountry
      */
@@ -80,7 +59,6 @@ public class DivisionsDao {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-
                 int divisionID = rs.getInt("Division_ID");
                 String divisionName = rs.getString("Division");
                 Divisions division = new Divisions(divisionID, divisionName);
@@ -91,7 +69,6 @@ public class DivisionsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return divisionsByCountry;
     }
 
