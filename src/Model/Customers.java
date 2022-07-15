@@ -97,8 +97,6 @@ import java.sql.Timestamp;
     public ObservableList<Appointment> getCustomerAppointments() {return new AppointmentDAO().getAppointmentsByCustomer(customerId);}
 
 
-
-
     /**
      * override for handling strings in the comboboxes.
      * @return customerId

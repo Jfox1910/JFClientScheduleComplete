@@ -3,7 +3,6 @@ package Controller;
 import Dao.*;
 import Model.*;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,10 +19,8 @@ import utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -34,10 +31,8 @@ public class ModApptController implements Initializable {
     public static Customers customers;
     public static Appointment appointment;
 
-
     private Stage stage;
     private Scene scene;
-    private Parent root;
 
     @FXML private TextField Appointment_ID;
     @FXML private TextField titleField;
@@ -54,14 +49,8 @@ public class ModApptController implements Initializable {
     private LocalDateTime start;
     private LocalDateTime end;
 
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm ");
-
-    private Appointment selectedAppointment = MainScreenController.getSelectedAppointment();
-
-    int apptID = selectedAppointment.getAppointment_ID();
+    private final Appointment selectedAppointment = MainScreenController.getSelectedAppointment();
     private int customerID;
-
-
 
 
     /**
@@ -70,7 +59,6 @@ public class ModApptController implements Initializable {
      */
     public void getAppointment(Appointment selectedAppointment){
 
-        System.out.println(customerID);
         ObservableList<Contacts> contactList = ContactsDao.getContactList();
         ObservableList<Customers> customerList = CustomersDao.getCustomerList();
 
@@ -96,7 +84,6 @@ public class ModApptController implements Initializable {
                 break;
             }
         }
-
         customerCombobox.setValue(customer);
         contactCombobox.setValue(selectedContact);
         appointmentDate.setValue(selectedAppointment.getStart().toLocalDate());
@@ -126,26 +113,26 @@ public class ModApptController implements Initializable {
         Customers customer = customerCombobox.getValue();
         User updatedBy = userComboBox.getValue();
         customerID = customerCombobox.getSelectionModel().getSelectedItem().getCustomerId();
-        int checkUser = userComboBox.getSelectionModel().getSelectedIndex() +1;
 
-        System.out.println(customerID);
-
-
-        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() || checkUser <=0){
+        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
             alert.setContentText("All fields and dropdown menus must be filled before saving.");
             alert.showAndWait();
         }else if (start.equals(end) || start.isAfter(end)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ATTENTION!");
+            alert.setTitle("ERROR!");
             alert.setContentText("Start time must be before the end time.");
+            alert.showAndWait();
+        }else if (handleDateChoice()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR!");
+            alert.setContentText("A date on or after " + LocalDate.now() + " must be selected.");
             alert.showAndWait();
         }
         else if (overlap()) {
-            System.out.println("overlap error");
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ATTENTION!");
+            alert.setTitle("ERROR!");
             alert.setContentText(customerCombobox.getValue() + "\n"
                     + "has a conflicting appointment previously scheduled." + "\n"
                     + "Please choose a different time and try again.");
@@ -158,7 +145,7 @@ public class ModApptController implements Initializable {
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
 
-                    Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customer.getCustomerId(), updatedBy.getUserId(),contact.getContact_ID());
+                    Appointment updateAppt = new Appointment(appointmentID,title,location,description,type,start,end,customer.getCustomerId(),updatedBy.getUserId(),contact.getContact_ID());
                     AppointmentDAO.updateAppointment(updateAppt);
 
                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
@@ -188,6 +175,7 @@ public class ModApptController implements Initializable {
      * @return overlap true or false for the update method
      */
     private boolean overlap() {
+        customerID = customerCombobox.getSelectionModel().getSelectedItem().getCustomerId();
         System.out.println("overlap checking");
         ObservableList<Appointment> thisCustomersAppts = AppointmentDAO.getAppointmentsByCustomer(customerID);
         boolean overlap = false;
@@ -203,34 +191,44 @@ public class ModApptController implements Initializable {
             if (appointmentId == apptID) {
                 System.out.println("ID MATCH" + " " + customersAppts.getAppointment_ID());
                 continue;
-            }if (overlapStart.isBefore(end) && start.isBefore(overlapEnd)){
-                System.out.println("Overlap True 1 " + start + " " + overlapStart + " " + end + " " + overlapEnd);
-                overlap = true;
-                break;
-            /*if (start.isAfter(overlapStart) && start.isBefore(overlapEnd)) {
-                System.out.println("Overlap True 1 " + start + " " + overlapStart + " " + end + " " + overlapEnd);
-                overlap = true;
-                break;
-            } else if (overlapEnd.isAfter(start) && overlapEnd.isBefore(end)) {
-                System.out.println("Overlap True 2 " + overlapEnd + " " + start + " " + overlapEnd + " " + end);
+                } if (start.isAfter(overlapStart.minusMinutes(15)) && start.isBefore(overlapEnd)) {
+                    System.out.println("Overlap True 1 " + start + " >= " + overlapStart + " " + start + " < " + overlapEnd + " " + customerID);
 
-                overlap = true;
-                break;
-            } else if (overlapStart.isBefore(start) && overlapEnd.isAfter(end)) {
-                System.out.println("Overlap True 3");
-
-                overlap = true;
-                break;*/
-            } else {
-                System.out.println("Overlap false");
-
-                overlap = false;
-                continue;
-            }
+                    overlap = true;
+                    break;
+                } else if (end.isAfter(overlapStart) && end.isBefore(overlapEnd.plusMinutes(15))) {
+                    System.out.println("Overlap True 2 " + end + " > " + overlapStart + " " + end + " <= " + overlapEnd + " " + customerID);
+                    overlap = true;
+                    break;
+                } else if (start.isBefore(overlapStart) && end.isAfter(overlapEnd)) {
+                    System.out.println("Overlap True 3");
+                    overlap = true;
+                    break;
+                } else {
+                    System.out.println("Overlap false");
+                    overlap = false;
+                    continue;
+                }
         }
         return overlap;
     }
 
+
+    /**
+     * Prevents a previous date from being selected for an appointment. Throws an alert and resets the datepicker.
+     *
+     * @return
+     */
+    private boolean handleDateChoice() {
+        boolean wrongDate = false;
+        LocalTime endHour = endHourCombo.getSelectionModel().getSelectedItem();
+        LocalTime startHour = startHourCombo.getSelectionModel().getSelectedItem();
+
+        long days = ChronoUnit.DAYS.between(LocalDate.now(), appointmentDate.getValue());
+        if (days < 0){
+            wrongDate = true;
+        }return wrongDate;
+    }
 
     /**
      * Handles exiting back to the main screen.
@@ -249,24 +247,6 @@ public class ModApptController implements Initializable {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }
-    }
-
-
-    /**
-     * Prevents a previous date from being selected for an appointment. Throws an alert and resets the datepicker.
-     * @param actionEvent
-     */
-    public void handleDateChoice(ActionEvent actionEvent) {
-
-        long days = ChronoUnit.DAYS.between(LocalDate.now(), appointmentDate.getValue());
-        if (days < 0){
-            Alert alert = new Alert(Alert.AlertType.NONE);
-            alert.setTitle("ERROR!");
-            alert.getDialogPane().getButtonTypes().add(ButtonType.OK);
-            alert.setContentText("A date on or after " + LocalDate.now() + " must be selected.");
-            alert.showAndWait();
-            appointmentDate.getEditor().clear();
         }
     }
 

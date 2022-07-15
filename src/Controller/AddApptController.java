@@ -24,6 +24,7 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.*;
+import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -46,14 +47,14 @@ public class AddApptController implements Initializable {
     @FXML private TextField locationField;
     @FXML private TextField descriptionField;
     @FXML private TextField typeField;
-    @FXML private ComboBox<Customers> customerCombobox;
-    @FXML private ComboBox contactCombobox;
+    @FXML public ComboBox<Customers> customerCombobox;
+    @FXML public ComboBox <Contacts> contactCombobox;
     @FXML private DatePicker appointmentDate;
     @FXML private ComboBox<LocalTime> startHourCombo;
     @FXML private ComboBox<LocalTime> endHourCombo;
+
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy");
 
-    //TESTING
     private int customerID;
     private LocalDateTime start;
     private LocalDateTime end;
@@ -97,47 +98,52 @@ public class AddApptController implements Initializable {
         LocalDate date = appointmentDate.getValue();
         start = LocalDateTime.of(date, startHourCombo.getValue());
         end = LocalDateTime.of(date, endHourCombo.getValue());
-        //LocalDateTime start = LocalDateTime.of(date, startHourCombo.getValue());
-        //LocalDateTime end = LocalDateTime.of(date, endHourCombo.getValue());
-        int customerID = getIdFromComboBox(customerCombobox);
+        Contacts contact = contactCombobox.getValue();
+        Customers customer = customerCombobox.getValue();
         int User_ID = UserDao.getLoggedinUser().getUserId();
-        int contactID = getIdFromComboBox(contactCombobox);
         Timestamp apptStart = Timestamp.valueOf(start);
         Timestamp apptEnd = Timestamp.valueOf(end);
-        int checkContact = contactID +1;
+        int checkContact = contactCombobox.getSelectionModel().getSelectedIndex() +1;
+        int checkCustomer = customerCombobox.getSelectionModel().getSelectedIndex() +1;
 
-        overlap();
 
-        //boolean overlap = AppointmentDAO.checkForOverlap(apptStart, apptEnd, customerID, -1);
+        boolean overlap = AppointmentDAO.checkForOverlap(apptStart, apptEnd, customerID, -1);
 
-        Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customerID, User_ID, contactID);
-
-        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty() || contactCombobox.getItems().isEmpty() && checkContact <=0){
+        if (titleField.getText().isEmpty() || locationField.getText().isEmpty() || descriptionField.getText().isEmpty() || typeField.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Attention!");
-            alert.setContentText("All fields must be filled before saving.");
+            alert.setContentText("All fields and drop down menus must be completed before saving.");
             alert.showAndWait();
         }else if (start.equals(end) || start.isAfter(end)){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setContentText("Start time must be before the end time.");
             alert.showAndWait();
-        }else if (overlap() == true) {
+        }else if (checkCustomer <=0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setContentText("A customer must be selected from the dropdown menu.");
+            alert.showAndWait();
+        }else if (checkContact <=0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATTENTION!");
+            alert.setContentText("A contact must be selected from the dropdown menu.");
+            alert.showAndWait();
+        }else if (overlap == true) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ATTENTION!");
             alert.setContentText(customerCombobox.getValue() + "\n"
                     + "has a conflicting appointment previously scheduled." + "\n"
                     + "Please choose a different time and try again.");
             alert.showAndWait();
-        }
-
-        else {
+        }else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Adding a new appointment.");
             alert.setContentText("By clicking OK, you will be scheduling an appointment for " + "\n"
                     + customerCombobox.getValue() + ". Are you sure you wish to continue?");
             alert.showAndWait().ifPresent((response -> {
                 if (response == ButtonType.OK) {
+                    Appointment appt = new Appointment(Appointment_ID, title, description, location, type, start, end, customer.getCustomerId(), User_ID, contact.getContact_ID());
 
                     AppointmentDAO.newAppointment(appt);
 
@@ -159,82 +165,6 @@ public class AddApptController implements Initializable {
                 }
             }));
         }
-    }
-
-    /**
-     * Overlap method that pulls verifies if there is an appointment overlap. It took a while to figure out how to not check against
-     * the current appointment and the logic behind stepping through the times. Tried a lot of different approaches before it worked.
-     * @return overlap true or false for the update method
-     */
-    private boolean overlap() {
-        System.out.println("overlap checking");
-        ObservableList<Appointment> thisCustomersAppts = AppointmentDAO.getAppointmentsByCustomer(customerID);
-        boolean overlap = false;
-
-        for (Appointment thisCustomersAppt : thisCustomersAppts) {
-
-            Appointment thisAppt = thisCustomersAppt;
-            Customers customerID = customerCombobox.getValue();
-            int appointmentId = thisAppt.getAppointment_ID();
-            LocalDateTime overlapStart = thisAppt.getStart();
-            LocalDateTime overlapEnd = thisAppt.getEnd();
-
-            if (start.isAfter(overlapStart.minusMinutes(0)) && start.isBefore(overlapEnd.plusMinutes(0))) {
-                System.out.println("Overlap True 1 " + start + " " + overlapStart + " " + end + " " + overlapEnd);
-                overlap = true;
-                break;
-            } else if (overlapEnd.isAfter(start.minusMinutes(0)) && overlapEnd.isBefore(end.plusMinutes(0))) {
-                System.out.println("Overlap True 2 " + overlapEnd + " " + start + " " + overlapEnd + " " + end);
-
-                overlap = true;
-                break;
-            } else if (overlapStart.isBefore(start.plusMinutes(0)) && overlapEnd.isAfter(end.minusMinutes(0))) {
-                System.out.println("Overlap True 3");
-
-                overlap = true;
-                break;
-            } else {
-                System.out.println("Overlap false");
-
-                overlap = false;
-                continue;
-            }
-        }
-        return overlap;
-    }
-
-    /**
-     * Calls the getID to string method from Utils.
-     * @param comboBox
-     * @return
-     */
-    private int getIdFromComboBox(ComboBox comboBox) {
-        return Utils.getIdFromComboString((String) comboBox.getSelectionModel().getSelectedItem());
-    }
-
-
-    /**
-     * An observable list holding the customers from the database. Used to initialize the "Customer" combobox.
-     * @return customers
-     */
-    private ObservableList customerList(){
-        ObservableList<String> customers = FXCollections.observableArrayList();
-        for(Customers customer : CustomersDao.getAllCustomers()){
-            customers.add(String.valueOf(customer.getCustomerId()) + " : " + customer.getCustomerName());
-        }
-        return customers;
-    }
-
-
-    /**
-     * An observable list holding contacts from the database. Used to initialize the "Contact" combobox.
-     * @return allContactNames
-     */
-    private ObservableList<String> contactList(){
-        ObservableList<String> allContactNames = FXCollections.observableArrayList();
-        for (Contacts contacts : ContactsDao.getAllContacts()){
-            allContactNames.add(String.valueOf(contacts.getContactID() + " : " + contacts.getContactName()));
-        }return allContactNames;
     }
 
 
@@ -263,7 +193,7 @@ public class AddApptController implements Initializable {
 
         startHourCombo.setItems(Utils.getStartTimeList());
         endHourCombo.setItems(Utils.getEndTimeList());
-        customerCombobox.setItems(customerList());
-        contactCombobox.setItems(contactList());
+        customerCombobox.setItems(CustomersDao.getAllCustomers());
+        contactCombobox.setItems(ContactsDao.getAllContacts());
     }
 }

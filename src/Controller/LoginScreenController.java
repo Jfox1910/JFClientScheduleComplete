@@ -110,12 +110,10 @@ public class LoginScreenController implements Initializable {
     void onActionExit(ActionEvent event) {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText(rb.getString("Do_You_Wish_To_Exit?"));
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        alert.setContentText("Do you wish to exit?");
+        alert.showAndWait().ifPresent((response -> {
             System.exit(0);
-        }
+        }));
     }
 
 

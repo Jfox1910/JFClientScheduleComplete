@@ -95,7 +95,7 @@
                         <Insets left="40.0" right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker fx:id="appointmentDate" onAction="#handleDateChoice" promptText="Appointment Date">
+                  <DatePicker fx:id="appointmentDate" promptText="Appointment Date">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin></DatePicker>

@@ -106,7 +106,6 @@ public final class AppointmentDAO {
     /**
      * DB access used in the modify customer method.
      */
-
    public static void updateAppointment(Appointment updateAppt){
 
         try {

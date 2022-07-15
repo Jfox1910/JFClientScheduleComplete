@@ -1,9 +1,7 @@
 package Controller;
 
 import Dao.CountriesDao;
-import static Dao.CountriesDao.getAllCountries;
 import static Dao.DivisionsDao.getAllDivisions;
-import static Dao.DivisionsDao.getCountryDivision;
 import Dao.CustomersDao;
 import Dao.DivisionsDao;
 import Model.Countries;
@@ -41,8 +39,6 @@ public class ModCustomerController implements Initializable{
 
     private Stage stage;
     private Scene scene;
-    private Parent root;
-    int retrieveDivisionID = 0;
 
     private Customers selectedCustomer = MainScreenController.getSelectedCustomer();
 
@@ -57,7 +53,7 @@ public class ModCustomerController implements Initializable{
         CustomerAddress.setText(String.valueOf(customers.getCustomerAddy()));
         CustomerPhone.setText(String.valueOf(customers.getCustomerPhone()));
         CustomerZip.setText(String.valueOf(customers.getCustomerZip()));
-         selectCountry();
+        selectCountry();
     }
 
 
@@ -206,23 +202,11 @@ if (customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty()
         customerDivision.setItems(getAllDivisions());
         getCustomer(selectedCustomer);
 
-
         ObservableList<Countries> allCountries = CountriesDao.getAllCountries();
         ObservableList<String> countryNames = FXCollections.observableArrayList();
         for (Countries country : allCountries) {
             countryNames.add(country.getCountryName());
         }
         customerCountry.setItems(countryNames);
-
-
-
-
-
-        //selectedCustomer.getCustomerCountry()
-        //customerDivision.setItems(divisionList());
-        //customerCountry.setItems(countryList());
-        //divisionList();
-
-
     }
 }
