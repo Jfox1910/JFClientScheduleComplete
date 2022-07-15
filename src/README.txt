@@ -26,7 +26,7 @@ Please use the attachment “Locale Codes for Region and Language” to review d
 however, administrative functions such as adding users are beyond the scope of the application and done by your company’s IT support staff.
 Your application should be organized logically using one or more design patterns and generously commented using Javadoc so your code can be read and maintained by other programmers.
 
-VERSION: 1.0
+VERSION: 1.1
 OpenJDK Version 17.0.2
 
 Built with:
